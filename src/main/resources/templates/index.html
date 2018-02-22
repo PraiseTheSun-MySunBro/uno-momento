@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Uno Momento</title>
-    </head>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="fragments/header :: header('Uno Momento')" ></head>
     <body>
-        <p>Just piece of code and nothing else...</p>
+        <div id="app">
+            <p>{{ text }}</p>
+        </div>
     </body>
+    <div th:replace="fragments/footer :: foot"></div>
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                text: 'Just piece of code and nothing else...'
+            },
+            methods: {
+
+            }
+        });
+    </script>
 </html>
