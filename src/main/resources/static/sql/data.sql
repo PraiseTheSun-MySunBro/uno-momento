@@ -26,3 +26,9 @@ INSERT INTO Grade (grade_code, en_name, ee_name) VALUES (2, 'Bachelor', 'Bakalau
 INSERT INTO Grade (grade_code, en_name, ee_name) VALUES (3, 'Master', 'Magistri');
 INSERT INTO Grade (grade_code, en_name, ee_name) VALUES (4, 'Doctoral', 'Doktori');
 INSERT INTO Grade (grade_code, en_name, ee_name) VALUES (5, 'Applied Higher Education', 'Rakenduskõrgharidus');
+
+INSERT INTO Person (grade_code, firstname, lastname, uniid, email, password) VALUES (1, 'Firstname', 'Lastname', 'filast', 'filast@ttu.ee', 'test');
+INSERT INTO Person (grade_code, firstname, lastname, uniid, email, password) VALUES (3, 'Oppejoud', 'Lastname', 'oplast', 'oppejoud.lastname@ttu.ee', 'test');
+
+INSERT INTO Role_Faculty_Owner (person_id, role_faculty_code) VALUES (1, 3);
+INSERT INTO Role_Faculty_Owner (person_id, role_faculty_code) VALUES (2, 8);

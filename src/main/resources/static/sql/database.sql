@@ -10,6 +10,17 @@ CREATE TABLE Person_state_type (
   CONSTRAINT AK_Person_state_type_en_name UNIQUE (en_name)
 );
 
+CREATE TABLE Grade (
+  grade_code SMALLINT NOT NULL,
+  ee_name d_name,
+  en_name d_name,
+  CONSTRAINT PK_Grade_grade_code PRIMARY KEY (grade_code),
+  CONSTRAINT AK_Grade_ee_name UNIQUE (ee_name),
+  CONSTRAINT AK_Grade_en_name UNIQUE (en_name)
+);
+
+COMMENT ON TABLE Grade IS '1 -- No Grade, 2 -- Bachelor, 3 -- Master, 4 -- Doctoral, 5 -- Applied Higher Education';
+
 CREATE TABLE Person (
   person_id BIGSERIAL NOT NULL,
   grade_code SMALLINT NOT NULL,
@@ -85,14 +96,3 @@ CREATE TABLE Role_Faculty_Owner (
 );
 
 CREATE INDEX IXFK_Role_Owner_role_faculty_code ON Role_Faculty_Owner (role_faculty_code ASC);
-
-CREATE TABLE Grade (
-  grade_code SMALLINT NOT NULL,
-  ee_name d_name,
-  en_name d_name,
-  CONSTRAINT PK_Grade_grade_code PRIMARY KEY (grade_code),
-  CONSTRAINT AK_Grade_ee_name UNIQUE (ee_name),
-  CONSTRAINT AK_Grade_en_name UNIQUE (en_name)
-);
-
-COMMENT ON TABLE Role IS '1 -- No Grade, 2 -- Bachelor, 3 -- Master, 4 -- Doctoral, 5 -- Applied Higher Education';
