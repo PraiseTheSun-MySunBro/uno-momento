@@ -1,17 +1,34 @@
 package ee.ttu.unomomento.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Entity
 public class Person {
-    public long personId;
-    public short gradeCode;
-    public String firstname;
-    public String lastname;
-    public short personStateCode;
-    public String uniid;
-    public String email;
-    public String password;
-    public Date regTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long personId;
+
+    private Short gradeCode;
+    private String firstname;
+    private String lastname;
+    private Short personStateCode;
+    private String uniid;
+    private String email;
+    private String password;
+    private Date regTime;
 
     // Just for testing method
     @Override
