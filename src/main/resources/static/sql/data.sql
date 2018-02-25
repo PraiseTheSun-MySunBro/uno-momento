@@ -1,5 +1,5 @@
-INSERT INTO Person_state_type (person_state_type_code, en_name, ee_name) VALUES (1, 'Active', 'Aktiivne');
-INSERT INTO Person_state_type (person_state_type_code, en_name, ee_name) VALUES (2, 'Inactive', 'Mitteaktiivne');
+INSERT INTO Person_state (person_state_code, en_name, ee_name) VALUES (1, 'Active', 'Aktiivne');
+INSERT INTO Person_state (person_state_code, en_name, ee_name) VALUES (2, 'Inactive', 'Mitteaktiivne');
 
 INSERT INTO Faculty (faculty_code, en_name, ee_name) VALUES (1, 'School of Business and Governance', 'Majandusteaduskond');
 INSERT INTO Faculty (faculty_code, en_name, ee_name) VALUES (2, 'School of Engineering', 'Inseneeriteaduskond');
@@ -32,3 +32,11 @@ INSERT INTO Person (grade_code, firstname, lastname, uniid, email, password) VAL
 
 INSERT INTO Role_Faculty_Owner (person_id, role_faculty_code) VALUES (1, 3);
 INSERT INTO Role_Faculty_Owner (person_id, role_faculty_code) VALUES (2, 8);
+
+INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (1, 'Active', 'Aktiivne');
+INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (2, 'Inactive', 'Mitteaktiivne');
+INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (3, 'Reserved', 'Reserveeritud');
+
+INSERT INTO Thesis (curator_id, faculty_code, ee_title, en_title, ee_description, en_description) VALUES (2, 3, 'Estonian', 'English', 'Java', 'Postgres');
+
+/* INSERT INTO Thesis_Candidate (thesis_id, person_id) VALUES (1, 1) */
