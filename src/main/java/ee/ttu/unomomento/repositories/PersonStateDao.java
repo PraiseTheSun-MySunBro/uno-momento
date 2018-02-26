@@ -1,12 +1,12 @@
 package ee.ttu.unomomento.repositories;
 
-import ee.ttu.unomomento.models.Person;
+import ee.ttu.unomomento.models.PersonState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersonDao extends JpaRepository<Person, Long> {
+public interface PersonStateDao extends JpaRepository<PersonState, Short> {
 
-    Person findByPersonId(@Param("person_id") Long personId);
+    PersonState findByPersonStateCode(@Param("person_state_code") Short personStateCode);
 }
