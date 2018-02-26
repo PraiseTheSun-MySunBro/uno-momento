@@ -17,6 +17,7 @@ import java.util.Date;
 @Setter
 @Entity
 public class Person {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long personId;
