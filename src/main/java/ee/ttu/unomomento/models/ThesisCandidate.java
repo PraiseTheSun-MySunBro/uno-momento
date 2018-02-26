@@ -18,6 +18,5 @@ public class ThesisCandidate {
     @Id
     private Long thesisId;
 
-    @Id
     private Long personId;
 }
