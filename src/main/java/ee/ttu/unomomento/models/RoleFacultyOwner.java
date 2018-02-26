@@ -18,5 +18,6 @@ public class RoleFacultyOwner {
     @Id
     private Long personId;
 
+    @Id
     private Short roleFacultyCode;
 }
