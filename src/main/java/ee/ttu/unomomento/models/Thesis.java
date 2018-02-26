@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +17,10 @@ import javax.persistence.Entity;
 @Entity
 public class Thesis {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long thesisId;
+
     private Long curatorId;
     private Long supervisorId;
     private Short facultyCode;
