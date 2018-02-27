@@ -19,6 +19,10 @@ public class PersonService {
         personDao.save(person);
     }
 
+    public Person getById(Long id) {
+        return personDao.findByPersonId(id);
+    }
+
     public List<Person> getPersons() {
         return personDao.findAll();
     }
