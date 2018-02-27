@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Configuration
-public class Config {
+public class LocaleConfig {
     private Locale locale = new Locale("ee", "EE");
 
     @Bean

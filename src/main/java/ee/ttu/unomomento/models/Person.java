@@ -34,6 +34,6 @@ public class Person {
     // Just for testing method
     @Override
     public String toString() {
-        return String.format("{%d} {%s} {%s} {%s}", personId, uniid, email, regTime);
+        return String.format("{%d} {%s} {%s} {%s} {%s}", personId, uniid, email, password, regTime);
     }
 }
