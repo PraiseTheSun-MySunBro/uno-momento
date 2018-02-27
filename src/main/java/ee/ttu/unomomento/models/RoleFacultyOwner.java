@@ -7,13 +7,16 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
-public class RoleFacultyOwner {
+@IdClass(RoleFacultyOwner.class)
+public class RoleFacultyOwner implements Serializable {
 
     @Id
     private Long personId;
