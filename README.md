@@ -1,7 +1,7 @@
 # Uno Momento
 ## Project is the subject of Software Engineer (IDK0071) for TUT
 
-![Travis](https://travis-ci.org/PraiseTheSun-MySunBro/uno-momento.svg?branch=master)
+[![Travis](https://travis-ci.org/PraiseTheSun-MySunBro/uno-momento.svg?branch=master)](https://travis-ci.org/PraiseTheSun-MySunBro/uno-momento)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ### Goal
