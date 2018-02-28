@@ -5,10 +5,13 @@ jdk:
 
 before_install:
   - chmod +x gradlew
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-    - $HOME/gradle/wrapper/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.gradle/caches/
 
 notifications:
   - email: false

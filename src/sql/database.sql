@@ -115,24 +115,26 @@ CREATE TABLE Thesis (
   supervisor_name VARCHAR(1000),
   faculty_code SMALLINT NOT NULL,
   thesis_state_code SMALLINT NOT NULL DEFAULT 1,
-  ee_title d_name,
-  en_title d_name,
-  ee_description VARCHAR(1000) NOT NULL,
-  en_description VARCHAR(1000) NOT NULL,
+  ee_title VARCHAR(128),
+  en_title VARCHAR(128),
+  ee_description VARCHAR(1000),
+  en_description VARCHAR(1000),
   CONSTRAINT PK_Thesis_thesis_id PRIMARY KEY (thesis_id),
-  CONSTRAINT AK_Thesis_ee_title UNIQUE (ee_title),
-  CONSTRAINT AK_Thesis_en_title UNIQUE (en_title),
   CONSTRAINT CK_Thesis_supervisor_name CHECK (supervisor_name ~ '^[[:alpha:]]+$'),
   /*CONSTRAINT FK_Thesis_curator_id FOREIGN KEY (curator_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT FK_Thesis_supervisor_id FOREIGN KEY (supervisor_id) REFERENCES Person (person_id) ON DELETE SET NULL ON UPDATE RESTRICT,*/
   CONSTRAINT FK_Thesis_faculty_code FOREIGN KEY (faculty_code) REFERENCES Faculty (faculty_code) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FK_Thesis_thesis_state_code FOREIGN KEY (thesis_state_code) REFERENCES Thesis_State (thesis_state_code) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT CK_Thesis_ee_description CHECK (TRIM(ee_description) != '' AND ee_description !~ '^[[:digit:]]+$'),
-  CONSTRAINT CK_Thesis_en_description CHECK (TRIM(en_description) != '' AND en_description !~ '^[[:digit:]]+$')
+  CONSTRAINT CK_Thesis_en_description CHECK (TRIM(en_description) != '' AND en_description !~ '^[[:digit:]]+$'),
+  CONSTRAINT CK_Thesis_titles_or_descriptions_are_not_empty CHECK (TRIM(ee_title) != '' AND TRIM(en_title) != '' AND TRIM(en_description) != '' AND TRIM(ee_description) != ''),
+  CONSTRAINT CK_Thesis_must_contain_one_or_more_titles_and_descriptions CHECK (ee_title IS NOT NULL AND ee_description IS NOT NULL OR en_title IS NOT NULL AND en_description IS NOT NULL)
 );
 
-CREATE INDEX IXFK_Thesis_curator_id ON Thesis (curator_id ASC);
-CREATE INDEX IXFK_Thesis_supervisor_id ON Thesis (supervisor_id ASC);
+/*CREATE INDEX IXFK_Thesis_curator_id ON Thesis (curator_id ASC);
+CREATE INDEX IXFK_Thesis_supervisor_id ON Thesis (supervisor_id ASC);*/
+CREATE UNIQUE INDEX IXAK_Thesis_en_title ON Thesis (en_title ASC);
+CREATE UNIQUE INDEX IXAK_Thesis_ee_title ON Thesis (ee_title ASC);
 CREATE INDEX IXFK_Thesis_faculty_code ON Thesis (faculty_code ASC);
 CREATE INDEX IXFK_Thesis_State_thesis_state_code ON Thesis_State (thesis_state_code ASC);
 

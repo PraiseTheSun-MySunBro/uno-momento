@@ -17,6 +17,7 @@
                 <b-navbar-nav>
                     <b-nav-item href="#" v-on:click="switchTab(1)">Paku oma</b-nav-item>
                     <b-nav-item href="#" v-on:click="switchTab(0)">Otsi juhendajat</b-nav-item>
+                    <b-nav-item href="#" @click="getPersons">Click me!</b-nav-item>
                 </b-navbar-nav>
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
@@ -203,6 +204,16 @@
                 show: true
             },
             methods: {
+                getPersons: function() {
+                    console.log("I'm working!");
+                    axios.get("/curators/page/0")
+                      .then((response) => {
+                          console.log('Response', response);
+                      })
+                      .catch((error) => {
+                          console.error('Error', error);
+                      })
+                },
                 onSubmit (evt) {
                     evt.preventDefault();
                     alert(JSON.stringify(this.form));
