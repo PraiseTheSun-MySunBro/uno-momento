@@ -5,26 +5,225 @@
         <title>UnoMomento</title>
         <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
         <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
-        <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
+        <link type="text/css" rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
-        <div id="app">
-            <p>{{ text }}</p>
+    <div id="app">
+        <!-- Navigation bar -->
+        <b-navbar toggleable="md" type="dark" variant="secondary" style="max-width:100%">
+            <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+            <b-navbar-brand href="#" v-on:click="switchTab(0)">Tallinna TehnikaUlikool</b-navbar-brand>
+            <b-collapse is-nav id="nav_collapse">
+                <b-navbar-nav>
+                    <b-nav-item href="#" v-on:click="switchTab(1)">Paku oma</b-nav-item>
+                    <b-nav-item href="#" v-on:click="switchTab(0)">Otsi juhendajat</b-nav-item>
+                </b-navbar-nav>
+                <!-- Right aligned nav items -->
+                <b-navbar-nav class="ml-auto">
+                    <b-nav-item-dropdown right>
+                        <!-- Using button-content slot -->
+                        <template slot="button-content">
+                            <em>Denis Rastas</em>
+                        </template>
+                        <b-dropdown-item href="#">Profile</b-dropdown-item>
+                        <b-dropdown-item href="#" v-on:click="switchTab(2)">WorkPlace</b-dropdown-item>
+                        <b-dropdown-item href="#">Signout</b-dropdown-item>
+                    </b-nav-item-dropdown>
+                </b-navbar-nav>
+            </b-collapse>
+        </b-navbar>
+        <!-- Main container -->
+        <div class="container-fluid">
+            <div class="container">
+                <!-- Student workplace where he can find own offered tesises -->
+                <div class="studentWorkPlace" v-if="tabNr==2">
+                    <b-tabs>
+                        <b-tab title="My offered thesises" active>
+                            <b-list-group>
+                                <b-list-group-item href="#" class="flex-column align-items-start" v-for="thesis in studentThesis">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ thesis.en_title}}</h5>
+                                        <small class="text-muted">3 days ago</small>
+                                    </div>
+                                    <p class="mb-1">
+                                        {{ thesis.en_description }}
+                                    </p>
+                                    <small class="text-muted">{{ thesis.lecturer }}</small>
+                                </b-list-group-item>
+                            </b-list-group>
+                        </b-tab>
+                        <b-tab title="My canditations" >
+                            <b-list-group>
+                                <b-list-group-item href="#" class="flex-column align-items-start" v-for="candidate in candidateThesis">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ candidate.en_title}}</h5>
+                                        <small class="text-muted">3 days ago</small>
+                                    </div>
+                                    <p class="mb-1">
+                                        {{ candidate.en_description }}
+                                    </p>
+                                    <small class="text-muted">{{ candidate.curator_name }}</small>
+                                </b-list-group-item>
+                            </b-list-group>
+                        </b-tab>
+                    </b-tabs>
+                </div>
+                <!-- Page with lists of lecturers -->
+
+                <div id="list-of-lecturers" v-if="tabNr==0">
+                    <h1>Informaatika teaduskond</h1>
+                    <div role="tablist">
+                        <b-card no-body class="mb-1" v-for="(lecturer, index) in lecturers">
+                            <b-card-header header-tag="header" class="p-1" role="tab">
+                                <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="secondary" >{{ lecturer.name }}</b-btn>
+                            </b-card-header>
+                            <b-collapse :id="'accordion-' +index" visible accordion="my-accordion" role="tab">
+                                <b-card-body>
+                                    <b-list-group v-for="(thesis, index) in lecturersThesis" v-if="thesis.curator_id==lecturer.id">
+                                        <b-list-group-item button v-b-modal="'modal-' +index">
+                                            {{ thesis.en_title }}
+                                        </b-list-group-item>
+                                        <!-- Modal Component -->
+                                        <b-modal :id="'modal-' + index" hide-footer size="lg" :title=thesis.en_title>
+                                            <div class="d-block text-left">
+                                                <h5>Description:</h5>
+                                                <h6>{{ thesis.en_description }}</h6>
+                                            </div>
+                                            <b-btn class="mt-2" variant="warning" block v-on:click="candidate">Candidate</b-btn>
+                                        </b-modal>
+                                    </b-list-group>
+                                </b-card-body>
+                            </b-collapse>
+                        </b-card>
+                    </div>
+                </div>
+                <!-- Page with registration of thesis -->
+                <div id="thesis-registration" v-if="tabNr==1">
+                    <h1>Paku oma loputoo idee</h1>
+                    <div class="container-registration">
+                        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+                            <b-form-group horizontal
+                                          :label-cols="2"
+                                          breakpoint="md"
+                                          label="Name:"
+                                          label-size="lg"
+                                          label-for="newThesisName">
+                                <b-form-input id="newThesisName"
+                                              type="text"
+                                              v-model="form.en_title"
+                                              placeholder="Enter thesis name"
+                                              required>
+                                </b-form-input>
+                            </b-form-group>
+                            <b-form-group horizontal
+                                          label="Description:"
+                                          :label-cols="2"
+                                          label-size="lg"
+                                          label-for="thesisDescription">
+                                <b-form-textarea id="thesisDescription"
+                                                 v-model="form.en_description"
+                                                 placeholder="Enter some description"
+                                                 :rows="3"
+                                                 :max-rows="6"
+                                                 required>
+                                </b-form-textarea>
+                            </b-form-group>
+                            <b-form-group horizontal
+                                          label="Lecturer:"
+                                          :label-cols="2"
+                                          breakpoint="md"
+                                          label-size="lg"
+                                          label-for="newThesisLecturer">
+                                <b-form-select id="newThesisLecturer"
+                                               :options="choseOfLecturers"
+                                               required
+                                               v-model="form.lecturer">
+                                </b-form-select>
+                            </b-form-group>
+                            <b-button type="submit" variant="primary">Submit</b-button>
+                            <b-button type="reset" variant="danger">Reset</b-button>
+                        </b-form>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
     </body>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
     <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
-    <script src="/static/js/script.js"></script>
+    <script src="js/script.js"></script>
     <script>
         const app = new Vue({
             el: "#app",
             data: {
-                text: 'Just piece of code and nothing else...'
+                tabNr: 0,
+                /* list of lecturers */
+                lecturers: [
+                    {id: 0,name: "Ago Luberg"},
+                    {id: 1,name: "Marko Karamees"},
+                    {id: 2,name: "Makar Rudenchik"},
+                    {id: 3,name: "Vladimir Putin"},
+                    {id: 4,name: "Erik Prisjaznjuk"},
+                    {id: 5,name: "Ogurec Malosolnqj"},
+                    {id: 6,name: "Prezident Zanzibara"},
+                    {id: 7,name: "Mer Lipetska"},
+                    {id: 8,name: "Knjazj Pustonskij"},
+                    {id: 9,name: "Karmen Elektra"},
+                ],
+                lecturersThesis: [
+                    {curator_id: 0, curator_name: "Ago Luberg", en_title: "Plagiatmachine", en_description: "Some text"},
+                    {curator_id: 1, curator_name: "Marko Karamees", en_title: "Linuxkiller", en_description: "Some text"},
+                    {curator_id: 0, curator_name: "Ago Luberg", en_title: "Yeeeebooooy", en_description: "Some text"},
+                    {curator_id: 0, curator_name: "Ago Luberg", en_title: "Maaaaafaka", en_description: "Some text"},
+                    {curator_id: 0, curator_name: "Ago Luberg", en_title: "Ogurec kruche Dona pomidora", en_description: "Some text"},
+                    {curator_id: 1, curator_name: "Marko Karamees", en_title: "Linux dlja durakov", en_description: "Some text"},
+                ],
+                studentThesis: [
+                    {lecturer: "Ago Luberg", en_title: "Vzjatie Sevastopolja", en_description: "Na tanke s ognevoj podderzkoj bradskih narodov, naselenijem menee 1 000 000 milliona chelovek"}
+                ],
+                candidateThesis: [
+                    {curator_id: 0, curator_name: "Example", en_title: "Example", en_description: "Some text"},
+                ],
+                /* for thesis registration */
+                form: {
+                    en_title: '',
+                    en_description: '',
+                    lecturer: null
+                },
+                choseOfLecturers: [
+                    { text: 'Select One', value: null },
+                    'Ago luberg',
+                    'Tanel Tammet',
+                    'Marko Karamees',
+                    'Sven Nomm',
+                    'Erik Prisjaznjuk',
+                ],
+                show: true
             },
             methods: {
-
+                onSubmit (evt) {
+                    evt.preventDefault();
+                    alert(JSON.stringify(this.form));
+                    this.studentThesis.push({lecturer: this.form.lecturer, en_title: this.form.en_title, en_description: this.form.en_description});
+                },
+                onReset (evt) {
+                    evt.preventDefault();
+                    /* Reset our form values */
+                    this.form.en_title = '';
+                    this.form.en_description = '';
+                    this.form.lecturer = null;
+                    /* Trick to reset/clear native browser form validation state */
+                    this.show = false;
+                    this.$nextTick(() => { this.show = true });
+                },
+                switchTab: function(a) {
+                    this.tabNr = a;
+                } ,
+                candidate: function() {
+                    this.candidateThesis.push({curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description});
+                }
             }
         });
     </script>
