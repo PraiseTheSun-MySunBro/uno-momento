@@ -24,7 +24,7 @@ public class HomeController {
 
     @GetMapping(value = "/")
     public String index() {
-        log.info("==========GET Persons==========\n{}", gson.toJson(personService.getPersons()));
+        log.info("==========GET PERSONS==========\n{}", gson.toJson(personService.getPersons()));
         return "index";
     }
 }
