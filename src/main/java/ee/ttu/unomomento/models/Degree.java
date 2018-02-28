@@ -13,10 +13,10 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
-public class Grade {
+public class Degree {
 
     @Id
-    private Short gradeCode;
+    private Short degreeCode;
 
     private String eeName;
     private String enName;
