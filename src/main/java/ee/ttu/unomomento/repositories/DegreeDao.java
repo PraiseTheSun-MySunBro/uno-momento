@@ -1,12 +1,12 @@
 package ee.ttu.unomomento.repositories;
 
-import ee.ttu.unomomento.models.Grade;
+import ee.ttu.unomomento.models.Degree;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GradeDao extends JpaRepository<Grade, Short> {
+public interface DegreeDao extends JpaRepository<Degree, Short> {
 
-    Grade findByGradeCode(@Param("grade_code") Short gradeCode);
+    Degree findByDegreeCode(@Param("degree_code") Short degreeCode);
 }
