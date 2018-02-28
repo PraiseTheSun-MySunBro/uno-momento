@@ -22,7 +22,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long personId;
 
-    private Short gradeCode;
+    private Short degreeCode;
     private String firstname;
     private String lastname;
     private Short personStateCode;

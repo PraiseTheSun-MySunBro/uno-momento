@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface ThesisCandidateDao extends JpaRepository<ThesisCandidate, Long> {
 
     ThesisCandidate findByThesisId(@Param("thesis_id") Long thesisId);
-    ThesisCandidate findByPersonId(@Param("person_id") Long personId);
+    ThesisCandidate findByCandidateId(@Param("candidate_id") Long personId);
 }

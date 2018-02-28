@@ -22,5 +22,5 @@ public class ThesisCandidate implements Serializable {
     private Long thesisId;
 
     @Id
-    private Long personId;
+    private Long candidateId;
 }
