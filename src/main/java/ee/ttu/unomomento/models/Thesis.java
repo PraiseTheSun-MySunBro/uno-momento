@@ -21,8 +21,7 @@ public class Thesis {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long thesisId;
 
-    private Long curatorId;
-    private Long supervisorId;
+    private String supervisorName;
     private Short facultyCode;
     private Short thesisStateCode;
     private String eeTitle;
