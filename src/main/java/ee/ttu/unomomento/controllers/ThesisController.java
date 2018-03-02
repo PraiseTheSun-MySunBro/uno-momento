@@ -1,13 +1,15 @@
 package ee.ttu.unomomento.controllers;
 
 import com.google.gson.Gson;
+import ee.ttu.unomomento.models.Thesis;
 import ee.ttu.unomomento.services.PersonService;
 import ee.ttu.unomomento.services.ThesisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -39,4 +41,12 @@ public class ThesisController {
         return gson.toJson(thesisService.getTheses());
     }
 
+    @PostMapping(value = "/thesis")
+    public String postThesis(@RequestBody Thesis thesis) {
+        /**
+          Post JSON with values from Thesis class
+         */
+        log.info("Model: {}", thesis.getEeTitle());
+        return "Ok";
+    }
 }

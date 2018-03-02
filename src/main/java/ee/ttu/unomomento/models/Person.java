@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,14 +24,18 @@ public class Person {
     private String firstname;
     private String lastname;
     private Short personStateCode;
-    private String uniid;
+    private String uniId;
     private String email;
     private String password;
     private Date regTime;
 
+    @OneToMany
+    @JoinTable(name = "ThesisOwner", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns = @JoinColumn(name = "thesisId"))
+    private Set<Thesis> theses;
+
     // Just for testing method
     @Override
     public String toString() {
-        return String.format("{%d} {%s} {%s} {%s} {%s}", personId, uniid, email, password, regTime);
+        return String.format("{%d} {%s} {%s} {%s} {%s}", personId, uniId, email, password, regTime);
     }
 }
