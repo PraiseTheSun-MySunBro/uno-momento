@@ -37,7 +37,7 @@ INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (1, 'Activ
 INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (2, 'Inactive', 'Mitteaktiivne');
 INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (3, 'Reserved', 'Reserveeritud');
 
-INSERT INTO Thesis (curator_id, faculty_code, ee_title, en_title, ee_description, en_description) VALUES (2, 3, 'Estonian', 'English', 'Java', 'Postgres');
+INSERT INTO Thesis (faculty_code, ee_title, en_title, ee_description, en_description) VALUES (3, 'Estonian', 'English', 'Java', 'Postgres');
 
 INSERT INTO Thesis_Candidate (thesis_id, candidate_id) VALUES (1, 1);
 
