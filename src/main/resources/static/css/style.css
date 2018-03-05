@@ -11,10 +11,17 @@
 
 .container {
     margin-top: 10%;
-    margin-bottom: 5%
+    margin-bottom: 5%;
 }
 .container-registration {
     margin-top: 5%;
     padding-right: 10%;
     padding-left: 10%;
+}
+#list-of-lecturers {
+    border-top: 4px solid rgb(66, 139, 202);
+}
+#thesisButtonAngle {
+    float: right;
+    vertical-align: middle;
 }
