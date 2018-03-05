@@ -15,12 +15,12 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@IdClass(RoleFacultyOwner.class)
-public class RoleFacultyOwner implements Serializable {
+@IdClass(PersonFaculty.class)
+public class PersonFaculty implements Serializable {
 
     @Id
     private Long personId;
 
     @Id
-    private Short roleFacultyCode;
+    private Short facultyCode;
 }

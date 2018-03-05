@@ -27,19 +27,15 @@ CREATE TABLE Person (
   firstname VARCHAR(1000) NOT NULL,
   lastname VARCHAR(1000) NOT NULL,
   person_state_code SMALLINT NOT NULL DEFAULT 1,
-  uniid VARCHAR(6) NOT NULL,
-  /*
-  id_code VARCHAR(11) NOT NULL,
-  address VARCHAR(256) NOT NULL,
-   */
+  uni_id VARCHAR(6) NOT NULL,
   email VARCHAR(256) NOT NULL, /* TODO: make trigger uniid || '@ttu.ee' */
   password VARCHAR(72) NOT NULL,
   reg_time TIMESTAMP NOT NULL DEFAULT now(),
   CONSTRAINT PK_Person_person_id PRIMARY KEY (person_id),
-  CONSTRAINT AK_Person_uniid UNIQUE (uniid),
+  CONSTRAINT AK_Person_uni_id UNIQUE (uni_id),
   CONSTRAINT CK_Person_firstname CHECK (TRIM(firstname) != '' AND firstname !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Person_lastname CHECK (TRIM(lastname) != '' AND lastname !~ '^[[:digit:]]+$'),
-  CONSTRAINT CK_Person_uniid CHECK (uniid ~ '^[a-z]{6}$'),
+  CONSTRAINT CK_Person_uni_id CHECK (uni_id ~ '^[a-z]{6}$'),
   CONSTRAINT CK_Person_email CHECK (email ~ '^[a-z0-9!#$%&''*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$'),
   CONSTRAINT CK_Person_reg_time CHECK (reg_time = now()),
   CONSTRAINT FK_Person_person_state_code FOREIGN KEY (person_state_code) REFERENCES Person_state (person_state_code) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -53,6 +49,17 @@ CREATE INDEX IXFK_Person_degree_code ON Person (degree_code ASC)
 CREATE UNIQUE INDEX IXAK_Person_email ON Person (lower(email))
 ;
 
+CREATE TABLE Role (
+  role_code SMALLINT NOT NULL,
+  en_name d_name,
+  ee_name d_name,
+  CONSTRAINT PK_Role_person_role_code PRIMARY KEY (role_code),
+  CONSTRAINT AK_Role_ee_name UNIQUE (ee_name),
+  CONSTRAINT AK_Role_en_name UNIQUE (en_name)
+);
+
+COMMENT ON TABLE Role IS '1 -- Student, 2 -- Curator';
+
 CREATE TABLE Faculty (
   faculty_code SMALLINT NOT NULL,
   ee_name d_name,
@@ -64,38 +71,25 @@ CREATE TABLE Faculty (
 
 COMMENT ON TABLE Faculty IS '1 -- School of Business and Governance, 2 -- School of Engineering, 3 -- School of Information Technologies, 4 -- School of Science, 5 -- Estonian Maritime Academy';
 
-CREATE TABLE Role (
-  role_code SMALLINT NOT NULL,
-  ee_name d_name,
-  en_name d_name,
-  CONSTRAINT PK_Role_role_code PRIMARY KEY (role_code),
-  CONSTRAINT AK_Role_ee_name UNIQUE (ee_name),
-  CONSTRAINT AK_Role_en_name UNIQUE (en_name)
-);
-
-COMMENT ON TABLE Role IS '1 -- Student, 2 -- Lecturer';
-
-CREATE TABLE Role_Faculty (
-  role_faculty_code SMALLINT NOT NULL,
-  role_code SMALLINT NOT NULL,
-  faculty_code SMALLINT NOT NULL,
-  CONSTRAINT PK_Role_Faculty_role_faculty_code PRIMARY KEY (role_faculty_code),
-  CONSTRAINT AK_Role_Faculty_role_code UNIQUE (role_code, faculty_code),
-  CONSTRAINT FK_Role_Faculty_faculty_code FOREIGN KEY (faculty_code) REFERENCES Faculty (faculty_code) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT FK_Role_Faculty_role_code FOREIGN KEY (role_code) REFERENCES Role (role_code) ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
-CREATE INDEX IXFK_Role_Faculty_faculty_code ON Role_Faculty (faculty_code ASC);
-
-CREATE TABLE Role_Faculty_Owner (
+CREATE TABLE Person_Role (
   person_id BIGINT NOT NULL,
-  role_faculty_code SMALLINT NOT NULL,
-  CONSTRAINT PK_Role_Owner_role_faculty_code_person_id PRIMARY KEY (person_id, role_faculty_code),
-  CONSTRAINT FK_Role_Owner_role_faculty_code FOREIGN KEY (role_faculty_code) REFERENCES Role_Faculty (role_faculty_code) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT FK_Role_Owner_person_id FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT
+  role_code SMALLINT NOT NULL,
+  CONSTRAINT PK_Person_Role_person_id_role_code PRIMARY KEY (person_id, role_code),
+  CONSTRAINT FK_Person_Role_person_id FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT FK_Person_Role_role_code FOREIGN KEY (role_code) REFERENCES Role (role_code) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE INDEX IXFK_Role_Owner_role_faculty_code ON Role_Faculty_Owner (role_faculty_code ASC);
+CREATE INDEX IXFK_Person_Role_role_code ON Person_Role (role_code ASC);
+
+CREATE TABLE Person_Faculty (
+  person_id BIGINT NOT NULL,
+  faculty_code SMALLINT NOT NULL,
+  CONSTRAINT PK_Person_Faculty_person_id_faculty_code PRIMARY KEY (person_id, faculty_code),
+  CONSTRAINT FK_Person_Faculty_person_id FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT FK_Person_Faculty_faculty_code FOREIGN KEY (faculty_code) REFERENCES Faculty (faculty_code) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE INDEX IXFK_Person_Faculty_faculty_code ON Person_Faculty (faculty_code ASC);
 
 CREATE TABLE Thesis_State (
   thesis_state_code SMALLINT NOT NULL,
@@ -110,8 +104,6 @@ COMMENT ON TABLE Thesis_State IS '1 -- Active, 2 - Inactive, 3 - Reserved';
 
 CREATE TABLE Thesis (
   thesis_id BIGSERIAL NOT NULL,
-  /*curator_id BIGINT NOT NULL,
-  supervisor_id BIGINT DEFAULT NULL,*/
   supervisor_name VARCHAR(1000),
   faculty_code SMALLINT NOT NULL,
   thesis_state_code SMALLINT NOT NULL DEFAULT 1,
@@ -121,8 +113,6 @@ CREATE TABLE Thesis (
   en_description VARCHAR(1000),
   CONSTRAINT PK_Thesis_thesis_id PRIMARY KEY (thesis_id),
   CONSTRAINT CK_Thesis_supervisor_name CHECK (supervisor_name ~ '^[[:alpha:]]+$'),
-  /*CONSTRAINT FK_Thesis_curator_id FOREIGN KEY (curator_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT,
-  CONSTRAINT FK_Thesis_supervisor_id FOREIGN KEY (supervisor_id) REFERENCES Person (person_id) ON DELETE SET NULL ON UPDATE RESTRICT,*/
   CONSTRAINT FK_Thesis_faculty_code FOREIGN KEY (faculty_code) REFERENCES Faculty (faculty_code) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FK_Thesis_thesis_state_code FOREIGN KEY (thesis_state_code) REFERENCES Thesis_State (thesis_state_code) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT CK_Thesis_ee_description CHECK (TRIM(ee_description) != '' AND ee_description !~ '^[[:digit:]]+$'),
@@ -131,8 +121,6 @@ CREATE TABLE Thesis (
   CONSTRAINT CK_Thesis_must_contain_one_or_more_titles_and_descriptions CHECK (ee_title IS NOT NULL AND ee_description IS NOT NULL OR en_title IS NOT NULL AND en_description IS NOT NULL)
 );
 
-/*CREATE INDEX IXFK_Thesis_curator_id ON Thesis (curator_id ASC);
-CREATE INDEX IXFK_Thesis_supervisor_id ON Thesis (supervisor_id ASC);*/
 CREATE UNIQUE INDEX IXAK_Thesis_en_title ON Thesis (en_title ASC);
 CREATE UNIQUE INDEX IXAK_Thesis_ee_title ON Thesis (ee_title ASC);
 CREATE INDEX IXFK_Thesis_faculty_code ON Thesis (faculty_code ASC);
@@ -155,22 +143,15 @@ CREATE TABLE Thesis_Tag (
   CONSTRAINT FK_Thesis_Tag_thesis_id FOREIGN KEY (thesis_id) REFERENCES Thesis (thesis_id) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 
-CREATE TABLE Person_Role (
-  person_role_code SMALLINT NOT NULL,
-  en_name d_name,
-  ee_name d_name,
-  CONSTRAINT PK_Person_Role_person_role_code PRIMARY KEY (person_role_code)
-);
-
-CREATE TABLE Thesis_Owner_Role (
+CREATE TABLE Thesis_Owner (
   thesis_id BIGINT NOT NULL,
   person_id BIGINT NOT NULL,
-  person_role_code SMALLINT NOT NULL,
-  CONSTRAINT PK_Thesis_Owner_Role_thesis_id_person_id PRIMARY KEY (thesis_id, person_id),
-  CONSTRAINT FK_Thesis_Owner_Role_thesis_id FOREIGN KEY (thesis_id) REFERENCES Thesis (thesis_id) ON DELETE CASCADE ON UPDATE RESTRICT,
-  CONSTRAINT FK_Thesis_Owner_Role_person_id FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT ,
-  CONSTRAINT FK_Thesis_Owner_Role_person_role_code FOREIGN KEY (person_role_code) REFERENCES Person_Role (person_role_code) ON DELETE RESTRICT ON UPDATE CASCADE
+  role_code SMALLINT NOT NULL,
+  CONSTRAINT PK_Thesis_Owner_thesis_id_person_id PRIMARY KEY (thesis_id, person_id),
+  CONSTRAINT FK_Thesis_Owner_thesis_id FOREIGN KEY (thesis_id) REFERENCES Thesis (thesis_id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT FK_Thesis_Owner_person_id FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT FK_Thesis_Owner_role_code FOREIGN KEY (role_code) REFERENCES Role (role_code) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE INDEX IXFK_Thesis_Owner_Role_person_id ON Thesis_Owner_Role (person_id ASC);
-CREATE INDEX IXFK_Thesis_Owner_Role_person_role_code ON Thesis_Owner_Role (person_role_code ASC);
+CREATE INDEX IXFK_Thesis_Owner_person_id ON Thesis_Owner (person_id ASC);
+CREATE INDEX IXFK_Thesis_Owner_role_code ON Thesis_Owner (role_code ASC);
