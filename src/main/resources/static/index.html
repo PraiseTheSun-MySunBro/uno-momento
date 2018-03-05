@@ -29,6 +29,7 @@
                         </template>
                         <b-dropdown-item href="#">
                             <i class="far fa-user fa-lg"></i>
+
                             <en>Kasutaja andmed</en>
                         </b-dropdown-item>
                         <b-dropdown-item href="#" v-on:click="switchTab(2)">
@@ -38,6 +39,7 @@
                         <b-dropdown-item href="#">
                             <i class="fas fa-sign-out-alt fa-lg"></i>
                             <en>Logi välja</en>
+
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
@@ -92,9 +94,11 @@
                             </b-card-header>
                             <b-collapse :id="'accordion-' +index" visible accordion="my-accordion" role="tab">
                                 <b-card-body>
+
                                     <b-list-group v-for="(thesis, index) in lecturer.theses">
                                         <b-list-group-item button v-b-modal="'modal-' +index">
                                             <en class="float-left">{{ thesis.eeTitle }}</en>
+                                          
                                             <div class="float-right">
                                                     <en>VAATA</en>
                                                     <i id="thesisButtonAngle" class="fas fa-angle-right fa-lg"></i>
@@ -133,7 +137,9 @@
                         <h1>Informaatika teaduskond</h1>
                 </div> 
                 <div id="thesis-registration" v-if="tabNr==1">
+
                         <b-card  border-variant="primary bg-light" v-if="tabNr==1">
+
                                 <h2 class="card-title">Paku oma lõputöö idee</h2>
                                 <hr class="my-2">
                                 <div id="offerSlogan">
@@ -261,7 +267,9 @@
                 } ,
                 modalCandidate: function() {
                     this.candidateThesis.push({curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description});
+
                 },
+
             },
             mounted: function() {
                 axios.get('/curators')
