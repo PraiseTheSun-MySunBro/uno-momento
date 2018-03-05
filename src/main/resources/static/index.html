@@ -29,15 +29,17 @@
                         </template>
                         <b-dropdown-item href="#">
                             <i class="far fa-user fa-lg"></i>
-                            <en>Profile</en>
+
+                            <en>Kasutaja andmed</en>
                         </b-dropdown-item>
                         <b-dropdown-item href="#" v-on:click="switchTab(2)">
                             <i class="fas fa-briefcase fa-lg"></i>
-                            <en>WorkPlace</en>
+                            <en>Töölaud</en>
                         </b-dropdown-item>
                         <b-dropdown-item href="#">
                             <i class="fas fa-sign-out-alt fa-lg"></i>
-                            <en>Signout</en>
+                            <en>Logi välja</en>
+
                         </b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
@@ -92,21 +94,37 @@
                             </b-card-header>
                             <b-collapse :id="'accordion-' +index" visible accordion="my-accordion" role="tab">
                                 <b-card-body>
-                                    <b-list-group v-for="(thesis, index) in lecturersThesis" v-if="thesis.curator_id==lecturer.personId">
+
+                                    <b-list-group v-for="(thesis, index) in lecturer.theses">
                                         <b-list-group-item button v-b-modal="'modal-' +index">
-                                            <en class="float-left">{{ thesis.en_title }}</en>
+                                            <en class="float-left">{{ thesis.eeTitle }}</en>
+                                          
                                             <div class="float-right">
                                                     <en>VAATA</en>
                                                     <i id="thesisButtonAngle" class="fas fa-angle-right fa-lg"></i>
                                             </div>
                                         </b-list-group-item>
                                         <!-- Modal Component -->
-                                        <b-modal :id="'modal-' + index" hide-footer size="lg" :title=thesis.en_title>
-                                            <div class="d-block text-left">
-                                                <h5>Description:</h5>
-                                                <h6>{{ thesis.en_description }}</h6>
+                                        <b-modal :id="'modal-' + index" 
+                                                body-bg-variant="light" 
+                                                hide-footer  
+                                                hide-header size="lg">
+                                            <div class="d-block text-center">
+                                                <h2>{{ thesis.eeTitle }}</h2>
+                                                <h4 id="modalLecturerName">{{ lecturer.firstname }} {{lecturer.lastname}}</h4>
                                             </div>
-                                            <b-btn class="mt-2" variant="warning" block v-on:click="candidate">Candidate</b-btn>
+                                            <hr class="my-2">                      
+                                            <b-card id="modalCardDescription">
+                                                <div class="d-block text-left">
+                                                    <h4>Kirjeldus:</h4>
+                                                    <p>{{ thesis.eeDescription }}</p>
+                                                </div>
+                                            </b-card>
+                                            <!-- 
+                                            <div id="modalButtons">
+                                                <b-btn class="mt-3" variant="primary" v-on:click="modalCandidate">Kandideeri</b-btn>
+                                            </div>
+                                        -->
                                         </b-modal>
                                     </b-list-group>
                                 </b-card-body>
@@ -119,7 +137,9 @@
                         <h1>Informaatika teaduskond</h1>
                 </div> 
                 <div id="thesis-registration" v-if="tabNr==1">
-                        <b-card  border-variant="secondary bg-light" v-if="tabNr==1">
+
+                        <b-card  border-variant="primary bg-light" v-if="tabNr==1">
+
                                 <h2 class="card-title">Paku oma lõputöö idee</h2>
                                 <hr class="my-2">
                                 <div id="offerSlogan">
@@ -245,9 +265,11 @@
                 switchTab: function(a) {
                     this.tabNr = a;
                 } ,
-                candidate: function() {
+                modalCandidate: function() {
                     this.candidateThesis.push({curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description});
-                }
+
+                },
+
             },
             mounted: function() {
                 axios.get('/curators')
