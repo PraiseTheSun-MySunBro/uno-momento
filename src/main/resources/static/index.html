@@ -17,8 +17,7 @@
             <b-collapse is-nav id="nav_collapse">
                 <b-navbar-nav>
                     <b-nav-item href="#" v-on:click="switchTab(1)">Paku oma</b-nav-item>
-                    <b-nav-item href="#" v-on:click="switchTab(0)">Otsi juhendajat</b-nav-item>
-                    <b-nav-item href="#" @click="getPersons">Click me!</b-nav-item>
+                    <b-nav-item href="#" v-on:click="switchTab(0)" disable>Otsi juhendajat</b-nav-item>
                 </b-navbar-nav>
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
@@ -95,8 +94,11 @@
                                 <b-card-body>
                                     <b-list-group v-for="(thesis, index) in lecturersThesis" v-if="thesis.curator_id==lecturer.personId">
                                         <b-list-group-item button v-b-modal="'modal-' +index">
-                                            <en>{{ thesis.en_title }}</en>
-                                            <i id="thesisButtonAngle" class="fas fa-angle-left fa-lg"></i>
+                                            <en class="float-left">{{ thesis.en_title }}</en>
+                                            <div class="float-right">
+                                                    <en>VAATA</en>
+                                                    <i id="thesisButtonAngle" class="fas fa-angle-right fa-lg"></i>
+                                            </div>
                                         </b-list-group-item>
                                         <!-- Modal Component -->
                                         <b-modal :id="'modal-' + index" hide-footer size="lg" :title=thesis.en_title>
@@ -113,52 +115,62 @@
                     </div>
                 </div>
                 <!-- Page with registration of thesis -->
+                <div id="facultyName" v-if="tabNr==1">
+                        <h1>Informaatika teaduskond</h1>
+                </div> 
                 <div id="thesis-registration" v-if="tabNr==1">
-                    <h1>Paku oma loputoo idee</h1>
-                    <div class="container-registration">
-                        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-                            <b-form-group horizontal
-                                          :label-cols="2"
-                                          breakpoint="md"
-                                          label="Name:"
-                                          label-size="lg"
-                                          label-for="newThesisName">
-                                <b-form-input id="newThesisName"
-                                              type="text"
-                                              v-model="form.en_title"
-                                              placeholder="Enter thesis name"
-                                              required>
-                                </b-form-input>
-                            </b-form-group>
-                            <b-form-group horizontal
-                                          label="Description:"
-                                          :label-cols="2"
-                                          label-size="lg"
-                                          label-for="thesisDescription">
-                                <b-form-textarea id="thesisDescription"
-                                                 v-model="form.en_description"
-                                                 placeholder="Enter some description"
-                                                 :rows="3"
-                                                 :max-rows="6"
-                                                 required>
-                                </b-form-textarea>
-                            </b-form-group>
-                            <b-form-group horizontal
-                                          label="Lecturer:"
-                                          :label-cols="2"
-                                          breakpoint="md"
-                                          label-size="lg"
-                                          label-for="newThesisLecturer">
-                                <b-form-select id="newThesisLecturer"
-                                               :options="choseOfLecturers"
-                                               required
-                                               v-model="form.lecturer">
-                                </b-form-select>
-                            </b-form-group>
-                            <b-button type="submit" variant="primary">Submit</b-button>
-                            <b-button type="reset" variant="danger">Reset</b-button>
-                        </b-form>
-                    </div>
+                        <b-card  border-variant="secondary bg-light" v-if="tabNr==1">
+                                <h2 class="card-title">Paku oma lõputöö idee</h2>
+                                <hr class="my-2">
+                                <div id="offerSlogan">
+                                    <footer>Peas on head mõtted millest saab hea lõpputöö idee?</footer>
+                                    <footer >Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</footer> 
+                                </div>   
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <b-form-group class="b-form-group">
+                                            <label for="inputfield">Lõputöö nimi:</label>
+                                            <input class="form-control " type="text" required  
+                                                id="inputfield" v-model="form.en_title" placeholder="Kirjutage oma lõputöö nimi">
+                                        </b-form-group>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="b-form-group">
+                                            <label for="inputfield">Kirjeldus:</label>
+                                            <b-form-textarea id="inputfield"
+                                                    placeholder="Kirjeldage oma idee"
+                                                    v-model="form.en_description"
+                                                    required 
+                                                    :rows="6"
+                                                    :max-rows="12">
+                                            </b-form-textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="b-form-group">
+                                            <label for="inputfield">Juhendaja:</label>
+                                            <b-form-select class="form-control" 
+                                                    :options="choseOfLecturers"
+                                                    required
+                                                    v-model="form.lecturer"
+                                                    id="inputfield" 
+                                                    placeholder="Kirjutage oma isikukood">
+                                            </b-form-select>
+                                            <small class="text-muted">Valige üks variant järgmiste hulgast</small>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div id="button-container" class="btn float-right">
+                                    <b-button-group variant="primary">
+                                            <b-button variant="primary" v-on:click="onReset">Tühista</b-button>
+                                            <b-button variant="primary" class="btn float-right" v-on:click="onSubmit">Paku</b-button>
+                                    </b-button-group>
+                                </div>      
+                            </b-card>
                 </div>
             </div>
         </div>
@@ -202,8 +214,7 @@
                     'Tanel Tammet',
                     'Marko Karamees',
                     'Sven Nomm'
-                ],
-                show: true
+                ]
             },
             methods: {
                 getPersons: function() {

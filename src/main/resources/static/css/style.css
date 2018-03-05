@@ -21,7 +21,12 @@
 #list-of-lecturers {
     border-top: 4px solid rgb(66, 139, 202);
 }
-#thesisButtonAngle {
-    float: right;
-    vertical-align: middle;
+#thesis-registration {
+    border-top: 4px solid rgb(66, 139, 202);
+}
+.row {
+    margin-bottom: 3%;
+}
+#offerSlogan {
+    margin-bottom: 3%;
 }
