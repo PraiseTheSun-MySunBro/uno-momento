@@ -10,6 +10,7 @@
     </head>
     <body>
     <div id="app">
+
         <!-- Page for student -->
         <div v-if="studentOrLecturer==0">
             <!-- Navigation bar -->
@@ -159,6 +160,7 @@
                                             </b-form-textarea>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="row">
                                         <div class="col-sm-9">
@@ -316,6 +318,7 @@
                                 <footer >Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</footer> 
                             </div> 
                             <b-form @submit="onSubmitLecturer" @reset="onResetLecturer" v-if="show">
+
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <b-form-group class="b-form-group">
@@ -339,6 +342,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div id="thesisFormButtons" class="float-right">
                                     <b-button type="reset"  variant="secondary">Tühista</b-button>
                                     <b-button type="submit"  variant="primary">Paku</b-button>
@@ -361,6 +365,7 @@
             el: "#app",
             data: {
                 tabNr: 0,
+
                 show: true,
                 lecturerName: 'Avo',
                 lecturerLastName: 'Läns',
@@ -375,6 +380,7 @@
                 lecturerThesis: [],
                 /* list of candidate theses */
                 candidateThesis: [],
+
                 /* for thesis registration */
                 form: {
                     en_title: '',
@@ -393,6 +399,7 @@
                     en_title: '',
                     en_description: '',
                 },
+
             },
             methods: {
                 getPersons: function() {
@@ -432,6 +439,7 @@
                 } ,
                 modalCandidate: function() {
                     this.candidateThesis.push({curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description});
+
                 },
                 /* methods for student */
                 onSubmitLecturer (evt) {
