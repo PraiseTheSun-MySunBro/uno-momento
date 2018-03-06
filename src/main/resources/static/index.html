@@ -10,142 +10,134 @@
     </head>
     <body>
     <div id="app">
-        <!-- Navigation bar -->
-        <b-navbar toggleable="md" type="dark" variant="secondary" style="max-width:100%">
-            <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-            <b-navbar-brand href="#" v-on:click="switchTab(0)">Tallinna TehnikaUlikool</b-navbar-brand>
-            <b-collapse is-nav id="nav_collapse">
-                <b-navbar-nav>
-                    <b-nav-item href="#" v-on:click="switchTab(1)">Paku oma</b-nav-item>
-                    <b-nav-item href="#" v-on:click="switchTab(0)" disable>Otsi juhendajat</b-nav-item>
-                </b-navbar-nav>
-                <!-- Right aligned nav items -->
-                <b-navbar-nav class="ml-auto">
-                    <b-nav-item-dropdown right>
-                        <!-- Using button-content slot -->
-                        <template slot="button-content">
-                            <em>Denis Rastas</em>
-                            <i class="fas fa-user-circle fa-lg"></i>
-                        </template>
-                        <b-dropdown-item href="#">
-                            <i class="far fa-user fa-lg"></i>
 
-                            <en>Kasutaja andmed</en>
-                        </b-dropdown-item>
-                        <b-dropdown-item href="#" v-on:click="switchTab(2)">
-                            <i class="fas fa-briefcase fa-lg"></i>
-                            <en>Töölaud</en>
-                        </b-dropdown-item>
-                        <b-dropdown-item href="#">
-                            <i class="fas fa-sign-out-alt fa-lg"></i>
-                            <en>Logi välja</en>
-
-                        </b-dropdown-item>
-                    </b-nav-item-dropdown>
-                </b-navbar-nav>
-            </b-collapse>
-        </b-navbar>
-        <!-- Main container -->
-        <div class="container-fluid">
-            <div class="container">
-                <!-- Student workplace where he can find own offered tesises -->
-                <div class="studentWorkPlace" v-if="tabNr==2">
-                    <b-tabs>
-                        <b-tab title="My offered thesises" active>
-                            <b-list-group>
-                                <b-list-group-item href="#" class="flex-column align-items-start" v-for="thesis in studentThesis">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">{{ thesis.en_title}}</h5>
-                                        <small class="text-muted">3 days ago</small>
-                                    </div>
-                                    <p class="mb-1">
-                                        {{ thesis.en_description }}
-                                    </p>
-                                    <small class="text-muted">{{ thesis.lecturer }}</small>
-                                </b-list-group-item>
-                            </b-list-group>
-                        </b-tab>
-                        <b-tab title="My canditations" >
-                            <b-list-group>
-                                <b-list-group-item href="#" class="flex-column align-items-start" v-for="candidate in candidateThesis">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">{{ candidate.en_title}}</h5>
-                                        <small class="text-muted">3 days ago</small>
-                                    </div>
-                                    <p class="mb-1">
-                                        {{ candidate.en_description }}
-                                    </p>
-                                    <small class="text-muted">{{ candidate.curator_name }}</small>
-                                </b-list-group-item>
-                            </b-list-group>
-                        </b-tab>
-                    </b-tabs>
-                </div>
-                <!-- Page with lists of lecturers -->
-                <div id="facultyName" v-if="tabNr==0">
-                    <h1>Informaatika teaduskond</h1>
-                </div> 
-                <div id="list-of-lecturers" v-if="tabNr==0">
-                    <div role="tablist">
-                        <b-card no-body class="mb-1" v-for="(lecturer, index) in lecturers">
-                            <b-card-header header-tag="header" class="p-1" role="tab">
-                                <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="light" class="text-left" >
-                                    {{ lecturer.firstname }} {{lecturer.lastname}}</b-btn>
-                            </b-card-header>
-                            <b-collapse :id="'accordion-' +index" visible accordion="my-accordion" role="tab">
-                                <b-card-body>
-
-                                    <b-list-group v-for="(thesis, index) in lecturer.theses">
-                                        <b-list-group-item button v-b-modal="'modal-' +index">
-                                            <en class="float-left">{{ thesis.eeTitle }}</en>
-                                          
-                                            <div class="float-right">
-                                                    <en>VAATA</en>
-                                                    <i id="thesisButtonAngle" class="fas fa-angle-right fa-lg"></i>
-                                            </div>
-                                        </b-list-group-item>
-                                        <!-- Modal Component -->
-                                        <b-modal :id="'modal-' + index" 
-                                                body-bg-variant="light" 
-                                                hide-footer  
-                                                hide-header size="lg">
-                                            <div class="d-block text-center">
-                                                <h2>{{ thesis.eeTitle }}</h2>
-                                                <h4 id="modalLecturerName">{{ lecturer.firstname }} {{lecturer.lastname}}</h4>
-                                            </div>
-                                            <hr class="my-2">                      
-                                            <b-card id="modalCardDescription">
-                                                <div class="d-block text-left">
-                                                    <h4>Kirjeldus:</h4>
-                                                    <p>{{ thesis.eeDescription }}</p>
-                                                </div>
-                                            </b-card>
-                                            <!-- 
-                                            <div id="modalButtons">
-                                                <b-btn class="mt-3" variant="primary" v-on:click="modalCandidate">Kandideeri</b-btn>
-                                            </div>
-                                        -->
-                                        </b-modal>
-                                    </b-list-group>
-                                </b-card-body>
-                            </b-collapse>
-                        </b-card>
+        <!-- Page for student -->
+        <div v-if="studentOrLecturer==0">
+            <!-- Navigation bar -->
+            <b-navbar toggleable="md" type="dark" variant="secondary" style="max-width:100%">
+                <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+                <b-navbar-brand href="#" v-on:click="switchTab(0)">Tallinna Tehnikaülikool</b-navbar-brand>
+                <b-collapse is-nav id="nav_collapse">
+                    <b-navbar-nav>
+                        <b-nav-item href="#" v-on:click="switchTab(1)">Paku oma</b-nav-item>
+                        <b-nav-item href="#" v-on:click="switchPerson(1)">Juhendaja vaade</b-nav-item>
+                    </b-navbar-nav>
+                    <!-- Right aligned nav items -->
+                    <b-navbar-nav class="ml-auto">
+                        <b-nav-item-dropdown right>
+                            <!-- Using button-content slot -->
+                            <template slot="button-content">
+                                <em>{{ studentName }}</em>
+                                <i class="fas fa-user-circle fa-lg"></i>
+                            </template>
+                            <b-dropdown-item href="#">
+                                <i class="far fa-user fa-lg"></i>
+                                <en>Kasutaja andmed</en>
+                            </b-dropdown-item>
+                            <b-dropdown-item href="#" v-on:click="switchTab(2)">
+                                <i class="fas fa-briefcase fa-lg"></i>
+                                <en>Töölaud</en>
+                            </b-dropdown-item>
+                            <b-dropdown-item href="#">
+                                <i class="fas fa-sign-out-alt fa-lg"></i>
+                                <en>Logi välja</en>
+                            </b-dropdown-item>
+                        </b-nav-item-dropdown>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
+            <!-- Main container -->
+            <div class="container-fluid">
+                <div class="container">
+                    <!-- Student workplace where he can find own offered tesises -->
+                    <div class="studentWorkPlace" v-if="tabNr==2">
+                        <b-tabs>
+                            <b-tab title="Minu pakkumised" active>
+                                <b-list-group>
+                                    <b-list-group-item href="#" class="flex-column align-items-start" v-for="thesis in studentThesis">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ thesis.en_title}}</h5>
+                                        </div>
+                                        <p class="mb-1">
+                                            {{ thesis.en_description }}
+                                        </p>
+                                        <small class="text-muted">{{ thesis.lecturer }}</small>
+                                    </b-list-group-item>
+                                </b-list-group>
+                            </b-tab>
+                            <b-tab title="Minu kandideerimised" >
+                                <b-list-group>
+                                    <b-list-group-item href="#" class="flex-column align-items-start" v-for="candidate in candidateThesis">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ candidate.en_title}}</h5>
+                                        </div>
+                                        <p class="mb-1">
+                                            {{ candidate.en_description }}
+                                        </p>
+                                        <small class="text-muted">{{ candidate.curator_name }}</small>
+                                    </b-list-group-item>
+                                </b-list-group>
+                            </b-tab>
+                        </b-tabs>
                     </div>
-                </div>
-                <!-- Page with registration of thesis -->
-                <div id="facultyName" v-if="tabNr==1">
+                    <!-- Page with lists of lecturers -->
+                    <div id="facultyName" v-if="tabNr==0">
                         <h1>Informaatika teaduskond</h1>
-                </div> 
-                <div id="thesis-registration" v-if="tabNr==1">
-
+                    </div> 
+                    <div id="list-of-lecturers" v-if="tabNr==0">
+                        <div role="tablist">
+                            <b-card no-body class="mb-1" v-for="(lecturer, index) in lecturers">
+                                <b-card-header header-tag="header" class="p-1" role="tab">
+                                    <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="light" class="text-left" >
+                                        {{ lecturer.firstname }} {{lecturer.lastname}}</b-btn>
+                                </b-card-header>
+                                <b-collapse :id="'accordion-' +index" visible accordion="my-accordion" role="tab">
+                                    <b-card-body>
+                                        <b-list-group v-for="(thesis, index) in lecturer.theses">
+                                            <b-list-group-item button v-b-modal="'modal-' +index">
+                                                <en class="float-left">{{ thesis.eeTitle }}</en>
+                                                <div class="float-right">
+                                                        <en>VAATA</en>
+                                                        <i id="thesisButtonAngle" class="fas fa-angle-right fa-lg"></i>
+                                                </div>
+                                            </b-list-group-item>
+                                            <!-- Modal Component -->
+                                            <b-modal :id="'modal-' + index" 
+                                                    body-bg-variant="light" 
+                                                    hide-footer  
+                                                    hide-header size="lg">
+                                                <div class="d-block text-center">
+                                                    <h2>{{ thesis.eeTitle }}</h2>
+                                                    <h4 id="modalLecturerName">{{ lecturer.firstname }} {{lecturer.lastname}}</h4>
+                                                </div>
+                                                <hr class="my-2">                      
+                                                <b-card id="modalCardDescription">
+                                                    <div class="d-block text-left">
+                                                        <h4>Kirjeldus:</h4>
+                                                        <p>{{ thesis.eeDescription }}</p>
+                                                    </div>
+                                                </b-card>
+                                                <!-- 
+                                                <div id="modalButtons">
+                                                    <b-btn class="mt-3" variant="primary" v-on:click="modalCandidate">Kandideeri</b-btn>
+                                                </div>
+                                            -->
+                                            </b-modal>
+                                        </b-list-group>
+                                    </b-card-body>
+                                </b-collapse>
+                            </b-card>
+                        </div>
+                    </div>
+                    <!-- Page with registration of thesis -->
+                    <div id="facultyName" v-if="tabNr==1">
+                            <h1>Informaatika teaduskond</h1>
+                    </div> 
+                    <div id="thesis-registration" v-if="tabNr==1">
                         <b-card  border-variant="primary bg-light" v-if="tabNr==1">
-
-                                <h2 class="card-title">Paku oma lõputöö idee</h2>
-                                <hr class="my-2">
-                                <div id="offerSlogan">
-                                    <footer>Peas on head mõtted millest saab hea lõpputöö idee?</footer>
-                                    <footer >Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</footer> 
-                                </div>   
+                            <h2 class="card-title">Lisa lõputöö</h2>
+                            <hr class="my-2"> 
+                            <b-form @submit="onSubmit" @reset="onReset" v-if="show">
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <b-form-group class="b-form-group">
@@ -168,29 +160,196 @@
                                             </b-form-textarea>
                                         </div>
                                     </div>
+
                                 </div>
+                                <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="b-form-group">
+                                                <label for="inputfield">Juhendaja:</label>
+                                                <b-form-select class="form-control" 
+                                                        :options="choseOfLecturers"
+                                                        required
+                                                        v-model="form.lecturer"
+                                                        id="inputfield" 
+                                                        placeholder="Kirjutage oma isikukood">
+                                                </b-form-select>
+                                                <small class="text-muted">Valige üks variant järgmiste hulgast</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div id="thesisFormButtons" class="float-right">
+                                    <b-button type="reset"  variant="secondary">Tühista</b-button>
+                                    <b-button type="submit"  variant="primary">Paku</b-button>
+                                </div>
+                            </b-form>        
+                        </b-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page for lecturer -->
+        <div v-if="studentOrLecturer==1">
+            <!-- Navigation bar -->
+            <b-navbar toggleable="md" type="dark" variant="secondary" style="max-width:100%">
+                <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+                <b-navbar-brand href="#" v-on:click="switchTab(0)">Tallinna Tehnikaülikool</b-navbar-brand>
+                <b-collapse is-nav id="nav_collapse">
+                    <b-navbar-nav>
+                        <b-nav-item href="#" v-on:click="switchTab(1)">Lõputöö lisamine</b-nav-item>
+                        <b-nav-item href="#" v-on:click="switchPerson(0)">Tudengi vaade</b-nav-item>
+                    </b-navbar-nav>
+                    <!-- Right aligned nav items -->
+                    <b-navbar-nav class="ml-auto">
+                        <b-nav-item-dropdown right>
+                            <!-- Using button-content slot -->
+                            <template slot="button-content">
+                                <em>{{ lecturerName }} {{ lecturerLastName }}</em>
+                                <i class="fas fa-user-circle fa-lg"></i>
+                            </template>
+                            <b-dropdown-item href="#">
+                                <i class="far fa-user fa-lg"></i>
+                                <en>Kasutaja andmed</en>
+                            </b-dropdown-item>
+                            <b-dropdown-item href="#" v-on:click="switchTab(2)">
+                                <i class="fas fa-briefcase fa-lg"></i>
+                                <en>Töölaud</en>
+                            </b-dropdown-item>
+                            <b-dropdown-item href="#">
+                                <i class="fas fa-sign-out-alt fa-lg"></i>
+                                <en>Logi välja</en>
+                            </b-dropdown-item>
+                        </b-nav-item-dropdown>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
+            <!-- Main container -->
+            <div class="container-fluid">
+                <div class="container">
+                    <!-- Student workplace where he can find own offered tesises -->
+                    <div class="studentWorkPlace" v-if="tabNr==2">
+                        <b-tabs>
+                            <b-tab title="Minu lõputööd" active>
+                                <b-list-group>
+                                    <div v-for="(lecturer, index) in lecturers">
+                                        <b-list-group-item href="#" class="flex-column align-items-start" v-for="thesis in lecturer.theses">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="mb-1">{{ thesis.eeTitle}}</h5>
+                                            </div>
+                                            <p class="mb-1">
+                                                {{ thesis.eeDescription }}
+                                            </p>
+                                        </b-list-group-item>
+                                    </div>     
+                                </b-list-group>
+                            </b-tab>
+                            <b-tab title="Tudengi pakkumised" >
+                                <b-list-group>
+                                    <b-list-group-item href="#" class="flex-column align-items-start" 
+                                                v-for="offer in studentThesis" v-if="lecturerName==offer.lecturer">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ offer.en_title}}</h5>
+                                        </div>
+                                        <p class="mb-1">
+                                            {{ offer.en_description }}
+                                        </p>
+                                        <small class="text-muted">{{ studentName }}</small>
+                                    </b-list-group-item>
+                                </b-list-group>
+                            </b-tab>
+                        </b-tabs>
+                    </div>
+                    <!-- Page with lists of lecturers -->
+                    <div id="facultyName" v-if="tabNr==0">
+                        <h1>Informaatika teaduskond</h1>
+                    </div> 
+                    <div id="list-of-lecturers" v-if="tabNr==0">
+                        <div role="tablist">
+                            <b-card no-body class="mb-1" 
+                                    v-for="(lecturer, index) in lecturers" 
+                                    v-if="lecturerName != lecturer.firstname"
+                                    v-if="lecturerLastName != lecturer.lastname">
+                                <b-card-header header-tag="header" class="p-1" role="tab">
+                                    <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="light" class="text-left" >
+                                        {{ lecturer.firstname }} {{lecturer.lastname}}</b-btn>
+                                </b-card-header>
+                                <b-collapse :id="'accordion-' +index" visible accordion="my-accordion" role="tab">
+                                    <b-card-body>
+                                        <b-list-group v-for="(thesis, index) in lecturer.theses">
+                                            <b-list-group-item button v-b-modal="'modal-' +index">
+                                                <en class="float-left">{{ thesis.eeTitle }}</en>
+                                                <div class="float-right">
+                                                        <en>VAATA</en>
+                                                        <i id="thesisButtonAngle" class="fas fa-angle-right fa-lg"></i>
+                                                </div>
+                                            </b-list-group-item>
+                                            <!-- Modal Component -->
+                                            <b-modal :id="'modal-' + index" 
+                                                    body-bg-variant="light" 
+                                                    hide-footer  
+                                                    hide-header size="lg">
+                                                <div class="d-block text-center">
+                                                    <h2>{{ thesis.eeTitle }}</h2>
+                                                    <h4 id="modalLecturerName">{{ lecturer.firstname }} {{lecturer.lastname}}</h4>
+                                                </div>
+                                                <hr class="my-2">                      
+                                                <b-card id="modalCardDescription">
+                                                    <div class="d-block text-left">
+                                                        <h4>Kirjeldus:</h4>
+                                                        <p>{{ thesis.eeDescription }}</p>
+                                                    </div>
+                                                </b-card>
+                                            </b-modal>
+                                        </b-list-group>
+                                    </b-card-body>
+                                </b-collapse>
+                            </b-card>
+                        </div>
+                    </div>
+                    <!-- Page with registration of thesis -->
+                    <div id="facultyName" v-if="tabNr==1">
+                            <h1>Informaatika teaduskond</h1>
+                    </div> 
+                    <div id="thesis-registration" v-if="tabNr==1">
+                        <b-card  border-variant="primary bg-light" v-if="tabNr==1">
+                            <h2 class="card-title">Paku oma lõputöö idee</h2>
+                            <hr class="my-2">
+                            <div id="offerSlogan">
+                                <footer>Peas on head mõtted millest saab hea lõpputöö idee?</footer>
+                                <footer >Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</footer> 
+                            </div> 
+                            <b-form @submit="onSubmitLecturer" @reset="onResetLecturer" v-if="show">
+
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <b-form-group class="b-form-group">
+                                            <label for="inputfield">Lõputöö nimi:</label>
+                                            <input class="form-control " type="text" required  
+                                                id="inputfield" v-model="formLecturer.en_title" placeholder="Kirjutage oma lõputöö nimi">
+                                        </b-form-group>
+                                    </div>
+                                </div> 
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <div class="b-form-group">
-                                            <label for="inputfield">Juhendaja:</label>
-                                            <b-form-select class="form-control" 
-                                                    :options="choseOfLecturers"
-                                                    required
-                                                    v-model="form.lecturer"
-                                                    id="inputfield" 
-                                                    placeholder="Kirjutage oma isikukood">
-                                            </b-form-select>
-                                            <small class="text-muted">Valige üks variant järgmiste hulgast</small>
+                                            <label for="inputfield">Kirjeldus:</label>
+                                            <b-form-textarea id="inputfield"
+                                                    placeholder="Kirjeldage oma idee"
+                                                    v-model="formLecturer.en_description"
+                                                    required 
+                                                    :rows="6"
+                                                    :max-rows="12">
+                                            </b-form-textarea>
                                         </div>
                                     </div>
-                                </div>   
-                                <div id="button-container" class="btn float-right">
-                                    <b-button-group variant="primary">
-                                            <b-button variant="primary" v-on:click="onReset">Tühista</b-button>
-                                            <b-button variant="primary" class="btn float-right" v-on:click="onSubmit">Paku</b-button>
-                                    </b-button-group>
-                                </div>      
-                            </b-card>
+                                </div>
+
+                                <div id="thesisFormButtons" class="float-right">
+                                    <b-button type="reset"  variant="secondary">Tühista</b-button>
+                                    <b-button type="submit"  variant="primary">Paku</b-button>
+                                </div>
+                            </b-form>        
+                        </b-card>
+                    </div>
                 </div>
             </div>
         </div>
@@ -206,22 +365,22 @@
             el: "#app",
             data: {
                 tabNr: 0,
-                /* list of lecturers */
+
+                show: true,
+                lecturerName: 'Avo',
+                lecturerLastName: 'Läns',
+                studentName: 'Denis Rästas',
+                /* if you want to change profile from student to lecturer, change this parameter on the 1 */
+                studentOrLecturer: 0,
+                /* list of lecturers  with list of theses */
                 lecturers: [],
-                lecturersThesis: [
-                    {curator_id: 1, curator_name: "Ago Luberg", en_title: "Plagiatmachine", en_description: "Some text"},
-                    {curator_id: 2, curator_name: "Marko Karamees", en_title: "Linuxkiller", en_description: "Some text"},
-                    {curator_id: 1, curator_name: "Ago Luberg", en_title: "Example3", en_description: "Some text"},
-                    {curator_id: 1, curator_name: "Ago Luberg", en_title: "Example4", en_description: "Some text"},
-                    {curator_id: 1, curator_name: "Ago Luberg", en_title: "Example5", en_description: "Some text"},
-                    {curator_id: 2, curator_name: "Marko Karamees", en_title: "Example6", en_description: "Some text"},
-                ],
-                studentThesis: [
-                    {lecturer: "Ago Luberg", en_title: "Example", en_description: "Some text"}
-                ],
-                candidateThesis: [
-                    {curator_id: 0, curator_name: "Example", en_title: "Example", en_description: "Some text"},
-                ],
+                /* list of offered theses */
+                studentThesis: [],
+                /* list of lecturer theses */
+                lecturerThesis: [],
+                /* list of candidate theses */
+                candidateThesis: [],
+
                 /* for thesis registration */
                 form: {
                     en_title: '',
@@ -229,12 +388,18 @@
                     lecturer: null
                 },
                 choseOfLecturers: [
-                    { text: 'Select One', value: null },
+                    { text: 'Valige üks', value: null },
                     'Ago luberg',
                     'Tanel Tammet',
                     'Marko Karamees',
-                    'Sven Nomm'
-                ]
+                    'Sven Nomm',
+                    'Avo Läns'
+                ],
+                formLecturer: {
+                    en_title: '',
+                    en_description: '',
+                },
+
             },
             methods: {
                 getPersons: function() {
@@ -247,10 +412,17 @@
                           console.error('Error', error);
                       })
                 },
+                /* methods for student */
                 onSubmit (evt) {
                     evt.preventDefault();
-                    alert(JSON.stringify(this.form));
                     this.studentThesis.push({lecturer: this.form.lecturer, en_title: this.form.en_title, en_description: this.form.en_description});
+                    /* Reset our form values */
+                    this.form.en_title = '';
+                    this.form.en_description = '';
+                    this.form.lecturer = null;
+                    /* Trick to reset/clear native browser form validation state */
+                    this.show = false;
+                    this.$nextTick(() => { this.show = true });
                 },
                 onReset (evt) {
                     evt.preventDefault();
@@ -269,7 +441,29 @@
                     this.candidateThesis.push({curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description});
 
                 },
-
+                /* methods for student */
+                onSubmitLecturer (evt) {
+                    evt.preventDefault();
+                    this.lecturerThesis.push({en_title: this.formLecturer.en_title, en_description: this.formLecturer.en_description});
+                    /* Reset our form values */
+                    this.formLecturer.en_title = '';
+                    this.formLecturer.en_description = '';
+                    /* Trick to reset/clear native browser form validation state */
+                    this.show = false;
+                    this.$nextTick(() => { this.show = true });
+                },
+                onResetLecturer (evt) {
+                    evt.preventDefault();
+                    /* Reset our form values */
+                    this.formLecturer.en_title = '';
+                    this.formLecturer.en_description = '';
+                    /* Trick to reset/clear native browser form validation state */
+                    this.show = false;
+                    this.$nextTick(() => { this.show = true });
+                },
+                switchPerson: function(a) {
+                    this.studentOrLecturer = a;
+                } ,
             },
             mounted: function() {
                 axios.get('/curators')
