@@ -22,4 +22,5 @@ public class ThesisService {
     public List<Thesis> getTheses() {
         return thesisDao.findAll();
     }
+
 }

@@ -1,8 +1,11 @@
 package ee.ttu.unomomento.controllers;
 
 import com.google.gson.Gson;
+import ee.ttu.unomomento.models.Person;
 import ee.ttu.unomomento.models.Thesis;
+import ee.ttu.unomomento.models.ThesisOwner;
 import ee.ttu.unomomento.services.PersonService;
+import ee.ttu.unomomento.services.ThesisOwnerService;
 import ee.ttu.unomomento.services.ThesisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,9 @@ public class ThesisController {
     private PersonService personService;
 
     @Autowired
+    private ThesisOwnerService thesisOwnerService;
+
+    @Autowired
     private Gson gson;
 
 
@@ -41,12 +47,42 @@ public class ThesisController {
         return gson.toJson(thesisService.getTheses());
     }
 
-    @PostMapping(value = "/thesis")
-    public String postThesis(@RequestBody Thesis thesis) {
+    @PostMapping(value = "/curator/{personId}/thesis")
+    public String postThesis(@RequestBody Thesis thesis, @PathVariable Long personId) {
         /**
           Post JSON with values from Thesis class
          */
-        log.info("Model: {}", thesis.getEeTitle());
+        thesis.setThesisStateCode((short) 1);
+        thesisService.insert(thesis);
+        Person person = personService.getById(personId);
+        ThesisOwner thesisOwner = new ThesisOwner();
+        thesisOwner.setPersonId(personId);
+        thesisOwner.setThesisId(thesis.getThesisId());
+        thesisOwner.setRoleCode((short) 2);
+        thesisOwnerService.insert(thesisOwner);
+        System.out.println(thesis);
         return "Ok";
+    }
+
+    @PostMapping(value = "/student/{personId}/thesis")
+    public String postStudentThesis(@RequestBody Thesis thesis, @PathVariable Long personId) {
+        /**
+         Post JSON with values from Thesis class
+         */
+        thesis.setThesisStateCode((short) 1);
+        thesisService.insert(thesis);
+        Person person = personService.getById(personId);
+        ThesisOwner thesisOwner = new ThesisOwner();
+        thesisOwner.setPersonId(personId);
+        thesisOwner.setThesisId(thesis.getThesisId());
+        thesisOwner.setRoleCode((short) 1);
+        thesisOwnerService.insert(thesisOwner);
+        System.out.println(thesis);
+        return "Ok";
+    }
+
+    @GetMapping(value = "/persons/{personId}")
+    public String getPersonsById(@PathVariable Long personId) {
+        return gson.toJson(personService.getById(personId));
     }
 }

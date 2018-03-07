@@ -203,7 +203,7 @@
                         <b-nav-item-dropdown right>
                             <!-- Using button-content slot -->
                             <template slot="button-content">
-                                <em>{{ lecturerName }} {{ lecturerLastName }}</em>
+                                <em>{{ lecturerName }}</em>
                                 <i class="fas fa-user-circle fa-lg"></i>
                             </template>
                             <b-dropdown-item href="#">
@@ -315,10 +315,10 @@
                             <hr class="my-2">
                             <div id="offerSlogan">
                                 <footer>Peas on head mõtted millest saab hea lõpputöö idee?</footer>
-                                <footer >Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</footer> 
-                            </div> 
+                                <footer >Paku neid!</footer>
+                            </div>
                             <b-form @submit="onSubmitLecturer" @reset="onResetLecturer" v-if="show">
-
+                                <input type="hidden" v-model="person.personId">
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <b-form-group class="b-form-group">
@@ -365,10 +365,10 @@
             el: "#app",
             data: {
                 tabNr: 0,
-
+                currentUser: 2,
+                person: {},
                 show: true,
-                lecturerName: 'Avo',
-                lecturerLastName: 'Läns',
+                lecturerName: 'Avo Läns',
                 studentName: 'Denis Rästas',
                 /* if you want to change profile from student to lecturer, change this parameter on the 1 */
                 studentOrLecturer: 0,
@@ -389,10 +389,7 @@
                 },
                 choseOfLecturers: [
                     { text: 'Valige üks', value: null },
-                    'Ago luberg',
-                    'Tanel Tammet',
-                    'Marko Karamees',
-                    'Sven Nomm',
+                    'Mart Vein',
                     'Avo Läns'
                 ],
                 formLecturer: {
@@ -417,6 +414,13 @@
                     evt.preventDefault();
                     this.studentThesis.push({lecturer: this.form.lecturer, en_title: this.form.en_title, en_description: this.form.en_description});
                     /* Reset our form values */
+                    // axios.post(`/curator/${this.currentUser}/thesis`, {eeTitle: this.form.en_title, enTitle: this.form.en_title, eeDescription: this.form.en_description, enDescription: this.form.en_description, facultyCode: 3})
+                    //     .then(response => {
+                    //         console.log("Post: ", response.data);
+                    //     })
+                    //     .catch(e => {
+                    //         console.error(e);
+                    //     });
                     this.form.en_title = '';
                     this.form.en_description = '';
                     this.form.lecturer = null;
@@ -441,10 +445,18 @@
                     this.candidateThesis.push({curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description});
 
                 },
-                /* methods for student */
+                /* methods for lecturer */
                 onSubmitLecturer (evt) {
                     evt.preventDefault();
                     this.lecturerThesis.push({en_title: this.formLecturer.en_title, en_description: this.formLecturer.en_description});
+                    axios.post(`/curator/${this.currentUser}/thesis`, {eeTitle: this.formLecturer.en_title, enTitle: this.formLecturer.en_title, eeDescription: this.formLecturer.en_description, enDescription: this.formLecturer.en_description, facultyCode: 3})
+                        .then(response => {
+                            console.log("Post: ", response.data);
+                            window.location.reload();
+                        })
+                        .catch(e => {
+                            console.error(e);
+                        });
                     /* Reset our form values */
                     this.formLecturer.en_title = '';
                     this.formLecturer.en_description = '';
@@ -468,10 +480,16 @@
             mounted: function() {
                 axios.get('/curators')
                     .then(response => {
-                        this.lecturers=response.data
+                        this.lecturers=response.data;
                     }).catch(e => {
                         console.error(e.data)
-                    })
+                    });
+                axios.get(`/persons/${this.currentUser}`)
+                    .then(response => {
+                        this.person = response.data;
+                    }).catch(e => {
+                       console.error(e.data);
+                    });
             }
             
         });
