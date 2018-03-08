@@ -1,40 +1,29 @@
 package ee.ttu.unomomento.services;
 
-import ee.ttu.unomomento.models.Person;
-import ee.ttu.unomomento.repositories.PersonDao;
+import ee.ttu.unomomento.db.tables.records.PersonRecord;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
+import static ee.ttu.unomomento.db.tables.Person.PERSON;
+import static ee.ttu.unomomento.db.tables.PersonRole.PERSON_ROLE;
+
 @Service
+@Transactional
 public class PersonService {
 
     @Autowired
-    private PersonDao personDao;
+    private DSLContext dsl;
 
-    public void insert(Person person) {
-        personDao.save(person);
-    }
-
-    public Person getById(Long id) {
-        return personDao.findByPersonId(id);
-    }
-
-    public List<Person> getPersons() {
-        return personDao.findAll();
-    }
-
-    public List<Person> getCurators(int offset, int limit) {
-        Pageable pageable = new PageRequest(offset, limit);
-        return personDao.findCurators(pageable);
-    }
-
-    public List<Person> getCurators() {
-        return personDao.findAll();
+    public Result<?> getCurators() {
+        return dsl
+                .select()
+                .from(PERSON)
+                .join(PERSON_ROLE)
+                .using(PERSON.PERSON_ID)
+                .where(PERSON_ROLE.ROLE_CODE.eq((short) 2)).fetch();
     }
 }

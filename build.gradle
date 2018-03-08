@@ -3,16 +3,21 @@ buildscript {
 		springBootVersion = '1.5.10.RELEASE'
 	}
 	repositories {
-		mavenCentral()
+        mavenCentral()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
 
+plugins {
+    id 'nu.studer.jooq' version '2.0.9'
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'nu.studer.jooq'
 
 group = 'ee.ttu'
 version = '0.0.1-SNAPSHOT'
@@ -25,11 +30,51 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
 	compile('com.google.code.gson:gson:2.8.2')
-    //compile('org.springframework.boot:spring-boot-starter-security')
-	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile 'org.jooq:jooq'
+    jooqRuntime 'org.postgresql:postgresql'
+	//compile('org.springframework.boot:spring-boot-starter-security')
+	//compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtime('org.postgresql:postgresql')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     //testCompile('org.springframework.security:spring-security-test')
 }
+
+jooq {
+    version = '3.10.4'
+    edition = 'OSS'
+    sample(sourceSets.main) {
+        jdbc {
+            driver = 'org.postgresql.Driver'
+            url = 'jdbc:postgresql://ec2-79-125-110-209.eu-west-1.compute.amazonaws.com:5432/d2n7auvrp67h9r?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory'
+            user = 'xdcyystqacivjw'
+            password = '21ccf7f3bb2cf2efda3b4ebf87d9cd9c84e824fafc63b765defb6fb7aaf35f09'
+        }
+        generator {
+            name = 'org.jooq.util.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.util.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.util.postgres.PostgresDatabase'
+                inputSchema = 'public'
+            }
+            generate {
+                relations = true
+                deprecated = false
+                records = true
+                immutablePojos = true
+                fluentSetters = true
+            }
+            target {
+                packageName = 'ee.ttu.unomomento.db'
+                directory = "src/main/java"
+            }
+        }
+    }
+}
+
+// removes the task dependency from compileJava to generateSampleJooqSchemaSource
+project.tasks.getByName('compileJava').dependsOn -= 'generateSampleJooqSchemaSource'
