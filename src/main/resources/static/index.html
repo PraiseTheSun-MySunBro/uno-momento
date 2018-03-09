@@ -5,12 +5,21 @@
         <title>UnoMomento</title>
         <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
         <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
-        <!--<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">-->
         <link type="text/css" rel="stylesheet" href="css/style.css"/>
         <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+        <style>
+            [v-cloak] > * { display: none; }
+            [v-cloak]::before {
+                content: " ";
+                display: block;
+                width: 16px;
+                height: 16px;
+                background-image: url('data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==');
+            }
+        </style>
     </head>
     <body>
-    <div id="app">
+    <div id="app" v-cloak>
         <!-- Navigation bar -->
         <b-navbar toggleable="md" type="dark" variant="secondary" style="max-width:100%">
             <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
@@ -19,11 +28,11 @@
                 <b-navbar-nav>
                     <b-nav-item href="#" v-on:click="switchCurrentTab(1)">Lõputöö lisamine</b-nav-item>
                     <b-nav-item href="#" v-on:click="switchUser(2)" v-if="currentUser.role_code === 1">Juhendaja vaade</b-nav-item>
-                    <b-nav-item href="#" v-on:click="switchUser(1)" v-else>Tudengi vaade</b-nav-item>
+                    <b-nav-item href="#" v-on:click="switchUser(1)" v-else-if="currentUser.role_code === 2">Tudengi vaade</b-nav-item>
                 </b-navbar-nav>
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-item-dropdown right>
+                    <b-nav-item-dropdown right no-caret>
                         <!-- Using button-content slot -->
                         <div slot="button-content">
                             <em>{{ fullname }}</em>
@@ -278,7 +287,6 @@
                 } ,
                 modalCandidate: function() {
                     this.candidateTheses.push({curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description});
-
                 },
                 /* methods for lecturer */
                 onSubmitLecturer (evt) {
@@ -310,7 +318,7 @@
                     this.currentUser.id = value;
                 } ,
             },
-            beforeMount: function() {
+            created: function() {
                 axios.get(`/persons/${this.currentUser.id}`)
                     .then(response => {
                         this.currentUser = response.data[0];
