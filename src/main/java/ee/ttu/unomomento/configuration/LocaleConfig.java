@@ -1,4 +1,4 @@
-package ee.ttu.unomomento.configurations;
+package ee.ttu.unomomento.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

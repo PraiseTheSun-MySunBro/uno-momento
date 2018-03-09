@@ -1,7 +1,4 @@
-package ee.ttu.unomomento.configurations;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+package ee.ttu.unomomento.configuration;
 
 //@Configuration
 //@EnableWebSecurity

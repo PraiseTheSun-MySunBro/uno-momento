@@ -31,7 +31,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile("org.springframework.boot:spring-boot-starter-jdbc")
-	compile('com.google.code.gson:gson:2.8.2')
+	//compile('com.google.code.gson:gson:2.8.2')
     compile 'org.jooq:jooq'
     jooqRuntime 'org.postgresql:postgresql'
 	//compile('org.springframework.boot:spring-boot-starter-security')
