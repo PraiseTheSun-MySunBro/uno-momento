@@ -1,5 +1,8 @@
-INSERT INTO Person_State (person_state_code, en_name, ee_name) VALUES (1, 'Active', 'Aktiivne');
-INSERT INTO Person_State (person_state_code, en_name, ee_name) VALUES (2, 'Inactive', 'Mitteaktiivne');
+INSERT INTO Account_Role (account_role_code, role_name) VALUES (1, 'USER');
+INSERT INTO Account_Role (account_role_code, role_name) VALUES (2, 'ADMIN');
+
+INSERT INTO Account_State (account_state_code, en_name, ee_name) VALUES (1, 'Active', 'Aktiivne');
+INSERT INTO Account_State (account_state_code, en_name, ee_name) VALUES (2, 'Inactive', 'Mitteaktiivne');
 
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (1, 'No Degree', 'Puudub');
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (2, 'Bachelor', 'Bakalaureuse');
@@ -7,8 +10,11 @@ INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (3, 'Master', 'Magistr
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (4, 'Doctoral', 'Doktori');
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (5, 'Applied Higher Education', 'Rakenduskõrgharidus');
 
-INSERT INTO Person (degree_code, firstname, lastname, uni_id, email, password) VALUES (1, 'Mart', 'Vein', 'mavein', 'mavein@ttu.ee', 'test');
-INSERT INTO Person (degree_code, firstname, lastname, uni_id, email, password) VALUES (3, 'Avo', 'Läns', 'avlans', 'avo.lans@ttu.ee', 'test123');
+INSERT INTO Account (username, password, email) VALUES ('Test1', 'test1', 'mavein@ttu.ee');
+INSERT INTO Account (username, password, email) VALUES ('Test123', 'test123', 'avo.lans@ttu.ee');
+
+INSERT INTO Person (person_id, degree_code, firstname, lastname, uni_id) VALUES (1, 1, 'Mart', 'Vein', 'mavein');
+INSERT INTO Person (person_id, degree_code, firstname, lastname, uni_id) VALUES (2, 3, 'Avo', 'Läns', 'avlans');
 
 INSERT INTO Role (role_code, en_name, ee_name) VALUES (1, 'Student', 'Tudeng');
 INSERT INTO Role (role_code, en_name, ee_name) VALUES (2, 'Curator', 'Õppejõud');
@@ -30,9 +36,9 @@ INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (2, 'Inact
 INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (3, 'Reserved', 'Reserveeritud');
 
 INSERT INTO Thesis (faculty_code, ee_title, en_title, ee_description, en_description)
-  VALUES (3, 'Lõputööde deklareerimise automatiseerimine', 'Thesis declaration', 'PHP Laravel programmeerimine', 'PHP Laravel programming');
+VALUES (3, 'Lõputööde deklareerimise automatiseerimine', 'Thesis declaration', 'PHP Laravel programmeerimine', 'PHP Laravel programming');
 INSERT INTO Thesis (faculty_code, ee_title, en_title, ee_description, en_description)
-  VALUES (3, 'Masinõpe ja tehisintellekt', 'Artificial Intellect', 'Tehisintellekti arendamine', 'AI development');
+VALUES (3, 'Masinõpe ja tehisintellekt', 'Artificial Intellect', 'Tehisintellekti arendamine', 'AI development');
 
 INSERT INTO Thesis_Candidate (thesis_id, candidate_id) VALUES (1, 1);
 

@@ -4,12 +4,14 @@
 package ee.ttu.unomomento.db;
 
 
+import ee.ttu.unomomento.db.tables.Account;
+import ee.ttu.unomomento.db.tables.AccountRole;
+import ee.ttu.unomomento.db.tables.AccountState;
 import ee.ttu.unomomento.db.tables.Degree;
 import ee.ttu.unomomento.db.tables.Faculty;
 import ee.ttu.unomomento.db.tables.Person;
 import ee.ttu.unomomento.db.tables.PersonFaculty;
 import ee.ttu.unomomento.db.tables.PersonRole;
-import ee.ttu.unomomento.db.tables.PersonState;
 import ee.ttu.unomomento.db.tables.Role;
 import ee.ttu.unomomento.db.tables.Thesis;
 import ee.ttu.unomomento.db.tables.ThesisCandidate;
@@ -32,6 +34,21 @@ import javax.annotation.Generated;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
+
+    /**
+     * The table <code>public.account</code>.
+     */
+    public static final Account ACCOUNT = ee.ttu.unomomento.db.tables.Account.ACCOUNT;
+
+    /**
+     * The table <code>public.account_role</code>.
+     */
+    public static final AccountRole ACCOUNT_ROLE = ee.ttu.unomomento.db.tables.AccountRole.ACCOUNT_ROLE;
+
+    /**
+     * The table <code>public.account_state</code>.
+     */
+    public static final AccountState ACCOUNT_STATE = ee.ttu.unomomento.db.tables.AccountState.ACCOUNT_STATE;
 
     /**
      * 1 -- No Degree, 2 -- Bachelor, 3 -- Master, 4 -- Doctoral, 5 -- Applied Higher Education
@@ -57,11 +74,6 @@ public class Tables {
      * The table <code>public.person_role</code>.
      */
     public static final PersonRole PERSON_ROLE = ee.ttu.unomomento.db.tables.PersonRole.PERSON_ROLE;
-
-    /**
-     * The table <code>public.person_state</code>.
-     */
-    public static final PersonState PERSON_STATE = ee.ttu.unomomento.db.tables.PersonState.PERSON_STATE;
 
     /**
      * 1 -- Student, 2 -- Curator

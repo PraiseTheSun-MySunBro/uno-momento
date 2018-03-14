@@ -8,7 +8,6 @@ import ee.ttu.unomomento.db.Keys;
 import ee.ttu.unomomento.db.Public;
 import ee.ttu.unomomento.db.tables.records.PersonRecord;
 
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -37,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Person extends TableImpl<PersonRecord> {
 
-    private static final long serialVersionUID = 530870800;
+    private static final long serialVersionUID = -1052774609;
 
     /**
      * The reference instance of <code>public.person</code>
@@ -55,7 +53,12 @@ public class Person extends TableImpl<PersonRecord> {
     /**
      * The column <code>public.person.person_id</code>.
      */
-    public final TableField<PersonRecord, Long> PERSON_ID = createField("person_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('person_person_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
+    public final TableField<PersonRecord, Long> PERSON_ID = createField("person_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+
+    /**
+     * The column <code>public.person.uni_id</code>.
+     */
+    public final TableField<PersonRecord, String> UNI_ID = createField("uni_id", org.jooq.impl.SQLDataType.VARCHAR.length(6).nullable(false), this, "");
 
     /**
      * The column <code>public.person.degree_code</code>.
@@ -76,26 +79,6 @@ public class Person extends TableImpl<PersonRecord> {
      * The column <code>public.person.person_state_code</code>.
      */
     public final TableField<PersonRecord, Short> PERSON_STATE_CODE = createField("person_state_code", org.jooq.impl.SQLDataType.SMALLINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.SMALLINT)), this, "");
-
-    /**
-     * The column <code>public.person.uni_id</code>.
-     */
-    public final TableField<PersonRecord, String> UNI_ID = createField("uni_id", org.jooq.impl.SQLDataType.VARCHAR.length(6).nullable(false), this, "");
-
-    /**
-     * The column <code>public.person.email</code>.
-     */
-    public final TableField<PersonRecord, String> EMAIL = createField("email", org.jooq.impl.SQLDataType.VARCHAR.length(256).nullable(false), this, "");
-
-    /**
-     * The column <code>public.person.password</code>.
-     */
-    public final TableField<PersonRecord, String> PASSWORD = createField("password", org.jooq.impl.SQLDataType.VARCHAR.length(72).nullable(false), this, "");
-
-    /**
-     * The column <code>public.person.reg_time</code>.
-     */
-    public final TableField<PersonRecord, Timestamp> REG_TIME = createField("reg_time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("now()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * Create a <code>public.person</code> table reference
@@ -131,14 +114,6 @@ public class Person extends TableImpl<PersonRecord> {
      * {@inheritDoc}
      */
     @Override
-    public Identity<PersonRecord, Long> getIdentity() {
-        return Keys.IDENTITY_PERSON;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public UniqueKey<PersonRecord> getPrimaryKey() {
         return Keys.PK_PERSON_PERSON_ID;
     }
@@ -148,7 +123,7 @@ public class Person extends TableImpl<PersonRecord> {
      */
     @Override
     public List<UniqueKey<PersonRecord>> getKeys() {
-        return Arrays.<UniqueKey<PersonRecord>>asList(Keys.PK_PERSON_PERSON_ID, Keys.AK_PERSON_UNI_ID);
+        return Arrays.<UniqueKey<PersonRecord>>asList(Keys.PK_PERSON_PERSON_ID);
     }
 
     /**
@@ -156,7 +131,7 @@ public class Person extends TableImpl<PersonRecord> {
      */
     @Override
     public List<ForeignKey<PersonRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<PersonRecord, ?>>asList(Keys.PERSON__FK_PERSON_DEGREE_CODE, Keys.PERSON__FK_PERSON_PERSON_STATE_CODE);
+        return Arrays.<ForeignKey<PersonRecord, ?>>asList(Keys.PERSON__FK_PERSON_PERSON_ID, Keys.PERSON__FK_PERSON_DEGREE_CODE);
     }
 
     /**

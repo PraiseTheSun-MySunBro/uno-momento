@@ -4,12 +4,14 @@
 package ee.ttu.unomomento.db;
 
 
+import ee.ttu.unomomento.db.tables.Account;
+import ee.ttu.unomomento.db.tables.AccountRole;
+import ee.ttu.unomomento.db.tables.AccountState;
 import ee.ttu.unomomento.db.tables.Degree;
 import ee.ttu.unomomento.db.tables.Faculty;
 import ee.ttu.unomomento.db.tables.Person;
 import ee.ttu.unomomento.db.tables.PersonFaculty;
 import ee.ttu.unomomento.db.tables.PersonRole;
-import ee.ttu.unomomento.db.tables.PersonState;
 import ee.ttu.unomomento.db.tables.Role;
 import ee.ttu.unomomento.db.tables.Thesis;
 import ee.ttu.unomomento.db.tables.ThesisCandidate;
@@ -42,12 +44,27 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -1285377244;
+    private static final long serialVersionUID = -960502506;
 
     /**
      * The reference instance of <code>public</code>
      */
     public static final Public PUBLIC = new Public();
+
+    /**
+     * The table <code>public.account</code>.
+     */
+    public final Account ACCOUNT = ee.ttu.unomomento.db.tables.Account.ACCOUNT;
+
+    /**
+     * The table <code>public.account_role</code>.
+     */
+    public final AccountRole ACCOUNT_ROLE = ee.ttu.unomomento.db.tables.AccountRole.ACCOUNT_ROLE;
+
+    /**
+     * The table <code>public.account_state</code>.
+     */
+    public final AccountState ACCOUNT_STATE = ee.ttu.unomomento.db.tables.AccountState.ACCOUNT_STATE;
 
     /**
      * 1 -- No Degree, 2 -- Bachelor, 3 -- Master, 4 -- Doctoral, 5 -- Applied Higher Education
@@ -73,11 +90,6 @@ public class Public extends SchemaImpl {
      * The table <code>public.person_role</code>.
      */
     public final PersonRole PERSON_ROLE = ee.ttu.unomomento.db.tables.PersonRole.PERSON_ROLE;
-
-    /**
-     * The table <code>public.person_state</code>.
-     */
-    public final PersonState PERSON_STATE = ee.ttu.unomomento.db.tables.PersonState.PERSON_STATE;
 
     /**
      * 1 -- Student, 2 -- Curator
@@ -134,7 +146,7 @@ public class Public extends SchemaImpl {
 
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
-            Sequences.PERSON_PERSON_ID_SEQ,
+            Sequences.ACCOUNT_ACCOUNT_ID_SEQ,
             Sequences.THESIS_THESIS_ID_SEQ);
     }
 
@@ -147,12 +159,14 @@ public class Public extends SchemaImpl {
 
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
+            Account.ACCOUNT,
+            AccountRole.ACCOUNT_ROLE,
+            AccountState.ACCOUNT_STATE,
             Degree.DEGREE,
             Faculty.FACULTY,
             Person.PERSON,
             PersonFaculty.PERSON_FACULTY,
             PersonRole.PERSON_ROLE,
-            PersonState.PERSON_STATE,
             Role.ROLE,
             Thesis.THESIS,
             ThesisCandidate.THESIS_CANDIDATE,

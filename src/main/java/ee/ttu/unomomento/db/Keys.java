@@ -4,24 +4,28 @@
 package ee.ttu.unomomento.db;
 
 
+import ee.ttu.unomomento.db.tables.Account;
+import ee.ttu.unomomento.db.tables.AccountRole;
+import ee.ttu.unomomento.db.tables.AccountState;
 import ee.ttu.unomomento.db.tables.Degree;
 import ee.ttu.unomomento.db.tables.Faculty;
 import ee.ttu.unomomento.db.tables.Person;
 import ee.ttu.unomomento.db.tables.PersonFaculty;
 import ee.ttu.unomomento.db.tables.PersonRole;
-import ee.ttu.unomomento.db.tables.PersonState;
 import ee.ttu.unomomento.db.tables.Role;
 import ee.ttu.unomomento.db.tables.Thesis;
 import ee.ttu.unomomento.db.tables.ThesisCandidate;
 import ee.ttu.unomomento.db.tables.ThesisOwner;
 import ee.ttu.unomomento.db.tables.ThesisState;
 import ee.ttu.unomomento.db.tables.ThesisTag;
+import ee.ttu.unomomento.db.tables.records.AccountRecord;
+import ee.ttu.unomomento.db.tables.records.AccountRoleRecord;
+import ee.ttu.unomomento.db.tables.records.AccountStateRecord;
 import ee.ttu.unomomento.db.tables.records.DegreeRecord;
 import ee.ttu.unomomento.db.tables.records.FacultyRecord;
 import ee.ttu.unomomento.db.tables.records.PersonFacultyRecord;
 import ee.ttu.unomomento.db.tables.records.PersonRecord;
 import ee.ttu.unomomento.db.tables.records.PersonRoleRecord;
-import ee.ttu.unomomento.db.tables.records.PersonStateRecord;
 import ee.ttu.unomomento.db.tables.records.RoleRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisCandidateRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisOwnerRecord;
@@ -55,13 +59,19 @@ public class Keys {
     // IDENTITY definitions
     // -------------------------------------------------------------------------
 
-    public static final Identity<PersonRecord, Long> IDENTITY_PERSON = Identities0.IDENTITY_PERSON;
+    public static final Identity<AccountRecord, Long> IDENTITY_ACCOUNT = Identities0.IDENTITY_ACCOUNT;
     public static final Identity<ThesisRecord, Long> IDENTITY_THESIS = Identities0.IDENTITY_THESIS;
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<AccountRecord> PK_ACCOUNT_ACCOUNT_ID = UniqueKeys0.PK_ACCOUNT_ACCOUNT_ID;
+    public static final UniqueKey<AccountRoleRecord> PK_ACCOUNT_ROLE_ACCOUNT_ROLE_CODE = UniqueKeys0.PK_ACCOUNT_ROLE_ACCOUNT_ROLE_CODE;
+    public static final UniqueKey<AccountRoleRecord> AK_ACCOUNT_ROLE_ROLE_NAME = UniqueKeys0.AK_ACCOUNT_ROLE_ROLE_NAME;
+    public static final UniqueKey<AccountStateRecord> PK_ACCOUNT_STATE_ACCOUNT_STATE_CODE = UniqueKeys0.PK_ACCOUNT_STATE_ACCOUNT_STATE_CODE;
+    public static final UniqueKey<AccountStateRecord> AK_ACCOUNT_STATE_EE_NAME = UniqueKeys0.AK_ACCOUNT_STATE_EE_NAME;
+    public static final UniqueKey<AccountStateRecord> AK_ACCOUNT_STATE_EN_NAME = UniqueKeys0.AK_ACCOUNT_STATE_EN_NAME;
     public static final UniqueKey<DegreeRecord> PK_DEGREE_DEGREE_CODE = UniqueKeys0.PK_DEGREE_DEGREE_CODE;
     public static final UniqueKey<DegreeRecord> AK_DEGREE_EE_NAME = UniqueKeys0.AK_DEGREE_EE_NAME;
     public static final UniqueKey<DegreeRecord> AK_DEGREE_EN_NAME = UniqueKeys0.AK_DEGREE_EN_NAME;
@@ -69,12 +79,8 @@ public class Keys {
     public static final UniqueKey<FacultyRecord> AK_FACULTY_EE_NAME = UniqueKeys0.AK_FACULTY_EE_NAME;
     public static final UniqueKey<FacultyRecord> AK_FACULTY_EN_NAME = UniqueKeys0.AK_FACULTY_EN_NAME;
     public static final UniqueKey<PersonRecord> PK_PERSON_PERSON_ID = UniqueKeys0.PK_PERSON_PERSON_ID;
-    public static final UniqueKey<PersonRecord> AK_PERSON_UNI_ID = UniqueKeys0.AK_PERSON_UNI_ID;
     public static final UniqueKey<PersonFacultyRecord> PK_PERSON_FACULTY_PERSON_ID_FACULTY_CODE = UniqueKeys0.PK_PERSON_FACULTY_PERSON_ID_FACULTY_CODE;
     public static final UniqueKey<PersonRoleRecord> PK_PERSON_ROLE_PERSON_ID_ROLE_CODE = UniqueKeys0.PK_PERSON_ROLE_PERSON_ID_ROLE_CODE;
-    public static final UniqueKey<PersonStateRecord> PK_PERSON_STATE_PERSON_STATE_CODE = UniqueKeys0.PK_PERSON_STATE_PERSON_STATE_CODE;
-    public static final UniqueKey<PersonStateRecord> AK_PERSON_STATE_EE_NAME = UniqueKeys0.AK_PERSON_STATE_EE_NAME;
-    public static final UniqueKey<PersonStateRecord> AK_PERSON_STATE_EN_NAME = UniqueKeys0.AK_PERSON_STATE_EN_NAME;
     public static final UniqueKey<RoleRecord> PK_ROLE_PERSON_ROLE_CODE = UniqueKeys0.PK_ROLE_PERSON_ROLE_CODE;
     public static final UniqueKey<RoleRecord> AK_ROLE_EN_NAME = UniqueKeys0.AK_ROLE_EN_NAME;
     public static final UniqueKey<RoleRecord> AK_ROLE_EE_NAME = UniqueKeys0.AK_ROLE_EE_NAME;
@@ -90,8 +96,10 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<AccountRecord, AccountStateRecord> ACCOUNT__FK_ACCOUNT_ACCOUNT_STATE_CODE = ForeignKeys0.ACCOUNT__FK_ACCOUNT_ACCOUNT_STATE_CODE;
+    public static final ForeignKey<AccountRecord, AccountRoleRecord> ACCOUNT__FK_ACCOUNT_ACCOUNT_ROLE_CODE = ForeignKeys0.ACCOUNT__FK_ACCOUNT_ACCOUNT_ROLE_CODE;
+    public static final ForeignKey<PersonRecord, AccountRecord> PERSON__FK_PERSON_PERSON_ID = ForeignKeys0.PERSON__FK_PERSON_PERSON_ID;
     public static final ForeignKey<PersonRecord, DegreeRecord> PERSON__FK_PERSON_DEGREE_CODE = ForeignKeys0.PERSON__FK_PERSON_DEGREE_CODE;
-    public static final ForeignKey<PersonRecord, PersonStateRecord> PERSON__FK_PERSON_PERSON_STATE_CODE = ForeignKeys0.PERSON__FK_PERSON_PERSON_STATE_CODE;
     public static final ForeignKey<PersonFacultyRecord, PersonRecord> PERSON_FACULTY__FK_PERSON_FACULTY_PERSON_ID = ForeignKeys0.PERSON_FACULTY__FK_PERSON_FACULTY_PERSON_ID;
     public static final ForeignKey<PersonFacultyRecord, FacultyRecord> PERSON_FACULTY__FK_PERSON_FACULTY_FACULTY_CODE = ForeignKeys0.PERSON_FACULTY__FK_PERSON_FACULTY_FACULTY_CODE;
     public static final ForeignKey<PersonRoleRecord, PersonRecord> PERSON_ROLE__FK_PERSON_ROLE_PERSON_ID = ForeignKeys0.PERSON_ROLE__FK_PERSON_ROLE_PERSON_ID;
@@ -110,11 +118,17 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     private static class Identities0 extends AbstractKeys {
-        public static Identity<PersonRecord, Long> IDENTITY_PERSON = createIdentity(Person.PERSON, Person.PERSON.PERSON_ID);
+        public static Identity<AccountRecord, Long> IDENTITY_ACCOUNT = createIdentity(Account.ACCOUNT, Account.ACCOUNT.ACCOUNT_ID);
         public static Identity<ThesisRecord, Long> IDENTITY_THESIS = createIdentity(Thesis.THESIS, Thesis.THESIS.THESIS_ID);
     }
 
     private static class UniqueKeys0 extends AbstractKeys {
+        public static final UniqueKey<AccountRecord> PK_ACCOUNT_ACCOUNT_ID = createUniqueKey(Account.ACCOUNT, "pk_account_account_id", Account.ACCOUNT.ACCOUNT_ID);
+        public static final UniqueKey<AccountRoleRecord> PK_ACCOUNT_ROLE_ACCOUNT_ROLE_CODE = createUniqueKey(AccountRole.ACCOUNT_ROLE, "pk_account_role_account_role_code", AccountRole.ACCOUNT_ROLE.ACCOUNT_ROLE_CODE);
+        public static final UniqueKey<AccountRoleRecord> AK_ACCOUNT_ROLE_ROLE_NAME = createUniqueKey(AccountRole.ACCOUNT_ROLE, "ak_account_role_role_name", AccountRole.ACCOUNT_ROLE.ROLE_NAME);
+        public static final UniqueKey<AccountStateRecord> PK_ACCOUNT_STATE_ACCOUNT_STATE_CODE = createUniqueKey(AccountState.ACCOUNT_STATE, "pk_account_state_account_state_code", AccountState.ACCOUNT_STATE.ACCOUNT_STATE_CODE);
+        public static final UniqueKey<AccountStateRecord> AK_ACCOUNT_STATE_EE_NAME = createUniqueKey(AccountState.ACCOUNT_STATE, "ak_account_state_ee_name", AccountState.ACCOUNT_STATE.EE_NAME);
+        public static final UniqueKey<AccountStateRecord> AK_ACCOUNT_STATE_EN_NAME = createUniqueKey(AccountState.ACCOUNT_STATE, "ak_account_state_en_name", AccountState.ACCOUNT_STATE.EN_NAME);
         public static final UniqueKey<DegreeRecord> PK_DEGREE_DEGREE_CODE = createUniqueKey(Degree.DEGREE, "pk_degree_degree_code", Degree.DEGREE.DEGREE_CODE);
         public static final UniqueKey<DegreeRecord> AK_DEGREE_EE_NAME = createUniqueKey(Degree.DEGREE, "ak_degree_ee_name", Degree.DEGREE.EE_NAME);
         public static final UniqueKey<DegreeRecord> AK_DEGREE_EN_NAME = createUniqueKey(Degree.DEGREE, "ak_degree_en_name", Degree.DEGREE.EN_NAME);
@@ -122,12 +136,8 @@ public class Keys {
         public static final UniqueKey<FacultyRecord> AK_FACULTY_EE_NAME = createUniqueKey(Faculty.FACULTY, "ak_faculty_ee_name", Faculty.FACULTY.EE_NAME);
         public static final UniqueKey<FacultyRecord> AK_FACULTY_EN_NAME = createUniqueKey(Faculty.FACULTY, "ak_faculty_en_name", Faculty.FACULTY.EN_NAME);
         public static final UniqueKey<PersonRecord> PK_PERSON_PERSON_ID = createUniqueKey(Person.PERSON, "pk_person_person_id", Person.PERSON.PERSON_ID);
-        public static final UniqueKey<PersonRecord> AK_PERSON_UNI_ID = createUniqueKey(Person.PERSON, "ak_person_uni_id", Person.PERSON.UNI_ID);
         public static final UniqueKey<PersonFacultyRecord> PK_PERSON_FACULTY_PERSON_ID_FACULTY_CODE = createUniqueKey(PersonFaculty.PERSON_FACULTY, "pk_person_faculty_person_id_faculty_code", PersonFaculty.PERSON_FACULTY.PERSON_ID, PersonFaculty.PERSON_FACULTY.FACULTY_CODE);
         public static final UniqueKey<PersonRoleRecord> PK_PERSON_ROLE_PERSON_ID_ROLE_CODE = createUniqueKey(PersonRole.PERSON_ROLE, "pk_person_role_person_id_role_code", PersonRole.PERSON_ROLE.PERSON_ID, PersonRole.PERSON_ROLE.ROLE_CODE);
-        public static final UniqueKey<PersonStateRecord> PK_PERSON_STATE_PERSON_STATE_CODE = createUniqueKey(PersonState.PERSON_STATE, "pk_person_state_person_state_code", PersonState.PERSON_STATE.PERSON_STATE_CODE);
-        public static final UniqueKey<PersonStateRecord> AK_PERSON_STATE_EE_NAME = createUniqueKey(PersonState.PERSON_STATE, "ak_person_state_ee_name", PersonState.PERSON_STATE.EE_NAME);
-        public static final UniqueKey<PersonStateRecord> AK_PERSON_STATE_EN_NAME = createUniqueKey(PersonState.PERSON_STATE, "ak_person_state_en_name", PersonState.PERSON_STATE.EN_NAME);
         public static final UniqueKey<RoleRecord> PK_ROLE_PERSON_ROLE_CODE = createUniqueKey(Role.ROLE, "pk_role_person_role_code", Role.ROLE.ROLE_CODE);
         public static final UniqueKey<RoleRecord> AK_ROLE_EN_NAME = createUniqueKey(Role.ROLE, "ak_role_en_name", Role.ROLE.EN_NAME);
         public static final UniqueKey<RoleRecord> AK_ROLE_EE_NAME = createUniqueKey(Role.ROLE, "ak_role_ee_name", Role.ROLE.EE_NAME);
@@ -141,8 +151,10 @@ public class Keys {
     }
 
     private static class ForeignKeys0 extends AbstractKeys {
+        public static final ForeignKey<AccountRecord, AccountStateRecord> ACCOUNT__FK_ACCOUNT_ACCOUNT_STATE_CODE = createForeignKey(ee.ttu.unomomento.db.Keys.PK_ACCOUNT_STATE_ACCOUNT_STATE_CODE, Account.ACCOUNT, "account__fk_account_account_state_code", Account.ACCOUNT.ACCOUNT_STATE_CODE);
+        public static final ForeignKey<AccountRecord, AccountRoleRecord> ACCOUNT__FK_ACCOUNT_ACCOUNT_ROLE_CODE = createForeignKey(ee.ttu.unomomento.db.Keys.PK_ACCOUNT_ROLE_ACCOUNT_ROLE_CODE, Account.ACCOUNT, "account__fk_account_account_role_code", Account.ACCOUNT.ACCOUNT_ROLE_CODE);
+        public static final ForeignKey<PersonRecord, AccountRecord> PERSON__FK_PERSON_PERSON_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_ACCOUNT_ACCOUNT_ID, Person.PERSON, "person__fk_person_person_id", Person.PERSON.PERSON_ID);
         public static final ForeignKey<PersonRecord, DegreeRecord> PERSON__FK_PERSON_DEGREE_CODE = createForeignKey(ee.ttu.unomomento.db.Keys.PK_DEGREE_DEGREE_CODE, Person.PERSON, "person__fk_person_degree_code", Person.PERSON.DEGREE_CODE);
-        public static final ForeignKey<PersonRecord, PersonStateRecord> PERSON__FK_PERSON_PERSON_STATE_CODE = createForeignKey(ee.ttu.unomomento.db.Keys.PK_PERSON_STATE_PERSON_STATE_CODE, Person.PERSON, "person__fk_person_person_state_code", Person.PERSON.PERSON_STATE_CODE);
         public static final ForeignKey<PersonFacultyRecord, PersonRecord> PERSON_FACULTY__FK_PERSON_FACULTY_PERSON_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_PERSON_PERSON_ID, PersonFaculty.PERSON_FACULTY, "person_faculty__fk_person_faculty_person_id", PersonFaculty.PERSON_FACULTY.PERSON_ID);
         public static final ForeignKey<PersonFacultyRecord, FacultyRecord> PERSON_FACULTY__FK_PERSON_FACULTY_FACULTY_CODE = createForeignKey(ee.ttu.unomomento.db.Keys.PK_FACULTY_FACULTY_CODE, PersonFaculty.PERSON_FACULTY, "person_faculty__fk_person_faculty_faculty_code", PersonFaculty.PERSON_FACULTY.FACULTY_CODE);
         public static final ForeignKey<PersonRoleRecord, PersonRecord> PERSON_ROLE__FK_PERSON_ROLE_PERSON_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_PERSON_PERSON_ID, PersonRole.PERSON_ROLE, "person_role__fk_person_role_person_id", PersonRole.PERSON_ROLE.PERSON_ID);

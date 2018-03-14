@@ -1,7 +1,7 @@
 package ee.ttu.unomomento.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ee.ttu.unomomento.db.tables.pojos.Person;
+import ee.ttu.unomomento.db.tables.pojos.Account;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,12 +24,12 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException, IOException {
-        Person creds = new ObjectMapper()
-            .readValue(req.getInputStream(), Person.class);
+        Account account = new ObjectMapper()
+            .readValue(req.getInputStream(), Account.class);
         return getAuthenticationManager().authenticate(
             new UsernamePasswordAuthenticationToken(
-                //creds.getUsername(),
-                creds.getPassword(),
+                account.getUsername(),
+                account.getPassword(),
                 Collections.emptyList()
             )
         );

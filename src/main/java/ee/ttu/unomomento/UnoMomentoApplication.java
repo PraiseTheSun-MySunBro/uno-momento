@@ -8,12 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class UnoMomentoApplication {
-
-	@Bean
-	public BCryptPasswordEncoder getPasswordEncoder() {
-	    return new BCryptPasswordEncoder();
-    }
-
 	public static void main(String[] args) {
 		SpringApplication.run(UnoMomentoApplication.class, args);
 	}

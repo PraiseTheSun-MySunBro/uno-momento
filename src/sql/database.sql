@@ -21,24 +21,34 @@ CREATE TABLE Degree (
 
 COMMENT ON TABLE Degree IS '1 -- No Degree, 2 -- Bachelor, 3 -- Master, 4 -- Doctoral, 5 -- Applied Higher Education';
 
+CREATE TABLE Account_Role (
+  account_role_code SMALLINT NOT NULL,
+  role_name d_name,
+  CONSTRAINT PK_Account_Role_account_role_code PRIMARY KEY (account_role_code),
+  CONSTRAINT AK_Account_Role_role_name UNIQUE (role_name)
+);
+
 CREATE TABLE Account (
   account_id BIGSERIAL NOT NULL,
   username VARCHAR(32) NOT NULL,
   password VARCHAR(72) NOT NULL,
-  email VARCHAR(256) NOT NULL,
+  email VARCHAR(256) NOT NULL, /* TODO: make trigger uniid || '@ttu.ee' */
   account_state_code SMALLINT NOT NULL DEFAULT 1,
+  account_role_code SMALLINT NOT NULL DEFAULT 1,
   reg_time TIMESTAMP NOT NULL DEFAULT now(),
   CONSTRAINT PK_Account_account_id PRIMARY KEY (account_id),
   CONSTRAINT FK_Account_account_state_code FOREIGN KEY (account_state_code) REFERENCES Account_State (account_state_code) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT FK_Account_account_role_code FOREIGN KEY (account_role_code) REFERENCES Account_Role (account_role_code) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT CK_Account_username CHECK (username ~ '^\w{3,}$'),
   CONSTRAINT CK_Account_password CHECK (TRIM(password) != ''),
   CONSTRAINT CK_Account_email CHECK (email ~ '^[a-z0-9!#$%&''*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$'),
   CONSTRAINT CK_Account_reg_time CHECK (reg_time = now())
 );
 
-CREATE UNIQUE INDEX IXAK_Account_email ON Account (email ASC);
-CREATE UNIQUE INDEX IXAK_Account_username ON Account (username ASC);
+CREATE UNIQUE INDEX IXAK_Account_email ON Account (LOWER(email) ASC);
+CREATE UNIQUE INDEX IXAK_Account_username ON Account (LOWER(username) ASC);
 CREATE INDEX IXFK_Account_account_state_code ON Account (account_state_code ASC);
+CREATE INDEX IXFK_Account_account_role_code ON Account (account_role_code ASC);
 
 CREATE TABLE Person (
   person_id BIGINT NOT NULL,
@@ -47,22 +57,17 @@ CREATE TABLE Person (
   firstname VARCHAR(1000) NOT NULL,
   lastname VARCHAR(1000) NOT NULL,
   person_state_code SMALLINT NOT NULL DEFAULT 1,
-  email VARCHAR(256) NOT NULL, /* TODO: make trigger uniid || '@ttu.ee' */
-  reg_time TIMESTAMP NOT NULL DEFAULT now(),
   CONSTRAINT PK_Person_person_id PRIMARY KEY (person_id),
-  CONSTRAINT AK_Person_uni_id UNIQUE (uni_id),
   CONSTRAINT FK_Person_degree_code FOREIGN KEY (degree_code) REFERENCES Degree (degree_code) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT FK_Person_person_id FOREIGN KEY (person_id) REFERENCES Account (account_id) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT CK_Person_firstname CHECK (TRIM(firstname) != '' AND firstname !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Person_lastname CHECK (TRIM(lastname) != '' AND lastname !~ '^[[:digit:]]+$'),
-  CONSTRAINT CK_Person_uni_id CHECK (uni_id ~ '^[a-z]{6}$'),
-  CONSTRAINT CK_Person_email CHECK (email ~ '^[a-z0-9!#$%&''*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$'),
-  CONSTRAINT CK_Person_reg_time CHECK (reg_time = now())
+  CONSTRAINT CK_Person_uni_id CHECK (uni_id ~ '^[a-z]{6}$')
 );
 
 CREATE INDEX IXFK_Person_person_id ON Person (person_id ASC);
 CREATE INDEX IXFK_Person_degree_code ON Person (degree_code ASC);
-CREATE UNIQUE INDEX IXAK_Person_email ON Person (lower(email));
+CREATE UNIQUE INDEX IXAK_Person_uni_id ON Person (LOWER(uni_id) ASC);
 
 CREATE TABLE Role (
   role_code SMALLINT NOT NULL,
