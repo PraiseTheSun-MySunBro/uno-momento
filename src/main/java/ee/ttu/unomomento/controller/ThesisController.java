@@ -29,6 +29,7 @@ public class ThesisController {
 
     @PostMapping(value = "/thesis")
     public HttpStatus postThesis(@Valid @RequestBody Thesis thesis) {
+        log.info(String.format("Post thesis: %s", thesis));
         System.out.println(thesis);
         return HttpStatus.OK;
     }
