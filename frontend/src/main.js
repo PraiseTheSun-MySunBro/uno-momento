@@ -5,6 +5,7 @@ import App from './App'
 import BootstrapVue from 'bootstrap-vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import Vuex from 'vuex'
 
 import router from './router'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -15,6 +16,7 @@ Vue.router = router
 
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
+Vue.use(Vuex)
 
 Vue.use(require('@websanova/vue-auth'), {
   auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
