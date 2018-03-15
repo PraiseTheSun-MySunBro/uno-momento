@@ -1,7 +1,5 @@
 <template>
-  <b-button>
-    Click me!
-  </b-button>
+  <b-button>Click me!</b-button>
 </template>
 
 <script>
