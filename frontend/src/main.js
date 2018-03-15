@@ -13,6 +13,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
 Vue.router = router
+axios.defaults.baseURL = 'http://localhost:9090/'
 
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
