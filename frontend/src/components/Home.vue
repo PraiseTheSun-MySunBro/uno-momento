@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid" v-if="$auth.check()">
     <div class="container">
       <!-- Student workplace where he can find own offered tesises -->
       <div class="work-place" v-if="currentTab === 2">
@@ -54,7 +54,7 @@
                         </div>
                       </b-list-group-item>
                       <!-- Modal Component -->
-                      <b-modal 
+                      <b-modal
                         :id="'modal-' + index"
                         body-bg-variant="light"
                         hide-footer
@@ -235,8 +235,8 @@ export default {
     onSubmitLecturer (evt) {
       this.lecturerTheses.push(
         {en_title: this.formLecturer.en_title, en_description: this.formLecturer.en_description})
-      axios.post(`/curator/${this.currentUser}/thesis`, 
-          {eeTitle: this.formLecturer.en_title, enTitle: this.formLecturer.en_title, 
+      axios.post(`/curator/${this.currentUser}/thesis`,
+          {eeTitle: this.formLecturer.en_title, enTitle: this.formLecturer.en_title,
            eeDescription: this.formLecturer.en_description, enDescription: this.formLecturer.en_description,
            facultyCode: 3})
         .then(response => {

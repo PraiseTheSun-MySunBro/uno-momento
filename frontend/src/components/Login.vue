@@ -1,15 +1,15 @@
 <template>
-  <b-container fluid>
+  <b-container fluid v-if="!$auth.check()">
     <b-container class="auth">
       <b-tabs>
         <b-tab title="Login">
           <b-form @submit.prevent="onLoginSubmit">
             <b-card bg-variant="light">
               <b-form-group horizontal
-                            label="Email:"
+                            label="Username:"
                             label-class="text-sm"
-                            label-for="auth_email">
-                <b-form-input id="auth_email" type="email" v-model="credentials.email"></b-form-input>
+                            label-for="auth_username">
+                <b-form-input id="auth_username" type="text" v-model="credentials.username"></b-form-input>
               </b-form-group>
               <b-form-group horizontal
                             label="Password:"
@@ -76,22 +76,41 @@ export default {
   },
   methods: {
     onLoginSubmit () {
-      // let app = this
-      // this.$auth.login({
-        
-      // })
-    },
-    onRegisterSubmit () {
-      console.log('wat');
       let app = this
-      this.$auth.register({
-        params: app.credentials,
+
+      this.$auth.login({
+        data: {
+          username: app.credentials.username,
+          password: app.credentials.password
+        },
         success: () => {
           app.success = true
         },
         error: (err) => {
           app.error = true
-          app.errors = err.response
+          app.errors = err.response.data;
+          console.error(err.response);
+        },
+        redirect: null,
+        fetchUser: null
+      })
+    },
+    onRegisterSubmit () {
+      let app = this
+
+      this.$auth.register({
+        data: {
+          email: app.credentials.email,
+          username: app.credentials.username,
+          password: app.credentials.password
+        },
+        success: () => {
+          app.success = true
+        },
+        error: (err) => {
+          app.error = true
+          app.errors = err.response.data;
+          console.error(err.response);
         },
         redirect: null
       })

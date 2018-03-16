@@ -25,7 +25,7 @@
               <i class="fas fa-briefcase fa-lg"></i>
               <em>Töölaud</em>
             </b-dropdown-item>
-            <b-dropdown-item href="#">
+            <b-dropdown-item href="#" @click="logOut">
               <i class="fas fa-sign-out-alt fa-lg"></i>
               <em>Logi välja</em>
             </b-dropdown-item>
@@ -55,6 +55,19 @@ export default {
   methods: {
     switchUser (value) {
       this.currentUser.role_code = value
+    },
+    logOut () {
+      this.$auth.logout({
+        success: () => {
+          app.success = true
+        },
+        error: (err) => {
+          app.error = true
+          app.errors = err.response.data;
+          console.error(err.response);
+        },
+        redirect: '/'
+      })
     }
   },
   computed: {

@@ -14,8 +14,12 @@ import static ee.ttu.unomomento.db.tables.Thesis.THESIS;
 @Transactional
 public class PersonService {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public PersonService(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     public Result<?> getAllCuratorsWithTheses() {
         return dslContext
