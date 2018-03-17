@@ -7,6 +7,7 @@ package ee.ttu.unomomento.db;
 import ee.ttu.unomomento.db.tables.Account;
 import ee.ttu.unomomento.db.tables.AccountRole;
 import ee.ttu.unomomento.db.tables.AccountState;
+import ee.ttu.unomomento.db.tables.CuratorsWithTheses;
 import ee.ttu.unomomento.db.tables.Degree;
 import ee.ttu.unomomento.db.tables.Faculty;
 import ee.ttu.unomomento.db.tables.Person;
@@ -49,6 +50,11 @@ public class Tables {
      * The table <code>public.account_state</code>.
      */
     public static final AccountState ACCOUNT_STATE = ee.ttu.unomomento.db.tables.AccountState.ACCOUNT_STATE;
+
+    /**
+     * The table <code>public.curators_with_theses</code>.
+     */
+    public static final CuratorsWithTheses CURATORS_WITH_THESES = ee.ttu.unomomento.db.tables.CuratorsWithTheses.CURATORS_WITH_THESES;
 
     /**
      * 1 -- No Degree, 2 -- Bachelor, 3 -- Master, 4 -- Doctoral, 5 -- Applied Higher Education

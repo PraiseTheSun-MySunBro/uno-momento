@@ -7,6 +7,7 @@ package ee.ttu.unomomento.db;
 import ee.ttu.unomomento.db.tables.Account;
 import ee.ttu.unomomento.db.tables.AccountRole;
 import ee.ttu.unomomento.db.tables.AccountState;
+import ee.ttu.unomomento.db.tables.CuratorsWithTheses;
 import ee.ttu.unomomento.db.tables.Degree;
 import ee.ttu.unomomento.db.tables.Faculty;
 import ee.ttu.unomomento.db.tables.Person;
@@ -44,7 +45,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -960502506;
+    private static final long serialVersionUID = -888855088;
 
     /**
      * The reference instance of <code>public</code>
@@ -65,6 +66,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.account_state</code>.
      */
     public final AccountState ACCOUNT_STATE = ee.ttu.unomomento.db.tables.AccountState.ACCOUNT_STATE;
+
+    /**
+     * The table <code>public.curators_with_theses</code>.
+     */
+    public final CuratorsWithTheses CURATORS_WITH_THESES = ee.ttu.unomomento.db.tables.CuratorsWithTheses.CURATORS_WITH_THESES;
 
     /**
      * 1 -- No Degree, 2 -- Bachelor, 3 -- Master, 4 -- Doctoral, 5 -- Applied Higher Education
@@ -162,6 +168,7 @@ public class Public extends SchemaImpl {
             Account.ACCOUNT,
             AccountRole.ACCOUNT_ROLE,
             AccountState.ACCOUNT_STATE,
+            CuratorsWithTheses.CURATORS_WITH_THESES,
             Degree.DEGREE,
             Faculty.FACULTY,
             Person.PERSON,

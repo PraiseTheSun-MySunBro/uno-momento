@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.*;
 public class PersonController {
     private static final int CURATORS_PER_PAGE = 5;
 
-    @Autowired
-    private JSONFormat jsonFormat;
+    private final JSONFormat jsonFormat;
+    private final PersonService personService;
 
     @Autowired
-    private PersonService personService;
+    public PersonController(PersonService personService, JSONFormat jsonFormat) {
+        this.personService = personService;
+        this.jsonFormat = jsonFormat;
+    }
 
     @InitBinder
     private void initBinder(WebDataBinder binder) {
@@ -36,7 +39,9 @@ public class PersonController {
     @GetMapping(value = "/persons/{personId}")
     public String getPersonById(@PathVariable Long personId) {
         log.info(String.format("Get Person by ID: %d", personId));
-        return personService.getPersonById(personId).formatJSON(jsonFormat);
+        return personService
+                .getPersonById(personId)
+                .formatJSON(jsonFormat);
     }
 
 }

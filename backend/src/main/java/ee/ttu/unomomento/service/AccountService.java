@@ -1,8 +1,10 @@
 package ee.ttu.unomomento.service;
 
-import ee.ttu.unomomento.db.tables.pojos.Account;
 import ee.ttu.unomomento.db.tables.records.AccountRecord;
+import ee.ttu.unomomento.model.Account;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,5 +30,18 @@ public class AccountService {
         account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
         AccountRecord accountRecord = dslContext.newRecord(ACCOUNT, account);
         accountRecord.store();
+    }
+
+    public Account findAccountByUsername(String username) {
+        Result<?> result = dslContext
+                .select()
+                .from(ACCOUNT)
+                .where(ACCOUNT.USERNAME.eq(username))
+                .fetch();
+        try {
+            return result.get(0).into(Account.class);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 }

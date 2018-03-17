@@ -1,7 +1,7 @@
 package ee.ttu.unomomento.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ee.ttu.unomomento.db.tables.pojos.Account;
+import ee.ttu.unomomento.model.Account;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

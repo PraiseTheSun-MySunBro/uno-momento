@@ -19,6 +19,9 @@ Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
 
+window.axios = require("axios");
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
 Vue.use(require('@websanova/vue-auth'), {
   auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
   http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),

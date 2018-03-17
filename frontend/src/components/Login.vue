@@ -85,6 +85,13 @@ export default {
         },
         success: () => {
           app.success = true
+          axios.get(`/auth/user/${app.credentials.username}`)
+            .then((res) => {
+              console.log("Loaded data: " + res.data);
+            })
+            .catch((err) => {
+              console.error(err);
+            })
         },
         error: (err) => {
           app.error = true
