@@ -224,9 +224,6 @@ export default {
       this.show = false
       this.$nextTick(() => { this.show = true })
     },
-    switchCurrentTab: function(value) {
-      this.currentTab = value
-    } ,
     modalCandidate: function() {
       this.candidateTheses.push(
         {curator_name: this.curator_name, en_title: this.en_title, en_description: this.en_description})
@@ -264,7 +261,11 @@ export default {
     switchUser: function(value) {
       this.currentUser.id = value
     },
-  }
+  },
+  created () {
+    console.log('Mounted!');
+
+  },
 }
 </script>
 

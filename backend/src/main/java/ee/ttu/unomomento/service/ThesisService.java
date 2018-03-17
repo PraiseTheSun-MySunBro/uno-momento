@@ -13,8 +13,12 @@ import static ee.ttu.unomomento.db.tables.ThesisOwner.THESIS_OWNER;
 @Transactional
 public class ThesisService {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ThesisService(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     public Result<?> getAllTheses() {
         return dslContext

@@ -2,6 +2,7 @@ package ee.ttu.unomomento.controller;
 
 import com.google.gson.Gson;
 import ee.ttu.unomomento.model.Account;
+import ee.ttu.unomomento.security.TokenAuthenticationService;
 import ee.ttu.unomomento.service.AccountService;
 import ee.ttu.unomomento.validator.AccountValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,11 @@ import org.jooq.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -47,7 +49,14 @@ public class AuthController {
         }
     }
 
-    @GetMapping(value = "/auth/user/{accountUsername}")
+    @GetMapping(value = "/auth/user", produces = "application/json")
+    public String getAccount(HttpServletRequest httpRequest) {
+        Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
+        assert authentication != null;
+        return getAccountByUsername((String) authentication.getPrincipal());
+    }
+
+    @GetMapping(value = "/auth/user/{accountUsername}", produces = "application/json")
     public String getAccountByUsername(@PathVariable(value = "accountUsername") String username) {
         return gson.toJson(accountService
                 .findAccountByUsername(username));

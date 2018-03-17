@@ -85,9 +85,9 @@ export default {
         },
         success: () => {
           app.success = true
-          axios.get(`/auth/user/${app.credentials.username}`)
+          axios.get('/auth/user')
             .then((res) => {
-              console.log("Loaded data: " + res.data);
+              console.log('Loaded data: ' + JSON.stringify(res.data));
             })
             .catch((err) => {
               console.error(err);
@@ -98,7 +98,8 @@ export default {
           app.errors = err.response.data;
           console.error(err.response);
         },
-        redirect: null,
+        rememberMe: true,
+        redirect: '/',
         fetchUser: null
       })
     },

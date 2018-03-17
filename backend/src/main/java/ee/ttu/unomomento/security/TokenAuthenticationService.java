@@ -12,7 +12,7 @@ import java.util.Date;
 
 import static java.util.Collections.emptyList;
 
-class TokenAuthenticationService {
+public class TokenAuthenticationService {
     static final long EXPIRATIONTIME = 60 * 60 * 24;  // 1 day
     static final String SECRET = "te7QNhTSQau4BDjG2zqUmPaDtNxvdmwI";
     static final String TOKEN_PREFIX = "Bearer";
@@ -28,7 +28,7 @@ class TokenAuthenticationService {
         res.getWriter().write("{\"token\":\"" + JWT + "\"}");
     }
 
-    static Authentication getAuthentication(HttpServletRequest request) {
+    public static Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
             // parse the token.

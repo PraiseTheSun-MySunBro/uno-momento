@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Home from '@/components/Home'
 import Login from '@/components/Login'
+import AddThesis from '@/components/AddThesis'
 
 Vue.use(Router)
 
@@ -10,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
+      name: 'home',
       component: Home,
       meta: {
         auth: true
@@ -18,10 +19,18 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: Login,
       meta: {
         auth: false
+      }
+    },
+    {
+      path: '/theses/add',
+      name: 'addThesis',
+      component: AddThesis,
+      meta: {
+        auth: true
       }
     }
   ]

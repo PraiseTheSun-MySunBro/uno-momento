@@ -2,7 +2,7 @@
   <div id="app" v-cloak v-if="$auth.ready()">
     <b-navbar toggleable="md" type="dark" variant="secondary" style="max-width:100%">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-      <b-navbar-brand href="#" v-on:click="switchCurrentTab(0)">Tallinna Tehnikaülikool</b-navbar-brand>
+      <b-navbar-brand :to="{ name: 'home' }" v-on:click="switchCurrentTab(0)">Tallinna Tehnikaülikool</b-navbar-brand>
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'addThesis' }">Lõputöö lisamine</b-nav-item>
@@ -66,9 +66,12 @@ export default {
           app.errors = err.response.data;
           console.error(err.response);
         },
-        redirect: '/'
+        redirect: '/login'
       })
-    }
+    },
+    switchCurrentTab: function(value) {
+      this.currentTab = value
+    } ,
   },
   computed: {
     fullname () {
