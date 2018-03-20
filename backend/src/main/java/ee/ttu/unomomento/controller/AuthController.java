@@ -54,6 +54,6 @@ public class AuthController {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
         assert authentication != null;
         return gson.toJson(accountService
-                .findAccountByUsername((String) authentication.getPrincipal()));
+            .findAccountByUsername((String) authentication.getPrincipal()));
     }
 }
