@@ -40,7 +40,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/auth/register", produces = "application/json")
-    public ResponseEntity<?> register(@Valid @RequestBody Account account) {
+    public ResponseEntity<String> register(@Valid @RequestBody Account account) {
         try {
             accountService.saveAccount(account);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -53,12 +53,7 @@ public class AuthController {
     public String getAccount(HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
         assert authentication != null;
-        return getAccountByUsername((String) authentication.getPrincipal());
-    }
-
-    @GetMapping(value = "/auth/user/{accountUsername}", produces = "application/json")
-    public String getAccountByUsername(@PathVariable(value = "accountUsername") String username) {
         return gson.toJson(accountService
-                .findAccountByUsername(username));
+                .findAccountByUsername((String) authentication.getPrincipal()));
     }
 }

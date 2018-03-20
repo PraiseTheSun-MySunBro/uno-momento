@@ -1,6 +1,6 @@
 package ee.ttu.unomomento.validator;
 
-import ee.ttu.unomomento.db.tables.pojos.Thesis;
+import ee.ttu.unomomento.model.Thesis;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

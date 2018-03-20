@@ -3,7 +3,6 @@ package ee.ttu.unomomento.service;
 import ee.ttu.unomomento.db.tables.records.AccountRecord;
 import ee.ttu.unomomento.model.Account;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;

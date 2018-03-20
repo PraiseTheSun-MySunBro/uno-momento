@@ -27,7 +27,7 @@ public class PersonController {
         binder.setValidator(new PersonValidator());
     }
 
-    @GetMapping(value = "/curators")
+    @GetMapping(value = "/api/curators")
     public String getCuratorsByPages(@RequestParam(required = false) Integer p) {
         log.info(String.format("Get Curators: %s", p != null ? "page = " + p.toString() : "All"));
         return ((p != null)
@@ -36,7 +36,7 @@ public class PersonController {
                 .formatJSON(jsonFormat);
     }
 
-    @GetMapping(value = "/persons/{personId}")
+    // @GetMapping(value = "/api/persons/{personId}")
     public String getPersonById(@PathVariable Long personId) {
         log.info(String.format("Get Person by ID: %d", personId));
         return personService
