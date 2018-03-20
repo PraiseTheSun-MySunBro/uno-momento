@@ -26,3 +26,4 @@ nbdist/
 
 ### Java ###
 out/
+test/
