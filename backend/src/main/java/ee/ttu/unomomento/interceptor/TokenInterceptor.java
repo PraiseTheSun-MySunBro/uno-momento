@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        TokenAuthenticationService.refreshToken(request, response, request.getUserPrincipal().getName());
+        if (request.getUserPrincipal() != null)
+            TokenAuthenticationService.refreshToken(request, response, request.getUserPrincipal().getName());
         return true;
     }
 

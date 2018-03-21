@@ -95,8 +95,8 @@ export default {
         },
         error: (err) => {
           app.error = true
-          app.errors = err.response.data;
-          console.error(err.response);
+          app.errors = err;
+          console.error(err);
         },
         rememberMe: true,
         redirect: '/',
