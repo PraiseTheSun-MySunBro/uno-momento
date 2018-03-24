@@ -1,33 +1,41 @@
 <template>
   <div id="app" v-cloak v-if="$auth.ready()" >
-    <!-- Background image -->
-    <div id="front-page-background-image" v-if="$auth.check()"></div>
+    <!-- Home page background -->
+    <div id="front-page-background" v-if="$auth.check()">
+      <div id="main-page-background-image"></div>
+    </div>
+    <!-- Login page background -->
+    <div id="login-page-background" v-if="!$auth.check()">
+      <div id="login-page-background-image"></div>
+    </div>
     <!-- Navigation bar -->
-    <b-navbar toggleable="md" type="dark"  id="navbar" v-if="$auth.check()">
+    <b-navbar toggleable="md" type="dark"  id="navbar">
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-navbar-brand :to="{ name: 'home' }" id="navbar-logo-container">
         <img src="./assets/TTU_peamine_logo_EST_Valge.png" id="navbar-logo">
       </b-navbar-brand>
-      <b-collapse is-nav id="nav-collapse">
+      <b-collapse is-nav id="nav-collapse" v-if="$auth.check()">
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'addThesis' }">Lõputöö lisamine</b-nav-item>
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right no-caret>
+          <b-nav-item-dropdown  right no-caret >
             <!-- Using button-content slot -->
             <div slot="button-content">
-              <em>{{ fullname }}</em>
+              <em>Denis Raestas</em>
               <i class="fas fa-user-circle fa-lg"></i>
             </div>
             <b-dropdown-item :to="{ name: 'profile' }">
               <i class="far fa-user fa-lg"></i>
               <em>Kasutaja andmed</em>
             </b-dropdown-item>
+            <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item :to="{ name: 'workplace' }">
               <i class="fas fa-briefcase fa-lg"></i>
               <em>Töölaud</em>
             </b-dropdown-item>
+            <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item href="#" @click="logOut">
               <i class="fas fa-sign-out-alt fa-lg"></i>
               <em>Logi välja</em>
@@ -92,23 +100,25 @@ export default {
 </script>
 
 <style>
+
+  html,body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
   #app {
-    height: auto;
-    background-image: linear-gradient(to bottom right,
-                        rgb(20, 117, 189),
-                        rgb(20, 117, 189) 40%,
-                        rgb(66, 139, 202) 40%,
-                        rgb(66, 139, 202) 65%,
-                        rgb(20, 117, 189) 65%,
-                        rgb(20, 117, 189) 75%,
-                        rgb(246, 249, 252) 75%);
+    min-height: 100%;
+    overflow: auto;
+    position: relative;
   }
 
   /* container for Vue components */
 
   .container-fluid {
-    height: 800px;
     margin-top: 290px;
+    margin-bottom: 50px;
     padding-left: 5%;
     padding-right: 5%;
   }
@@ -144,6 +154,7 @@ export default {
   /* navigation bar */
 
   #navbar {
+    position: relative;
     max-width:100%;
     background-color: rgba(0,0,0,.5);
   }  
@@ -157,16 +168,50 @@ export default {
     max-height: 40px;
   }
 
-  /* background image  */
+  /* Home page background (diagonal lines and image) */
 
-  #front-page-background-image {
+  #front-page-background {
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(to bottom right,
+                        rgb(20, 117, 189),
+                        rgb(20, 117, 189) 40%,
+                        rgb(66, 139, 202) 40%,
+                        rgb(66, 139, 202) 65%,
+                        rgb(20, 117, 189) 65%,
+                        rgb(20, 117, 189) 75%,
+                        rgb(246, 249, 252) 75%);
+    position: absolute;
+    z-index: -1;
+  }
+
+  #main-page-background-image {
     min-height: 400px;
     width: 100%;
     background-image: url(./assets/ttu4.png);
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;
+  }
+
+  /* Login page background */
+
+  #login-page-background {
+    height: 100%;
+    width: 100%;
+    background-color:  rgb(246, 249, 252);
     position: absolute;
+    z-index: -1;
+  }
+
+
+  #login-page-background-image {
+    height: 100%;
+    width: 100%;
+    background-image: url(./assets/ttu3.jpg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
 

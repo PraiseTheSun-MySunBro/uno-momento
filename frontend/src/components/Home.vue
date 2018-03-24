@@ -49,7 +49,7 @@
         </div>
       </div>
       <div id="pagination-container">
-        <b-pagination id="pagination" align="center" size="md" :total-rows="100" v-model="currentPage" :per-page="10">
+        <b-pagination align="center" size="md" :total-rows="100" v-model="currentPage" :per-page="10">
         </b-pagination>
         <br>
       </div>
@@ -100,6 +100,10 @@ export default {
 
   #pagination {
   }
+
+  .pagination a {
+    border: 1px solid #ddd; /* Gray */
+}
 
   #list-accordion {
     border-top: 4px solid rgb(66, 139, 202);
