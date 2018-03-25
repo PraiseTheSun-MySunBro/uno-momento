@@ -16,7 +16,7 @@
                     </div>     
                 </b-list-group>
             </b-tab>
-            <b-tab title="Tudengi pakkumised" >
+            <b-tab title="Tudengi pakkumised">
                 <b-list-group>
                     <b-list-group-item href="#" 
                                         class="flex-column align-items-start" 

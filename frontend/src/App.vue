@@ -20,12 +20,12 @@
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown  right no-caret >
+          <b-nav-item-dropdown  right >
             <!-- Using button-content slot -->
-            <div slot="button-content">
+            <template slot="button-content">
               <em>Denis Raestas</em>
               <i class="fas fa-user-circle fa-lg"></i>
-            </div>
+            </template>
             <b-dropdown-item :to="{ name: 'profile' }">
               <i class="far fa-user fa-lg"></i>
               <em>Kasutaja andmed</em>

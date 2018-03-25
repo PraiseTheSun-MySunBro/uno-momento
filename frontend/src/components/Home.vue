@@ -5,17 +5,24 @@
         <div role="tablist">
           <b-card  id="list-accordion" no-body class="mb-1" v-for="(lecturer, index) in lecturers" :key="index">
             <b-card-header header-tag="header" class="p-1" role="tab">
-              <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="light" class="text-left" >
+              <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="light" class="text-left">
+                <span class="when-opened float-right">
+                  <i class="fas fa-caret-down"></i>
+                </span>
+                  <span class="when-closed float-right">
+                    <i class="fas fa-caret-left"></i>
+                </span>
                 {{ lecturer.firstname }} {{lecturer.lastname}}</b-btn>
             </b-card-header>
             <b-collapse :id="'accordion-' + index" visible accordion="my-accordion" role="tab">
               <b-card-body>
                 <!-- List of lectors theses -->
-                <b-list-group v-for="(thesis, index) in JSON.parse(lecturer.theses)" :key="index">
-                  <b-list-group-item button v-b-modal="'modal-' +index">
-                    <em class="float-left">{{ thesis.ee_title }}</em>
+                <b-list-group v-for="(thesis, index) in JSON.parse(lecturer.theses)" :key="index" class="theses-list">
+                  <b-list-group-item button v-b-modal="'modal-' +index" id="theses-group-item">
+                    {{ thesis.ee_title }}
                     <div class="float-right">
-                      <em>VAATA</em>
+                      <b-badge variant="dark" pill id="graduade-pill">MAGISTRI</b-badge>
+                      VAATA
                       <i class="fas fa-angle-right fa-lg"></i>
                     </div>
                   </b-list-group-item>
@@ -63,7 +70,7 @@ export default {
       /* list of lecturers  with list of theses */
       lecturers: [],
       /* number of chosen page */
-      currentPage: 1
+      currentPage: 1,
     }
   },
   methods: {
@@ -94,6 +101,13 @@ export default {
       margin-bottom: 50px;
   }
 
+  /* Animation for caret in list of lecturers */
+
+  .collapsed > .when-opened,
+  :not(.collapsed) > .when-closed {
+    display: none;
+  }
+
   #pagination-container {
     
   }
@@ -110,6 +124,23 @@ export default {
     border-radius: 0px;
   }
 
+  /* Each theses group item */
+
+  #theses-group-item {
+    border-radius: 0px;
+  }
+
+  #graduade-pill {
+    margin-right: 40px;
+    min-width: 100px;
+    background-color:rgb(66, 139, 202);
+  }
+
+  .card-body {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
   #modal_lecturer_name {
       font-family: 'Times New Roman', Times, serif;
       font-style: italic;
@@ -124,5 +155,7 @@ export default {
 
   #modal_buttons {
       text-align: center;
+      
   }
+
 </style>
