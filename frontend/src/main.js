@@ -11,14 +11,15 @@ import VueAuth from '@websanova/vue-auth'
 import router from './router'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import store from './store'
 
 Vue.config.productionTip = false
+Vue.config.devtools = true
 Vue.router = router
 axios.defaults.baseURL = 'http://localhost:9090/'
 
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
-Vue.use(Vuex)
 
 window.axios = axios
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
@@ -36,6 +37,7 @@ Vue.use(VueAuth, {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

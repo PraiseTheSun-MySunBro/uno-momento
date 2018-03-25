@@ -41,20 +41,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'App',
   data () {
     return {
-      currentUser: {
-        role_code: 1,
-        firstname: '',
-        lastname: '',
-      }
     }
+  },
+  created () {
+    this.$store.dispatch('fetchUser')
+      .then(() => {
+        console.log('Data has been fetched successfully!')
+      })
   },
   methods: {
     switchUser (value) {
-      this.currentUser.role_code = value
+      this.currentUser.roleCode = value
     },
     logOut () {
       this.$auth.logout({
@@ -76,7 +79,10 @@ export default {
   computed: {
     fullname () {
       return `${this.currentUser.firstname} ${this.currentUser.lastname}`
-    }
+    },
+    ...mapGetters({
+      currentUser: 'getUser'
+    })
   }
 }
 </script>
