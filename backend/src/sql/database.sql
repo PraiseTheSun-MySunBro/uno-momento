@@ -51,7 +51,7 @@ CREATE INDEX IXFK_Account_account_state_code ON Account (account_state_code ASC)
 CREATE INDEX IXFK_Account_account_role_code ON Account (account_role_code ASC);
 
 CREATE TABLE Person (
-  person_id BIGINT NOT NULL,
+  person_id BIGSERIAL NOT NULL,
   uni_id VARCHAR(6) NOT NULL, /* TODO: create by function */
   degree_code SMALLINT NOT NULL,
   firstname VARCHAR(1000) NOT NULL,
@@ -59,15 +59,23 @@ CREATE TABLE Person (
   person_state_code SMALLINT NOT NULL DEFAULT 1,
   CONSTRAINT PK_Person_person_id PRIMARY KEY (person_id),
   CONSTRAINT FK_Person_degree_code FOREIGN KEY (degree_code) REFERENCES Degree (degree_code) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT FK_Person_person_id FOREIGN KEY (person_id) REFERENCES Account (account_id) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT CK_Person_firstname CHECK (TRIM(firstname) != '' AND firstname !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Person_lastname CHECK (TRIM(lastname) != '' AND lastname !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Person_uni_id CHECK (uni_id ~ '^[a-z]{6}$')
 );
 
-CREATE INDEX IXFK_Person_person_id ON Person (person_id ASC);
 CREATE INDEX IXFK_Person_degree_code ON Person (degree_code ASC);
 CREATE UNIQUE INDEX IXAK_Person_uni_id ON Person (LOWER(uni_id) ASC);
+
+CREATE TABLE Person_Account_Owner (
+  account_id BIGINT NOT NULL,
+  person_id BIGINT NOT NULL,
+  CONSTRAINT PK_Person_Account_Owner_account_id PRIMARY KEY (account_id),
+  CONSTRAINT FK_Person_Account_Owner_person_id FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT FK_Person_Account_Owner_account_id FOREIGN KEY (account_id) REFERENCES Account (account_id) ON DELETE CASCADE ON UPDATE RESTRICT
+);
+
+CREATE INDEX IXFK_Person_Account_Owner_person_id ON Person_Account_Owner (person_id ASC);
 
 CREATE TABLE Role (
   role_code SMALLINT NOT NULL,
@@ -127,6 +135,7 @@ CREATE TABLE Thesis (
   supervisor_name VARCHAR(1000),
   faculty_code SMALLINT NOT NULL,
   thesis_state_code SMALLINT NOT NULL DEFAULT 1,
+  degree_code SMALLINT NOT NULL,
   ee_title VARCHAR(128),
   en_title VARCHAR(128),
   ee_description VARCHAR(1000),
@@ -135,6 +144,8 @@ CREATE TABLE Thesis (
   CONSTRAINT CK_Thesis_supervisor_name CHECK (supervisor_name ~ '^[[:alpha:]]+$'),
   CONSTRAINT FK_Thesis_faculty_code FOREIGN KEY (faculty_code) REFERENCES Faculty (faculty_code) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FK_Thesis_thesis_state_code FOREIGN KEY (thesis_state_code) REFERENCES Thesis_State (thesis_state_code) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT FK_Thesis_degree_code FOREIGN KEY (degree_code) REFERENCES Degree (degree_code) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT CK_Thesis_degree_code CHECK (degree_code > 1),
   CONSTRAINT CK_Thesis_ee_description CHECK (TRIM(ee_description) != '' AND ee_description !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Thesis_en_description CHECK (TRIM(en_description) != '' AND en_description !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Thesis_titles_or_descriptions_are_not_empty CHECK (TRIM(ee_title) != '' AND TRIM(en_title) != '' AND TRIM(en_description) != '' AND TRIM(ee_description) != ''),
@@ -190,5 +201,3 @@ CREATE OR REPLACE VIEW curators_with_theses WITH (security_barrier) AS
     JOIN person_role pr USING (person_id))
   WHERE (pr.role_code = 2)
   GROUP BY p.person_id;
-
-

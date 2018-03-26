@@ -11,6 +11,7 @@ import ee.ttu.unomomento.db.tables.CuratorsWithTheses;
 import ee.ttu.unomomento.db.tables.Degree;
 import ee.ttu.unomomento.db.tables.Faculty;
 import ee.ttu.unomomento.db.tables.Person;
+import ee.ttu.unomomento.db.tables.PersonAccountOwner;
 import ee.ttu.unomomento.db.tables.PersonFaculty;
 import ee.ttu.unomomento.db.tables.PersonRole;
 import ee.ttu.unomomento.db.tables.Role;
@@ -45,7 +46,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -888855088;
+    private static final long serialVersionUID = -943726303;
 
     /**
      * The reference instance of <code>public</code>
@@ -86,6 +87,11 @@ public class Public extends SchemaImpl {
      * The table <code>public.person</code>.
      */
     public final Person PERSON = ee.ttu.unomomento.db.tables.Person.PERSON;
+
+    /**
+     * The table <code>public.person_account_owner</code>.
+     */
+    public final PersonAccountOwner PERSON_ACCOUNT_OWNER = ee.ttu.unomomento.db.tables.PersonAccountOwner.PERSON_ACCOUNT_OWNER;
 
     /**
      * The table <code>public.person_faculty</code>.
@@ -153,6 +159,7 @@ public class Public extends SchemaImpl {
     private final List<Sequence<?>> getSequences0() {
         return Arrays.<Sequence<?>>asList(
             Sequences.ACCOUNT_ACCOUNT_ID_SEQ,
+            Sequences.PERSON_PERSON_ID_SEQ,
             Sequences.THESIS_THESIS_ID_SEQ);
     }
 
@@ -172,6 +179,7 @@ public class Public extends SchemaImpl {
             Degree.DEGREE,
             Faculty.FACULTY,
             Person.PERSON,
+            PersonAccountOwner.PERSON_ACCOUNT_OWNER,
             PersonFaculty.PERSON_FACULTY,
             PersonRole.PERSON_ROLE,
             Role.ROLE,

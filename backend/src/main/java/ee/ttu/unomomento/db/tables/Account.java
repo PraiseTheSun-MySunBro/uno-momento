@@ -14,8 +14,6 @@ import java.util.List;
 
 import javax.annotation.Generated;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
