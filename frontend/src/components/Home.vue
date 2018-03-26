@@ -18,7 +18,7 @@
               <b-card-body>
                 <!-- List of lectors theses -->
                 <b-list-group v-for="(thesis, index) in JSON.parse(lecturer.theses)" :key="index" class="theses-list">
-                  <b-list-group-item button v-b-modal="'modal-' +index" id="theses-group-item">
+                  <b-list-group-item button v-b-modal="'modal-' +index" id="theses-group-item" @click="openModal()">
                     {{ thesis.ee_title }}
                     <div class="float-right">
                       <b-badge variant="dark" pill id="graduade-pill">MAGISTRI</b-badge>
@@ -27,15 +27,17 @@
                     </div>
                   </b-list-group-item>
                   <!-- Modal Component -->
-                  <b-modal :id="'modal-' + index"
+                    <b-modal v-if="showModal===true" 
+                            :id="'modal-' + index"
                             body-bg-variant="light"
                             hide-footer
-                            hide-header size="lg">
+                            hide-header 
+                            size="lg">
                     <div class="d-block text-center">
                       <h2>{{ thesis.ee_title }}</h2>
                       <h4 id="modal_lecturer_name">{{ lecturer.firstname }} {{lecturer.lastname}}</h4>
                     </div>
-                    <hr class="my-2">
+                    <hr>
                     <!-- Card with theses description -->
                     <b-card id="modal_card_description">
                       <div class="d-block text-left">
@@ -43,11 +45,10 @@
                         <p>{{ thesis.ee_description }}</p>
                       </div>
                     </b-card>
-                    <!--
                     <div id="modal_buttons">
-                      <b-btn class="mt-3" variant="primary" v-on:click="modalCandidate">Kandideeri</b-btn>
+                      <b-btn class="mt-3" variant="primary" @click="closeModal()">Tagasi</b-btn>
+                      <b-btn class="mt-3" variant="outline-primary">Kandideeri</b-btn>
                     </div>
-                    -->
                   </b-modal>
                 </b-list-group>
               </b-card-body>
@@ -67,6 +68,7 @@
 export default {
   data () {
     return {
+      showModal: false,
       /* list of lecturers  with list of theses */
       lecturers: [],
       /* number of chosen page */
@@ -74,6 +76,12 @@ export default {
     }
   },
   methods: {
+    openModal() {
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+    },
     getPersons: function() {
       console.log("I'm working!")
       axios.get("/api/curators")
@@ -108,13 +116,6 @@ export default {
     display: none;
   }
 
-  #pagination-container {
-    
-  }
-
-  #pagination {
-  }
-
   .pagination a {
     border: 1px solid #ddd; /* Gray */
 }
@@ -141,14 +142,19 @@ export default {
     padding-right: 5%;
   }
 
+  /* Modal form with theses description */
+
+  
+
   #modal_lecturer_name {
       font-family: 'Times New Roman', Times, serif;
       font-style: italic;
+      margin-bottom: 40px;
   }
 
   #modal_card_description {
+      min-height: 500px;
       margin-top: 3%;
-      margin-bottom: 5%;
       margin-left: 15%;
       margin-right: 15%;
   }
@@ -156,6 +162,15 @@ export default {
   #modal_buttons {
       text-align: center;
       
+  }
+
+  /* Pagination */
+
+  #pagination-container {
+    
+  }
+
+  #pagination {
   }
 
 </style>
