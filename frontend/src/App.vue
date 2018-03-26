@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-cloak v-if="$auth.ready()">
+  <div id="app" v-cloak v-if="$auth.ready() && $store.getters.getConnectionState">
     <b-navbar toggleable="md" type="dark" variant="secondary" style="max-width:100%">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-navbar-brand :to="{ name: 'home' }" @click="switchCurrentTab(0)">Tallinna Tehnikaülikool</b-navbar-brand>
@@ -35,8 +35,11 @@
     </b-navbar>
     <router-view/>
   </div>
+  <div v-else-if="!$store.getters.getConnectionState">
+    <h2>No connection to server (might be you forget to start the server?)</h2>
+  </div>
   <div v-else>
-    <h1>Loading...</h1>
+    <h2>Loading...</h2>
   </div>
 </template>
 
@@ -53,6 +56,9 @@ export default {
     this.$store.dispatch('fetchUser')
       .then(() => {
         console.log('Data has been fetched successfully!')
+      })
+      .catch(err => {
+        console.log(err)
       })
   },
   methods: {

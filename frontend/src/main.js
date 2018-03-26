@@ -8,9 +8,9 @@ import VueAxios from 'vue-axios'
 import Vuex from 'vuex'
 import VueAuth from '@websanova/vue-auth'
 
-import router from './router'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import router from './router'
 import store from './store'
 
 Vue.config.productionTip = false

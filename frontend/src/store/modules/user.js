@@ -5,12 +5,16 @@ const state = {
     lastname: '',
     state: 0,
     roleCode: -1
-  }
+  },
+  connectionState: true
 }
 
 const getters = {
-  getUser() {
+  getUser(state) {
     return state.user
+  },
+  getConnectionState(state) {
+    return state.connectionState
   }
 }
 
@@ -24,12 +28,12 @@ const actions = {
 
       axios.get('/auth/user')
         .then(res => {
-          commit('fetchUser', res.data);
+          commit('fetchUser', res.data)
           resolve()
         })
         .catch(err => {
-          console.error(err.response)
-          reject()
+          commit('connectionState', !!err.response)
+          reject(err)
         })
     })
   }
@@ -37,7 +41,10 @@ const actions = {
 
 const mutations = {
   fetchUser(state, user) {
-    state.user = user;
+    state.user = user
+  },
+  connectionState(state, connectionState) {
+    state.connectionState = connectionState
   }
 }
 
