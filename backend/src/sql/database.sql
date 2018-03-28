@@ -188,16 +188,19 @@ CREATE INDEX IXFK_Thesis_Owner_person_id ON Thesis_Owner (person_id ASC);
 CREATE INDEX IXFK_Thesis_Owner_role_code ON Thesis_Owner (role_code ASC);
 
 CREATE OR REPLACE VIEW curators_with_theses WITH (security_barrier) AS
-  SELECT p.person_id,
-    p.uni_id,
-    p.degree_code,
-    p.firstname,
-    p.lastname,
-    p.person_state_code,
-    array_to_json(array_agg(t.*)) AS theses
-  FROM (((person p
-    JOIN thesis_owner USING (person_id))
-    JOIN thesis t USING (thesis_id))
-    JOIN person_role pr USING (person_id))
-  WHERE (pr.role_code = 2)
-  GROUP BY p.person_id;
+ SELECT p.person_id,
+  p.uni_id,
+  p.degree_code,
+  p.firstname,
+  p.lastname,
+  p.person_state_code,
+  array_to_json(array_agg(r.*)) AS theses
+  FROM person p
+    INNER JOIN thesis_owner tho USING (person_id)
+    INNER JOIN person_role pr USING (person_id)
+    INNER JOIN (
+      SELECT t.*, d.en_name AS en_degree, d.ee_name AS ee_degree
+      FROM thesis t
+        INNER JOIN degree d ON t.degree_code = d.degree_code) r ON r.thesis_id = tho.thesis_id
+WHERE (pr.role_code = 2)
+GROUP BY p.person_id;

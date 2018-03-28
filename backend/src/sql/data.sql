@@ -8,7 +8,8 @@ INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (1, 'No Degree', 'Puud
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (2, 'Bachelor', 'Bakalaureuse');
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (3, 'Master', 'Magistri');
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (4, 'Doctoral', 'Doktori');
-INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (5, 'Applied Higher Education', 'Rakenduskõrgharidus');
+INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (5, 'Applied', 'Rakendus');
+INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (6, 'Engineering', 'Integreeritud');
 
 INSERT INTO Account (username, password, email) VALUES ('Test1', 'test1', 'mavein@ttu.ee');
 INSERT INTO Account (username, password, email) VALUES ('Test123', 'test123', 'avo.lans@ttu.ee');
