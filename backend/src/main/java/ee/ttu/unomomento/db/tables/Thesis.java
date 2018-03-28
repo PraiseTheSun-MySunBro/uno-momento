@@ -36,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Thesis extends TableImpl<ThesisRecord> {
 
-    private static final long serialVersionUID = 1847251401;
+    private static final long serialVersionUID = -1708033526;
 
     /**
      * The reference instance of <code>public.thesis</code>
@@ -70,6 +70,11 @@ public class Thesis extends TableImpl<ThesisRecord> {
      * The column <code>public.thesis.thesis_state_code</code>.
      */
     public final TableField<ThesisRecord, Short> THESIS_STATE_CODE = createField("thesis_state_code", org.jooq.impl.SQLDataType.SMALLINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.SMALLINT)), this, "");
+
+    /**
+     * The column <code>public.thesis.degree_code</code>.
+     */
+    public final TableField<ThesisRecord, Short> DEGREE_CODE = createField("degree_code", org.jooq.impl.SQLDataType.SMALLINT.nullable(false), this, "");
 
     /**
      * The column <code>public.thesis.ee_title</code>.
@@ -150,7 +155,7 @@ public class Thesis extends TableImpl<ThesisRecord> {
      */
     @Override
     public List<ForeignKey<ThesisRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ThesisRecord, ?>>asList(Keys.THESIS__FK_THESIS_FACULTY_CODE, Keys.THESIS__FK_THESIS_THESIS_STATE_CODE);
+        return Arrays.<ForeignKey<ThesisRecord, ?>>asList(Keys.THESIS__FK_THESIS_FACULTY_CODE, Keys.THESIS__FK_THESIS_THESIS_STATE_CODE, Keys.THESIS__FK_THESIS_DEGREE_CODE);
     }
 
     /**

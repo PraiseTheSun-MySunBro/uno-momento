@@ -14,6 +14,7 @@ public class Thesis {
     private String supervisorName;
     private Short  facultyCode;
     private Short  thesisStateCode;
+    private Short  degreeCode;
     private String eeTitle;
     private String enTitle;
     private String eeDescription;
@@ -22,7 +23,7 @@ public class Thesis {
     @Override
     public String toString() {
 
-        return String.format("Thesis (%d, %s, %s, %s, %s, %s, %s, %s)", thesisId, supervisorName, facultyCode,
-                thesisStateCode, eeTitle, enTitle, eeDescription, enDescription);
+        return String.format("Thesis (%d, %s, %s, %s, %s, %s, %s, %s, %s)", thesisId, supervisorName, facultyCode,
+                thesisStateCode, degreeCode, eeTitle, enTitle, eeDescription, enDescription);
     }
 }

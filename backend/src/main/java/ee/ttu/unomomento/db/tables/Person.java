@@ -15,6 +15,7 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Identity;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,7 +36,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Person extends TableImpl<PersonRecord> {
 
-    private static final long serialVersionUID = -1052774609;
+    private static final long serialVersionUID = -368157172;
 
     /**
      * The reference instance of <code>public.person</code>
@@ -53,7 +54,7 @@ public class Person extends TableImpl<PersonRecord> {
     /**
      * The column <code>public.person.person_id</code>.
      */
-    public final TableField<PersonRecord, Long> PERSON_ID = createField("person_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<PersonRecord, Long> PERSON_ID = createField("person_id", org.jooq.impl.SQLDataType.BIGINT.nullable(false).defaultValue(org.jooq.impl.DSL.field("nextval('person_person_id_seq'::regclass)", org.jooq.impl.SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>public.person.uni_id</code>.
@@ -114,6 +115,14 @@ public class Person extends TableImpl<PersonRecord> {
      * {@inheritDoc}
      */
     @Override
+    public Identity<PersonRecord, Long> getIdentity() {
+        return Keys.IDENTITY_PERSON;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public UniqueKey<PersonRecord> getPrimaryKey() {
         return Keys.PK_PERSON_PERSON_ID;
     }
@@ -131,7 +140,7 @@ public class Person extends TableImpl<PersonRecord> {
      */
     @Override
     public List<ForeignKey<PersonRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<PersonRecord, ?>>asList(Keys.PERSON__FK_PERSON_PERSON_ID, Keys.PERSON__FK_PERSON_DEGREE_CODE);
+        return Arrays.<ForeignKey<PersonRecord, ?>>asList(Keys.PERSON__FK_PERSON_DEGREE_CODE);
     }
 
     /**

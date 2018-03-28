@@ -13,20 +13,24 @@ import java.util.Date;
 import static java.util.Collections.emptyList;
 
 public class TokenAuthenticationService {
+    private static final String SECRET = "te7QNhTSQau4BDjG2zqUmPaDtNxvdmwI";
     static final long EXPIRATIONTIME = 1000 * 60 * 60 * 24;  // 1 day
     static final long REFRESH_TIME = 1000 * 60 * 60 * 24 * 14;  // 14 days
-    static final String SECRET = "te7QNhTSQau4BDjG2zqUmPaDtNxvdmwI";
-    static final String TOKEN_PREFIX = "Bearer";
-    static final String HEADER_STRING = "Authorization";
+    public static final String TOKEN_PREFIX = "Bearer";
+    public static final String HEADER_STRING = "Authorization";
 
     static void addAuthentication(HttpServletResponse res, String username) throws IOException {
-        String JWT = Jwts.builder()
-            .setSubject(username)
-            .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
-            .signWith(SignatureAlgorithm.HS512, SECRET)
-            .compact();
+        String JWT = createToken(username);
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
         res.getWriter().write("{\"token\":\"" + JWT + "\"}");
+    }
+
+    public static String createToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
+                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .compact();
     }
 
     public static Authentication getAuthentication(HttpServletRequest request) {

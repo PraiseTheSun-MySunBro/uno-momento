@@ -11,6 +11,7 @@ import ee.ttu.unomomento.db.tables.CuratorsWithTheses;
 import ee.ttu.unomomento.db.tables.Degree;
 import ee.ttu.unomomento.db.tables.Faculty;
 import ee.ttu.unomomento.db.tables.Person;
+import ee.ttu.unomomento.db.tables.PersonAccountOwner;
 import ee.ttu.unomomento.db.tables.PersonFaculty;
 import ee.ttu.unomomento.db.tables.PersonRole;
 import ee.ttu.unomomento.db.tables.Role;
@@ -70,6 +71,11 @@ public class Tables {
      * The table <code>public.person</code>.
      */
     public static final Person PERSON = ee.ttu.unomomento.db.tables.Person.PERSON;
+
+    /**
+     * The table <code>public.person_account_owner</code>.
+     */
+    public static final PersonAccountOwner PERSON_ACCOUNT_OWNER = ee.ttu.unomomento.db.tables.PersonAccountOwner.PERSON_ACCOUNT_OWNER;
 
     /**
      * The table <code>public.person_faculty</code>.
