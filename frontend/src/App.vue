@@ -86,19 +86,19 @@ export default {
     logOut () {
       this.$auth.logout({
         success: () => {
-          app.success = true
+          // app.success = true
         },
         error: (err) => {
-          app.error = true
-          app.errors = err.response.data;
-          console.error(err.response);
+          // app.error = true
+          // app.errors = err.response.data
+          console.error(err.response)
         },
         redirect: '/login'
       })
     },
-    switchCurrentTab: function(value) {
+    switchCurrentTab: function (value) {
       this.currentTab = value
-    } ,
+    }
   },
   computed: {
     fullname () {
@@ -152,7 +152,7 @@ export default {
     height: max-content;
     max-width: 70%;
     text-align: center;
-    
+
     background-color: rgba(0,0,0,.5);
     position: absolute;
   }
@@ -169,7 +169,7 @@ export default {
     position: relative;
     max-width:100%;
     background-color: rgba(0,0,0,.5);
-  }  
+  }
 
   #navbar-logo-container {
     padding-top: 0px;
@@ -215,7 +215,6 @@ export default {
     position: absolute;
     z-index: -1;
   }
-
 
   #login-page-background-image {
     height: 100%;

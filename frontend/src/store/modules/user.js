@@ -10,16 +10,16 @@ const state = {
 }
 
 const getters = {
-  getUser(state) {
+  getUser (state) {
     return state.user
   },
-  getConnectionState(state) {
+  getConnectionState (state) {
     return state.connectionState
   }
 }
 
 const actions = {
-  fetchUser({ commit }) {
+  fetchUser ({ commit }) {
     return new Promise((resolve, reject) => {
       if (state.user.id !== -1) {
         resolve()
@@ -40,10 +40,10 @@ const actions = {
 }
 
 const mutations = {
-  fetchUser(state, user) {
+  fetchUser (state, user) {
     state.user = user
   },
-  connectionState(state, connectionState) {
+  connectionState (state, connectionState) {
     state.connectionState = connectionState
   }
 }
