@@ -61,13 +61,42 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        credentials: {
-          email: '',
-          password: '',
-          username: ''
+export default {
+  data () {
+    return {
+      credentials: {
+        email: '',
+        password: '',
+        username: ''
+      },
+      success: false,
+      error: false,
+      errors: []
+    }
+  },
+  methods: {
+    onLoginSubmit () {
+      let app = this
+
+      this.$auth.login({
+        data: {
+          username: app.credentials.username,
+          password: app.credentials.password
+        },
+        success: () => {
+          app.success = true
+          axios.get('/auth/user')
+            .then((res) => {
+              console.log('Loaded data: ' + JSON.stringify(res.data));
+            })
+            .catch((err) => {
+              console.error(err);
+            })
+        },
+        error: (err) => {
+          app.error = true
+          app.errors = err;
+          console.error(err);
         },
         success: false,
         error: false,
