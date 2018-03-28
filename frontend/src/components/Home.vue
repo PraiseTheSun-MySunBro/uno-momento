@@ -19,9 +19,9 @@
                 <!-- List of lectors theses -->
                 <b-list-group class="theses-list">
                   <b-list-group-item v-for="(thesis, index) in JSON.parse(lecturer.theses)"
-                                    :key="index" 
-                                    href="#"  
-                                    id="theses-group-item" 
+                                    :key="index"
+                                    href="#"
+                                    id="theses-group-item"
                                     @click="showModal(thesis,lecturer)">
                     {{ thesis.ee_title }}
                     <div class="float-right">
@@ -42,12 +42,12 @@
         <br>
       </div>
       <!-- Modal Component -->
-      <b-modal ref="myModalRef" 
+      <b-modal ref="myModalRef"
               id="modal-center"
               centered
               body-bg-variant="light"
               hide-footer
-              hide-header 
+              hide-header
               size="lg">
       <div class="d-block text-center">
         <b-badge variant="dark" pill id="graduade-pill-modal">MAGISTRI</b-badge>
@@ -62,16 +62,16 @@
         <div id="modal-description-container" >
           <div id="modal-description-headline-container">
             <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
-            <h6 id="modal-description-headline">KIRJELDUS</h6> 
+            <h6 id="modal-description-headline">KIRJELDUS</h6>
           </div>
           <p>{{ thesisDescription }}</p>
-        </div> 
-        <div id="modal-tags-container"> 
+        </div>
+        <div id="modal-tags-container">
           <div id="modal-description-tags-headline-container">
             <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
             <h6 id="modal-description-headline">MÄRKSÕNAD</h6>
           </div>
-        </div>  
+        </div>
       </b-card>
       <div id="modal-buttons-container">
         <b-btn class="modal-button-back" @click="hideModal">Tagasi</b-btn>
@@ -79,14 +79,14 @@
         <b-btn class="modal-button-deny" v-if="!candidate" @click="denyThesisCandidation">Tühista</b-btn>
       </div>
     </b-modal>
-    </div> 
+    </div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      /* test values */ 
+      /* test values */
       candidate: true,
       subscription: false,
       /* list of lecturers  with list of theses */
@@ -97,49 +97,49 @@ export default {
       thesisCuratorFirstName: '',
       thesisCuratorLastName: '',
       /* number of chosen page */
-      currentPage: 1,
+      currentPage: 1
     }
   },
   methods: {
-    showModal (thesis,lecturer) {
-      this.thesisTitle = thesis.ee_title;
-      this.thesisDescription = thesis.ee_description;
-      this.thesisCuratorFirstName = lecturer.firstname;
-      this.thesisCuratorLastName = lecturer.lastname;
-      this.$refs.myModalRef.show();
+    showModal (thesis, lecturer) {
+      this.thesisTitle = thesis.ee_title
+      this.thesisDescription = thesis.ee_description
+      this.thesisCuratorFirstName = lecturer.firstname
+      this.thesisCuratorLastName = lecturer.lastname
+      this.$refs.myModalRef.show()
     },
-    hideModal () {
-      this.$refs.myModalRef.hide();
+    hideModal: function () {
+      this.$refs.myModalRef.hide()
     },
-    candidateThesis() {
-      this.candidate = false;
+    candidateThesis: function () {
+      this.candidate = false
     },
-    denyThesisCandidation() {
-      this.candidate = true;
+    denyThesisCandidation: function () {
+      this.candidate = true
     },
-    acceptSubscription() {
-      this.subscription = true;
+    acceptSubscription: function () {
+      this.subscription = true
     },
-    denySubscription() {
-      this.subscription = false;
+    denySubscription: function () {
+      this.subscription = false
     },
-    getPersons: function() {
+    getPersons: function () {
       console.log("I'm working!")
-      axios.get("/api/curators")
+      axios.get('/api/curators')
         .then((response) => {
           console.log('Response', response)
         })
         .catch((error) => {
           console.error('Error', error)
         })
-    }  
+    }
   },
-  mounted: function() {
+  mounted: function () {
     axios.get('/api/curators')
       .then(response => {
-          this.lecturers=response.data
+        this.lecturers = response.data
       }).catch(e => {
-          console.error(e.data)
+        console.error(e.data)
       })
   }
 }
@@ -174,12 +174,9 @@ export default {
 
   /* Pagination */
 
-  #pagination-container {
-    
-  }
+  #pagination-container {}
 
-  #pagination {
-  }
+  #pagination {}
 
   /* Modal form with theses description */
 
@@ -233,7 +230,7 @@ export default {
     #modal-description-icon {
       color: rgb(66, 139, 202);
       display: inline-block;
-      vertical-align: middle;  
+      vertical-align: middle;
     }
 
     #modal-description-headline {
@@ -254,7 +251,6 @@ export default {
       margin-top: 40px;
       width: 220px;
       text-align: center;
-      
   }
 
     .modal-button-back {
@@ -303,6 +299,6 @@ export default {
   .collapsed > .when-opened,
   :not(.collapsed) > .when-closed {
     display: none;
-  }  
+  }
 
 </style>
