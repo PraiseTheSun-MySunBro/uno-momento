@@ -85,72 +85,43 @@ export default {
         },
         success: () => {
           app.success = true
-          axios.get('/auth/user')
-            .then((res) => {
-              console.log('Loaded data: ' + JSON.stringify(res.data));
-            })
-            .catch((err) => {
-              console.error(err);
+          this.$store.dispatch('fetchUser')
+            .then(() => {
+              console.log('Data has been fetched successfully!')
             })
         },
         error: (err) => {
           app.error = true
-          app.errors = err;
-          console.error(err);
+          app.errors = err
+          console.error(err)
         },
-        success: false,
-        error: false,
-        errors: []
-      }
+        rememberMe: true,
+        redirect: '/',
+        fetchUser: null
+      })
     },
-    methods: {
-      onLoginSubmit () {
-        let app = this
+    onRegisterSubmit () {
+      let app = this
 
-        this.$auth.login({
-          data: {
-            username: app.credentials.username,
-            password: app.credentials.password
-          },
-          success: () => {
-            app.success = true
-            this.$store.dispatch('fetchUser')
-              .then(() => {
-                console.log('Data has been fetched successfully!')
-              })
-          },
-          error: (err) => {
-            app.error = true
-            app.errors = err;
-            console.error(err);
-          },
-          rememberMe: true,
-          redirect: '/',
-          fetchUser: null
-        })
-      },
-      onRegisterSubmit () {
-        let app = this
-
-        this.$auth.register({
-          data: {
-            email: app.credentials.email,
-            username: app.credentials.username,
-            password: app.credentials.password
-          },
-          success: () => {
-            app.success = true
-          },
-          error: (err) => {
-            app.error = true
-            app.errors = err.response.data;
-            console.error(err.response);
-          },
-          redirect: null
-        })
-      }
+      this.$auth.register({
+        data: {
+          email: app.credentials.email,
+          username: app.credentials.username,
+          password: app.credentials.password
+        },
+        success: () => {
+          app.success = true
+        },
+        error: (err) => {
+          app.error = true
+          app.errors = err.response.data
+          console.error(err.response)
+        },
+        redirect: null
+      })
     }
   }
+}
 </script>
 
 <style>
