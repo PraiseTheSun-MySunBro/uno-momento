@@ -53,26 +53,35 @@
       <router-view/>
     </div>
   </div>
+  <div v-else-if="!$store.getters.getConnectionState">
+    <h2>No connection to server (might be you forget to start the server?)</h2>
+  </div>
   <div v-else>
-    <h1>Loading...</h1>
+    <h2>Loading...</h2>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'App',
   data () {
     return {
-      currentUser: {
-        role_code: 1,
-        firstname: '',
-        lastname: '',
-      }
     }
+  },
+  created () {
+    this.$store.dispatch('fetchUser')
+      .then(() => {
+        console.log('Data has been fetched successfully!')
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   methods: {
     switchUser (value) {
-      this.currentUser.role_code = value
+      this.currentUser.roleCode = value
     },
     logOut () {
       this.$auth.logout({
@@ -94,7 +103,10 @@ export default {
   computed: {
     fullname () {
       return `${this.currentUser.firstname} ${this.currentUser.lastname}`
-    }
+    },
+    ...mapGetters({
+      currentUser: 'getUser'
+    })
   }
 }
 </script>
@@ -213,7 +225,6 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
   }
-
 
   [v-cloak] > * { display: none; }
 </style>
