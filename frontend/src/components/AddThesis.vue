@@ -6,16 +6,18 @@
         <hr class="my-2">
         <div id="offer_slogan">
             <footer>Peas on head mõtted millest saab hea lõpputöö idee?</footer>
-            <footer >Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</footer> 
+            <footer>Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</footer>
         </div>
-        <b-form @submit.prevent="onSubmit" @reset.prevent="onReset" v-if="show">            
+        <b-form @submit.prevent="onSubmit"
+                @reset.prevent="onReset"
+                v-if="show">
           <div class="row">
             <div class="col-sm-9">
               <b-form-group vertical
                         label="Teema:"
                         label-class="text-sm"
                         label-for="add_thesis_name">
-                <b-form-input id="add_thesis_name" 
+                <b-form-input id="add_thesis_name"
                               type="text"
                               required
                               v-model="form.ee_title"
@@ -30,7 +32,7 @@
                         label="Kirjeldus:"
                         label-class="text-sm"
                         label-for="add_thesis_description">
-                <b-form-textarea id="add_thesis_description" 
+                <b-form-textarea id="add_thesis_description"
                               type="text"
                               required
                               :rows="6"
@@ -64,7 +66,7 @@
           </div>
         </b-form>
       </b-card>
-    </div> 
+    </div>
   </div>
 </template>
 
@@ -94,16 +96,18 @@ export default {
     onSubmit (evt) {
       this.listOfTheses.push(
         {ee_title: this.form.ee_title, ee_description: this.form.ee_description})
-      axios.post(`api/curator/2/thesis`,
-          {ee_title: this.form.ee_title, en_title: this.form.en_title,
-           ee_description: this.form.ee_description, en_description: this.form.en_description,
-           faculty_code: 3})
+      axios.post(`api/curator/2/thesis`, {
+        ee_title: this.form.ee_title,
+        en_title: this.form.en_title,
+        ee_description: this.form.ee_description,
+        en_description: this.form.en_description,
+        aculty_code: 3})
         .then(response => {
-            console.log("Post: ", response.data)
-            window.location.reload()
+          console.log('Post:', response.data)
+          window.location.reload()
         })
         .catch(e => {
-            console.error(e)
+          console.error(e)
         })
       /* Reset our form values */
       this.form.ee_title = ''
@@ -122,12 +126,12 @@ export default {
       this.$nextTick(() => { this.show = true })
     }
   },
-  mounted: function() {
+  mounted: function () {
     axios.get('/api/curators')
       .then(response => {
-          this.lecturers=response.data
+        this.lecturers = response.data
       }).catch(e => {
-          console.error(e.data)
+        console.error(e.data)
       })
   }
 }
@@ -136,20 +140,20 @@ export default {
 <style>
 
   .add-thesis {
-      margin-top: 5%;
-      padding-right: 15%;
-      padding-left: 15%;
+    margin-top: 5%;
+    padding-right: 15%;
+    padding-left: 15%;
   }
 
   #thesis_registration {
-      border-top: 4px solid rgb(66, 139, 202);
+    border-top: 4px solid rgb(66, 139, 202);
   }
   .row {
-      margin-bottom: 3%;
+    margin-bottom: 3%;
   }
 
   #offer_slogan {
-      margin-bottom: 3%;
+    margin-bottom: 3%;
   }
 
 </style>
