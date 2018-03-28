@@ -20,9 +20,4 @@ public class AuthControllerTest {
 
     @MockBean
     private AccountService accountService;
-
-    @Test
-    public void testRegistrationInvalidCredentials() {
-
-    }
 }
