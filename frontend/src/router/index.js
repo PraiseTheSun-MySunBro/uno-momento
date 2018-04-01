@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from '@/components/Home'
-import Login from '@/components/Login'
+import EntryPoint from '@/components/EntryPoint'
+import HomeStudent from '@/components/HomeStudent'
 import AddThesis from '@/components/AddThesis'
-import Workplace from '@/components/Workplace'
-import Profile from '@/components/Profile'
+import UserProfile from '@/components/UserProfile'
+import UserWorkplace from '@/components/UserWorkplace'
 
 Vue.use(Router)
 
@@ -13,22 +13,22 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login,
+      name: 'entry',
+      component: EntryPoint,
       meta: {
         auth: false
       }
     },
     {
-      path: '/theses/add',
+      path: '/home',
+      name: 'home',
+      component: HomeStudent,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/thesis/add',
       name: 'addThesis',
       component: AddThesis,
       meta: {
@@ -36,17 +36,17 @@ export default new Router({
       }
     },
     {
-      path: '/workplace',
-      name: 'workplace',
-      component: Workplace,
+      path: '/profile',
+      name: 'profile',
+      component: UserProfile,
       meta: {
         auth: true
       }
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: Profile,
+      path: '/workplace',
+      name: 'workplace',
+      component: UserWorkplace,
       meta: {
         auth: true
       }
