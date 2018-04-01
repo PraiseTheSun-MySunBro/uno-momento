@@ -138,22 +138,20 @@ export default {
 </script>
 
 <style>
+.add-thesis {
+  margin-top: 5%;
+  padding-right: 15%;
+  padding-left: 15%;
+}
 
-  .add-thesis {
-    margin-top: 5%;
-    padding-right: 15%;
-    padding-left: 15%;
-  }
+#thesis_registration {
+  border-top: 4px solid rgb(66, 139, 202);
+}
+.row {
+  margin-bottom: 3%;
+}
 
-  #thesis_registration {
-    border-top: 4px solid rgb(66, 139, 202);
-  }
-  .row {
-    margin-bottom: 3%;
-  }
-
-  #offer_slogan {
-    margin-bottom: 3%;
-  }
-
+#offer_slogan {
+  margin-bottom: 3%;
+}
 </style>

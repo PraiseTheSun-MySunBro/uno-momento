@@ -84,6 +84,7 @@
 
 <script>
 export default {
+  name: 'HomeStudent',
   data () {
     return {
       /* test values */
@@ -146,159 +147,165 @@ export default {
 </script>
 
 <style scoped>
-  #list_of_lecturers {
-      margin-bottom: 50px;
+#home-container {
+  margin-top: 290px;
+  margin-bottom: 50px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+#list_of_lecturers {
+    margin-bottom: 50px;
+}
+
+#list-accordion {
+  border-top: 4px solid rgb(66, 139, 202);
+  border-radius: 0px;
+}
+
+/* Each theses group item */
+
+#theses-group-item {
+  border-radius: 0px;
+}
+
+#graduade-pill {
+  margin-right: 40px;
+  min-width: 120px;
+  background-color:rgb(66, 139, 202);
+}
+
+.card-body {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+/* Pagination */
+
+#pagination-container {}
+
+#pagination {}
+
+/* Modal form with theses description */
+
+#graduade-pill-modal {
+  margin-bottom: 10px;
+  min-width: 120px;
+  background-color:rgb(66, 139, 202);
+}
+
+#modal-lecturer-name {
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+
+#modal-hr {
+  width: 220px;
+  border-top: 1px solid black;
+}
+
+/* Modal card with description and tags */
+
+#modal-card-description {
+    min-height: 450px;
+    margin-top: 30px;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+  /* Description container */
+
+  #modal-description-container {
+    min-height: 300px;
   }
 
-  #list-accordion {
-    border-top: 4px solid rgb(66, 139, 202);
-    border-radius: 0px;
+  #modal-description-headline-container {
+    margin-bottom: 15px;
   }
 
-  /* Each theses group item */
+  /* Tags container */
 
-  #theses-group-item {
-    border-radius: 0px;
+  #modal-tags-container {
+    min-height: 50px;
   }
 
-  #graduade-pill {
-    margin-right: 40px;
-    min-width: 120px;
-    background-color:rgb(66, 139, 202);
+  #modal-description-tags-headline-container {
+    margin-bottom: 15px;
   }
 
-  .card-body {
-    padding-left: 5%;
-    padding-right: 5%;
+  /* Modal description and tags headlines */
+  #modal-description-icon {
+    color: rgb(66, 139, 202);
+    display: inline-block;
+    vertical-align: middle;
   }
 
-  /* Pagination */
-
-  #pagination-container {}
-
-  #pagination {}
-
-  /* Modal form with theses description */
-
-  #graduade-pill-modal {
-    margin-bottom: 10px;
-    min-width: 120px;
-    background-color:rgb(66, 139, 202);
+  #modal-description-headline {
+    color: rgb(66, 139, 202);
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5px;
+    margin-top: 5px;
   }
 
-  #modal-lecturer-name {
-      font-family: 'Times New Roman', Times, serif;
-      font-style: italic;
-      margin-bottom: 40px;
-  }
+/* Modal buttons */
 
-  #modal-hr {
+#modal-buttons-container {
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 40px;
     width: 220px;
-    border-top: 1px solid black;
+    text-align: center;
+}
+
+  .modal-button-back {
+    margin-bottom: 20px;
+    float: left;
+    font-weight: 300;
+    background-color: rgb(66, 139, 202);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    width: 100px;
+    border: none;
   }
 
-  /* Modal card with description and tags */
-
-  #modal-card-description {
-      min-height: 450px;
-      margin-top: 30px;
-      margin-left: 15%;
-      margin-right: 15%;
+  .modal-button-back:hover {
+    background-color: rgb(46, 100, 148);
   }
 
-    /* Description container */
-
-    #modal-description-container {
-      min-height: 300px;
-    }
-
-    #modal-description-headline-container {
-      margin-bottom: 15px;
-    }
-
-    /* Tags container */
-
-    #modal-tags-container {
-      min-height: 50px;
-    }
-
-    #modal-description-tags-headline-container {
-      margin-bottom: 15px;
-    }
-
-    /* Modal description and tags headlines */
-    #modal-description-icon {
-      color: rgb(66, 139, 202);
-      display: inline-block;
-      vertical-align: middle;
-    }
-
-    #modal-description-headline {
-      color: rgb(66, 139, 202);
-      display: inline-block;
-      vertical-align: top;
-      margin-left: 5px;
-      margin-top: 5px;
-    }
-
-  /* Modal buttons */
-
-  #modal-buttons-container {
-      left:0;
-      right:0;
-      margin-left:auto;
-      margin-right:auto;
-      margin-top: 40px;
-      width: 220px;
-      text-align: center;
+  .modal-button-candidate {
+    margin-bottom: 20px;
+    float: right;
+    font-weight: 300;
+    background-color: rgb(66, 139, 202);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    width: 100px;
+    border: none;
   }
 
-    .modal-button-back {
-      margin-bottom: 20px;
-      float: left;
-      font-weight: 300;
-      background-color: rgb(66, 139, 202);
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-      width: 100px;
-      border: none;
-    }
-
-    .modal-button-back:hover {
-      background-color: rgb(46, 100, 148);
-    }
-
-    .modal-button-candidate {
-      margin-bottom: 20px;
-      float: right;
-      font-weight: 300;
-      background-color: rgb(66, 139, 202);
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-      width: 100px;
-      border: none;
-    }
-
-    .modal-button-candidate:hover {
-      background-color: rgb(46, 100, 148);
-    }
-
-    .modal-button-deny {
-      margin-bottom: 20px;
-      float: right;
-      background-color: rgb(219, 70, 70);
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-      width: 100px;
-      border: none;
-    }
-
-    .modal-button-deny:hover {
-      background-color: rgb(177, 40, 40);
-    }
-
-  /* Animation for caret in list of lecturers */
-
-  .collapsed > .when-opened,
-  :not(.collapsed) > .when-closed {
-    display: none;
+  .modal-button-candidate:hover {
+    background-color: rgb(46, 100, 148);
   }
 
+  .modal-button-deny {
+    margin-bottom: 20px;
+    float: right;
+    background-color: rgb(219, 70, 70);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    width: 100px;
+    border: none;
+  }
+
+  .modal-button-deny:hover {
+    background-color: rgb(177, 40, 40);
+  }
+
+/* Animation for caret in list of lecturers */
+
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
+}
 </style>
