@@ -9,24 +9,29 @@
 
     <!-- Home page background -->
     <div class="home-page__background"
-         v-if="$auth.check()">
+         v-else>
       <div class="home-page__background__image"></div>
     </div>
 
-    <!-- Navigation bar -->
-    <the-navigation v-if="$auth.check()"></the-navigation>
-    <!-- Faculty name -->
-    <the-faculty-name v-if="$auth.check()"></the-faculty-name>
-    <!-- Vue component -->
-    <div>
-      <router-view/>
+    <div v-if="$auth.check()">
+      <!-- Navigation bar -->
+      <the-navigation />
+      <!-- Faculty name -->
+      <the-faculty-name />
     </div>
+
+    <!-- Vue component -->
+    <router-view />
   </div>
   <div v-else-if="!$store.getters.getConnectionState">
     <h2>No connection to server (might be you forget to start the server?)</h2>
   </div>
-  <div v-else>
-    <h2>Loading...</h2>
+  <div class="login-page-background"
+       v-else>
+    <div style="text-align: center">
+      <p style="font-size: 1.5rem; color: white;">Loading...</p>
+      <i class="fa fa-spinner fa-spin" style="font-size: 2.5rem;"></i>
+    </div>
   </div>
 </template>
 
@@ -135,6 +140,7 @@ html, body {
   position: absolute;
   z-index: -1;
 }
+
 .home-page__background__image {
   min-height: 400px;
   width: 100%;
@@ -147,6 +153,14 @@ html, body {
   -moz-filter: brightness(55%);
   -o-filter: brightness(55%);
   -ms-filter: brightness(55%);
+}
+
+.login-page-background {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 [v-cloak] > * { display: none; }
