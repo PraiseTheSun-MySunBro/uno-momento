@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import EntryPoint from '@/components/EntryPoint'
-import HomeStudent from '@/components/HomeStudent'
-import AddThesis from '@/components/AddThesis'
+import Home from '@/components/Home'
+import AddThesisStudent from '@/components/AddThesisStudent'
 import UserProfile from '@/components/UserProfile'
 import UserWorkplace from '@/components/UserWorkplace'
 
@@ -22,15 +22,15 @@ export default new Router({
     {
       path: '/home',
       name: 'home',
-      component: HomeStudent,
+      component: Home,
       meta: {
         auth: true
       }
     },
     {
       path: '/thesis/add',
-      name: 'addThesis',
-      component: AddThesis,
+      name: 'addThesisStudent',
+      component: AddThesisStudent,
       meta: {
         auth: true
       }

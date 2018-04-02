@@ -13,10 +13,10 @@
                 is-nav>
       <b-navbar-nav>
         <b-nav-item :to="{ name: 'home' }">
-          Pealeht
+          <em>Pealeht</em>
         </b-nav-item>
-        <b-nav-item :to="{ name: 'addThesis' }">
-          Lõputöö lisamine
+        <b-nav-item :to="{ name: 'addThesisStudent' }">
+          <em>Lõputöö lisamine</em>
         </b-nav-item>
       </b-navbar-nav>
 
@@ -26,25 +26,25 @@
 
           <!-- Using button-content slot -->
           <template slot="button-content">
-            <em>{{ fullname }}</em>
-            <i class="fas fa-user-circle fa-lg"></i>
+            <em class="username">{{ fullname }}</em>
+            <i class="fas fa-user-circle fa-lg navbar-icon"></i>
           </template>
 
           <b-dropdown-item :to="{ name: 'profile' }">
-            <i class="far fa-user fa-lg"></i>
+            <i class="far fa-user fa-lg navbar-icon"></i>
             <em>Kasutaja andmed</em>
           </b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
 
           <b-dropdown-item :to="{ name: 'workplace' }">
-            <i class="fas fa-briefcase fa-lg"></i>
+            <i class="fas fa-briefcase fa-lg navbar-icon"></i>
             <em>Töölaud</em>
           </b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
 
           <b-dropdown-item href="#"
                            @click="logout">
-            <i class="fas fa-sign-out-alt fa-lg"></i>
+            <i class="fas fa-sign-out-alt fa-lg navbar-icon"></i>
             <em>Logi välja</em>
           </b-dropdown-item>
         </b-nav-item-dropdown>
@@ -88,9 +88,16 @@ export default {
 </script>
 
 <style scoped>
+
+em {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+}
+
 .navbar {
   position: relative;
-  max-width: 100%;
+  max-width:100%;
   background-color: rgba(0,0,0,.5);
 }
 .navbar__logo-container {
@@ -100,4 +107,29 @@ export default {
 .navbar__logo {
   max-height: 40px;
 }
+
+.username {
+  margin-right: 5px;
+}
+
+.navbar-icon {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 767px) {
+  /* adaptive for mobile */
+  .navbar {
+    position: absolute;
+    min-width:100%;
+    background-color: rgba(0,0,0,.7);
+    z-index: 2;
+  }
+
+  em {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+  }
+}
+
 </style>
