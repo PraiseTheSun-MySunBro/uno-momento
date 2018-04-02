@@ -15,9 +15,9 @@
 
     <div v-if="$auth.check()">
       <!-- Navigation bar -->
-      <the-navigation />
+      <the-navigation :currentUser="currentUser"/>
       <!-- Faculty name -->
-      <the-faculty-name />
+      <the-faculty-name :faculty="currentUser.person.faculty"/>
     </div>
 
     <!-- Vue component -->
@@ -51,15 +51,6 @@ export default {
     return {
     }
   },
-  created () {
-    this.$store.dispatch('fetchUser')
-      .then(() => {
-        console.log('Data has been fetched successfully!')
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  },
   methods: {
     switchUser (value) {
       this.currentUser.roleCode = value
@@ -68,10 +59,16 @@ export default {
       this.currentTab = value
     }
   },
+  created () {
+    this.$store.dispatch('fetchUser')
+      .then(() => {
+        console.log('User data has been fetched successfully!')
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  },
   computed: {
-    fullname () {
-      return `${this.currentUser.firstname} ${this.currentUser.lastname}`
-    },
     ...mapGetters({
       currentUser: 'getUser'
     })
@@ -117,6 +114,7 @@ html, body {
   -o-filter: blur(10px);
   -ms-filter: blur(10px);
   filter: blur(10px);
+  transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
 }
 

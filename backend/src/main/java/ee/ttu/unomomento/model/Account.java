@@ -24,6 +24,8 @@ public class Account implements Serializable {
     private Short     accountRoleCode;
     private Timestamp regTime;
 
+    private Person person;
+
     @Override
     public String toString() {
         return String.format("Account (%d, %s, %s, %s, %s, %s, %s)", accountId, username, password, email,

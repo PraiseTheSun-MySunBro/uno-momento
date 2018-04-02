@@ -42,7 +42,7 @@ CREATE TABLE Account (
   CONSTRAINT CK_Account_username CHECK (username ~ '^\w{3,}$'),
   CONSTRAINT CK_Account_password CHECK (TRIM(password) != ''),
   CONSTRAINT CK_Account_email CHECK (email ~ '^[a-z0-9!#$%&''*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$'),
-  CONSTRAINT CK_Account_reg_time CHECK (reg_time = now())
+  CONSTRAINT CK_Account_reg_time CHECK (reg_time <= now())
 );
 
 CREATE UNIQUE INDEX IXAK_Account_email ON Account (LOWER(email) ASC);
@@ -140,6 +140,7 @@ CREATE TABLE Thesis (
   en_title VARCHAR(128),
   ee_description VARCHAR(1000),
   en_description VARCHAR(1000),
+  reg_time TIMESTAMP NOT NULL DEFAULT now(),
   CONSTRAINT PK_Thesis_thesis_id PRIMARY KEY (thesis_id),
   CONSTRAINT CK_Thesis_supervisor_name CHECK (supervisor_name ~ '^[[:alpha:]]+$'),
   CONSTRAINT FK_Thesis_faculty_code FOREIGN KEY (faculty_code) REFERENCES Faculty (faculty_code) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -149,7 +150,8 @@ CREATE TABLE Thesis (
   CONSTRAINT CK_Thesis_ee_description CHECK (TRIM(ee_description) != '' AND ee_description !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Thesis_en_description CHECK (TRIM(en_description) != '' AND en_description !~ '^[[:digit:]]+$'),
   CONSTRAINT CK_Thesis_titles_or_descriptions_are_not_empty CHECK (TRIM(ee_title) != '' AND TRIM(en_title) != '' AND TRIM(en_description) != '' AND TRIM(ee_description) != ''),
-  CONSTRAINT CK_Thesis_must_contain_one_or_more_titles_and_descriptions CHECK (ee_title IS NOT NULL AND ee_description IS NOT NULL OR en_title IS NOT NULL AND en_description IS NOT NULL)
+  CONSTRAINT CK_Thesis_must_contain_one_or_more_titles_and_descriptions CHECK (ee_title IS NOT NULL AND ee_description IS NOT NULL OR en_title IS NOT NULL AND en_description IS NOT NULL),
+  CONSTRAINT CK_Thesis_reg_time CHECK (reg_time <= now())
 );
 
 CREATE UNIQUE INDEX IXAK_Thesis_en_title ON Thesis (en_title ASC);

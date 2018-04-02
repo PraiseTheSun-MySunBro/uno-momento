@@ -2,8 +2,12 @@ package ee.ttu.unomomento.controller;
 
 import com.google.gson.Gson;
 import ee.ttu.unomomento.model.Account;
+import ee.ttu.unomomento.model.Faculty;
+import ee.ttu.unomomento.model.Person;
 import ee.ttu.unomomento.security.TokenAuthenticationService;
 import ee.ttu.unomomento.service.AccountService;
+import ee.ttu.unomomento.service.FacultyService;
+import ee.ttu.unomomento.service.PersonService;
 import ee.ttu.unomomento.validator.AccountValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.JSONFormat;
@@ -23,13 +27,17 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AccountService accountService;
+    private final PersonService personService;
+    private final FacultyService facultyService;
     private final JSONFormat jsonFormat;
     private final Gson gson;
 
 
     @Autowired
-    public AuthController(AccountService accountService, JSONFormat jsonFormat, Gson gson) {
+    public AuthController(AccountService accountService, PersonService personService, FacultyService facultyService, JSONFormat jsonFormat, Gson gson) {
         this.accountService = accountService;
+        this.personService = personService;
+        this.facultyService = facultyService;
         this.jsonFormat = jsonFormat;
         this.gson = gson;
     }
@@ -53,7 +61,18 @@ public class AuthController {
     public String getAccount(HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
         assert authentication != null;
-        return gson.toJson(accountService
-            .findAccountByUsername((String) authentication.getPrincipal()));
+
+        String username = (String) authentication.getPrincipal();
+        Account account = accountService.findAccountByUsername(username);
+        assert account != null;
+        Person person = personService.findPersonByAccountId(account.getAccountId());
+        assert person != null;
+        Faculty faculty = facultyService.getFacultyByPersonId(person.getPersonId());
+        assert faculty != null;
+
+//        JsonObject obj = gson.toJsonTree(account).getAsJsonObject();
+        person.setFaculty(faculty);
+        account.setPerson(person);
+        return gson.toJson(account);
     }
 }

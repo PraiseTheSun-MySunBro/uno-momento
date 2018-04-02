@@ -1,13 +1,16 @@
 <template>
   <div class="div__faculty"
        v-if="$auth.check()">
-    <h1 class="faculty__name">Infotehnoloogia teaduskond</h1>
+    <h1 class="faculty__name">{{ faculty.eeName }}</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TheFacultyName'
+  name: 'TheFacultyName',
+  props: {
+    faculty: {}
+  }
 }
 </script>
 

@@ -135,12 +135,16 @@ export default {
         })
     }
   },
-  mounted: function () {
-    axios.get('/api/curators')
-      .then(response => {
-        this.lecturers = response.data
-      }).catch(e => {
-        console.error(e.data)
+  created () {
+    console.log('test')
+    this.lecturers = this.$store.getters.getCurators
+    this.$store.dispatch('fetchCurators')
+      .then((data) => {
+        console.log('Curators data has been fetched successfully!')
+        this.lecturers = data
+      })
+      .catch(err => {
+        console.error(err)
       })
   }
 }

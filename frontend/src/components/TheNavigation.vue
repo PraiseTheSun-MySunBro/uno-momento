@@ -12,6 +12,9 @@
     <b-collapse id="nav-collapse"
                 is-nav>
       <b-navbar-nav>
+        <b-nav-item :to="{ name: 'home' }">
+          Pealeht
+        </b-nav-item>
         <b-nav-item :to="{ name: 'addThesis' }">
           Lõputöö lisamine
         </b-nav-item>
@@ -23,7 +26,7 @@
 
           <!-- Using button-content slot -->
           <template slot="button-content">
-            <em>Denis Raestas</em>
+            <em>{{ fullname }}</em>
             <i class="fas fa-user-circle fa-lg"></i>
           </template>
 
@@ -72,6 +75,14 @@ export default {
         redirect: '/'
       })
     }
+  },
+  computed: {
+    fullname () {
+      return `${this.currentUser.person.firstname} ${this.currentUser.person.lastname}`
+    }
+  },
+  props: {
+    currentUser: {}
   }
 }
 </script>
@@ -79,7 +90,7 @@ export default {
 <style scoped>
 .navbar {
   position: relative;
-  max-width:100%;
+  max-width: 100%;
   background-color: rgba(0,0,0,.5);
 }
 .navbar__logo-container {
