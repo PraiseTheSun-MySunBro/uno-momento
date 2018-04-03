@@ -113,7 +113,7 @@
                           class="mb-3">
               <b-form-input id="reg-uniid"
                             type="text"
-                            v-model="credentials.uniid">
+                            v-model="credentials.uniId">
               </b-form-input>
             </b-form-group>
             <b-form-group class="div__roles mb-3">
@@ -179,27 +179,30 @@ export default {
         password: '',
         email: '',
         role: '',
-        uniid: '',
+        uniId: '',
         degree: '',
         faculty: ''
       },
       roles: [
-        { text: '<span class="label__text">Tudeng</span>', value: 'student' },
-        { text: '<span class="label__text">Õppejõud</span>', value: 'curator' }
+        { text: '<span class="label__text">Tudeng</span>', value: 1 },
+        { text: '<span class="label__text">Õppejõud</span>', value: 2 }
       ],
       degrees: [
         // { text: '<span class="label__text">Vali</span>', value: null, disabled: true },
-        { text: '<span class="label__text">Bakalaureus</span>', value: 'bachelor' },
-        { text: '<span class="label__text">Magister</span>', value: 'magister' },
-        { text: '<span class="label__text">Doktor</span>', value: 'doctorate' }
+        { text: '<span class="label__text">Puudub</span>', value: 1 },
+        { text: '<span class="label__text">Bakalaureus</span>', value: 2 },
+        { text: '<span class="label__text">Magister</span>', value: 3 },
+        { text: '<span class="label__text">Doktor</span>', value: 4 },
+        { text: '<span class="label__text">Rakendus</span>', value: 5 },
+        { text: '<span class="label__text">Inseneeri</span>', value: 6 }
       ],
       faculties: [
         // { text: '<span class="label__text">Vali</span>', value: null, disabled: true },
-        { text: '<span class="label__text">Infotehnoloogia teaduskond</span>', value: 'infomation technology' },
-        { text: '<span class="label__text">Loodusteaduskond</span>', value: 'science' },
-        { text: '<span class="label__text">Eesti Mereakadeemia</span>', value: 'maritime academy' },
-        { text: '<span class="label__text">Inseneriteaduskond</span>', value: 'engineering' },
-        { text: '<span class="label__text">Majandusteaduskond</span>', value: 'economics' }
+        { text: '<span class="label__text">Infotehnoloogia teaduskond</span>', value: 3 },
+        { text: '<span class="label__text">Loodusteaduskond</span>', value: 4 },
+        { text: '<span class="label__text">Eesti Mereakadeemia</span>', value: 5 },
+        { text: '<span class="label__text">Inseneriteaduskond</span>', value: 2 },
+        { text: '<span class="label__text">Majandusteaduskond</span>', value: 1 }
       ],
       back: false,
       success: false,
@@ -244,14 +247,20 @@ export default {
         data: {
           username: app.credentials.username,
           password: app.credentials.password,
-          email: app.credentials.email
+          email: app.credentials.email,
+          firstname: app.credentials.firstname,
+          lastname: app.credentials.lastname,
+          uniId: app.credentials.uniId,
+          roleCode: app.credentials.role,
+          facultyCode: app.credentials.faculty,
+          degreeCode: app.credentials.degree
         },
         success: () => {
           app.success = true
         },
         error: (err) => {
           app.error = true
-          app.errors = err.response.data
+          app.errors = `${err.response.data.status} ${err.response.data.error} - ${err.response.data.message}`
           console.error(err.response)
         },
         redirect: null

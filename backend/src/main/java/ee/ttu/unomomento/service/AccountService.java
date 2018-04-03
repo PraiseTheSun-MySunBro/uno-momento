@@ -38,7 +38,7 @@ public class AccountService {
         Account account = new Account();
         account.setUsername(userRegistration.getUsername());
         account.setPassword(bCryptPasswordEncoder.encode(userRegistration.getPassword()));
-        account.setEmail(userRegistration.getEmail());
+        account.setEmail(userRegistration.getEmail().toLowerCase());
 
         AccountRecord accountRecord = dslContext.newRecord(ACCOUNT, account);
         accountRecord.insert();
@@ -47,7 +47,7 @@ public class AccountService {
         person.setDegreeCode(userRegistration.getDegreeCode());
         person.setFirstname(userRegistration.getFirstname());
         person.setLastname(userRegistration.getLastname());
-        person.setUniId(userRegistration.getUniId());
+        person.setUniId(userRegistration.getUniId().toLowerCase());
 
         PersonRecord personRecord = dslContext.newRecord(PERSON, person);
         personRecord.insert();

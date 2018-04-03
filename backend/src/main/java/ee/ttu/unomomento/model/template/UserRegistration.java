@@ -13,11 +13,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class UserRegistration implements Serializable {
 
-    private String firstname;
-    private String lastname;
     private String username;
     private String password;
     private String email;
+    private String firstname;
+    private String lastname;
     private String uniId;
     private Short roleCode;
     private Short degreeCode;

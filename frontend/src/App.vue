@@ -65,7 +65,15 @@ export default {
         console.log('User data has been fetched successfully!')
       })
       .catch(err => {
-        console.error(err)
+        if (err.response.data.exception === 'io.jsonwebtoken.ExpiredJwtException') {
+          this.$auth.logout({
+            success: () => {},
+            error: (err) => {
+              console.error('Logout error', err.response)
+            }
+          })
+        }
+        console.error(err.response)
       })
   },
   computed: {
