@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import ee.ttu.unomomento.model.Account;
 import ee.ttu.unomomento.model.Faculty;
 import ee.ttu.unomomento.model.Person;
+import ee.ttu.unomomento.model.template.AccountPersonInformation;
+import ee.ttu.unomomento.model.template.UserRegistration;
 import ee.ttu.unomomento.security.TokenAuthenticationService;
 import ee.ttu.unomomento.service.AccountService;
 import ee.ttu.unomomento.service.FacultyService;
@@ -42,15 +44,15 @@ public class AuthController {
         this.gson = gson;
     }
 
-    @InitBinder
-    private void initBinder(WebDataBinder binder) {
-        binder.setValidator(new AccountValidator());
-    }
+//    @InitBinder
+//    private void initBinder(WebDataBinder binder) {
+//        binder.setValidator(new AccountValidator());
+//    }
 
     @PostMapping(value = "/auth/register", produces = "application/json")
-    public ResponseEntity<String> register(@Valid @RequestBody Account account) {
+    public ResponseEntity<String> register(@RequestBody UserRegistration userRegistration) {
         try {
-            accountService.saveAccount(account);
+            accountService.saveAccount(userRegistration);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (DataAccessException e) {
             return new ResponseEntity<>("Some error occured " + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -63,16 +65,10 @@ public class AuthController {
         assert authentication != null;
 
         String username = (String) authentication.getPrincipal();
-        Account account = accountService.findAccountByUsername(username);
-        assert account != null;
-        Person person = personService.findPersonByAccountId(account.getAccountId());
-        assert person != null;
-        Faculty faculty = facultyService.getFacultyByPersonId(person.getPersonId());
-        assert faculty != null;
+        AccountPersonInformation accountPersonInformation = accountService
+                .findAccountPersonInformationByUsername(username);
+        assert accountPersonInformation != null;
 
-//        JsonObject obj = gson.toJsonTree(account).getAsJsonObject();
-        person.setFaculty(faculty);
-        account.setPerson(person);
-        return gson.toJson(account);
+        return gson.toJson(accountPersonInformation);
     }
 }
