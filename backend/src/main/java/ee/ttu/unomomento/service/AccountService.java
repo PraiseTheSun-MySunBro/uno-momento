@@ -107,4 +107,26 @@ public class AccountService {
             return null;
         }
     }
+
+    public AccountPersonInformation findAccountByUsernameDegreeFacultyRoleCodes(String username, Short degreeCode, Short facultyCode, Short roleCode) {
+        Result<?> result = dslContext
+                .select(ACCOUNT.ACCOUNT_ID, ACCOUNT.USERNAME, PERSON.PERSON_ID, PERSON.FIRSTNAME, PERSON.LASTNAME, PERSON.DEGREE_CODE,
+                        PERSON.UNI_ID, PERSON_FACULTY.FACULTY_CODE, PERSON_ROLE.ROLE_CODE)
+                .from(PERSON)
+                .innerJoin(PERSON_ACCOUNT_OWNER).using(PERSON.PERSON_ID)
+                .innerJoin(ACCOUNT).using(PERSON_ACCOUNT_OWNER.ACCOUNT_ID)
+                .innerJoin(PERSON_FACULTY).using(PERSON.PERSON_ID)
+                .innerJoin(PERSON_ROLE).using(PERSON.PERSON_ID)
+                .innerJoin(ACCOUNT_STATE).using(ACCOUNT.ACCOUNT_STATE_CODE)
+                .where(ACCOUNT.USERNAME.lower().eq(username.toLowerCase())
+                        .and(PERSON.DEGREE_CODE.eq(degreeCode))
+                        .and(PERSON_FACULTY.FACULTY_CODE.eq(facultyCode))
+                        .and(PERSON_ROLE.ROLE_CODE.eq(roleCode)))
+                .fetch();
+        try {
+            return result.get(0).into(AccountPersonInformation.class);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
 }
