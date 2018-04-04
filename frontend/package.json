@@ -16,6 +16,7 @@
     "@websanova/vue-auth": "^2.21.3-beta",
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.4",
+    "popper.js": "^1.14.3",
     "vue": "^2.5.16",
     "vue-lang": "^0.2.5",
     "vue-router": "^3.0.1",
