@@ -97,7 +97,7 @@ em {
 
 .navbar {
   position: relative;
-  max-width:100%;
+  max-width: 100%;
   background-color: rgba(0,0,0,.5);
 }
 .navbar__logo-container {

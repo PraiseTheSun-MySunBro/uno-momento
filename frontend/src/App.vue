@@ -27,7 +27,8 @@
   <div v-else-if="!$store.getters.getConnectionState">
     <h2>No connection to server (might be you forget to start the server?)</h2>
   </div>
-  <div v-else>
+  <div class="login-page-background"
+       v-else>
     <div style="text-align: center">
       <p style="font-size: 1.5rem; color: white;">Loading...</p>
       <i class="fa fa-spinner fa-spin" style="font-size: 2.5rem;"></i>
@@ -65,7 +66,15 @@ export default {
         console.log('User data has been fetched successfully!')
       })
       .catch(err => {
-        console.error(err)
+        if (err.response.data.exception === 'io.jsonwebtoken.ExpiredJwtException') {
+          this.$auth.logout({
+            success: () => {},
+            error: (err) => {
+              console.error('Logout error', err.response)
+            }
+          })
+        }
+        console.error(err.response)
       })
   },
   computed: {
@@ -150,6 +159,7 @@ button:hover {
   position: absolute;
   z-index: -1;
 }
+
 .home-page__background__image {
   min-height: 400px;
   width: 100%;
@@ -162,6 +172,14 @@ button:hover {
   -moz-filter: brightness(55%);
   -o-filter: brightness(55%);
   -ms-filter: brightness(55%);
+}
+
+.login-page-background {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 [v-cloak] > * { display: none; }

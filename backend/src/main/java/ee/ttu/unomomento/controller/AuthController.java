@@ -1,16 +1,12 @@
 package ee.ttu.unomomento.controller;
 
 import com.google.gson.Gson;
-import ee.ttu.unomomento.model.Account;
-import ee.ttu.unomomento.model.Faculty;
-import ee.ttu.unomomento.model.Person;
+import ee.ttu.unomomento.model.template.AccountPersonInformation;
+import ee.ttu.unomomento.model.template.UserRegistration;
 import ee.ttu.unomomento.security.TokenAuthenticationService;
 import ee.ttu.unomomento.service.AccountService;
-import ee.ttu.unomomento.service.FacultyService;
-import ee.ttu.unomomento.service.PersonService;
-import ee.ttu.unomomento.validator.AccountValidator;
+import ee.ttu.unomomento.validator.RegistrationValidator;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.JSONFormat;
 import org.jooq.exception.DataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,32 +23,28 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AccountService accountService;
-    private final PersonService personService;
-    private final FacultyService facultyService;
-    private final JSONFormat jsonFormat;
     private final Gson gson;
 
-
     @Autowired
-    public AuthController(AccountService accountService, PersonService personService, FacultyService facultyService, JSONFormat jsonFormat, Gson gson) {
+    public AuthController(AccountService accountService, Gson gson) {
         this.accountService = accountService;
-        this.personService = personService;
-        this.facultyService = facultyService;
-        this.jsonFormat = jsonFormat;
         this.gson = gson;
     }
 
     @InitBinder
     private void initBinder(WebDataBinder binder) {
-        binder.setValidator(new AccountValidator());
+        binder.setValidator(new RegistrationValidator());
     }
 
     @PostMapping(value = "/auth/register", produces = "application/json")
-    public ResponseEntity<String> register(@Valid @RequestBody Account account) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserRegistration userRegistration) {
+        log.info(String.format("[REQUEST]: User %s requested registration", userRegistration.getUsername()));
         try {
-            accountService.saveAccount(account);
+            accountService.saveAccount(userRegistration);
+            log.info(String.format("[RESULT]: Successfully registered user %s", userRegistration.getUsername()));
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (DataAccessException e) {
+            log.info(String.format("[RESULT]: Some error with user %s registration", userRegistration.getUsername()));
             return new ResponseEntity<>("Some error occured " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -63,16 +55,12 @@ public class AuthController {
         assert authentication != null;
 
         String username = (String) authentication.getPrincipal();
-        Account account = accountService.findAccountByUsername(username);
-        assert account != null;
-        Person person = personService.findPersonByAccountId(account.getAccountId());
-        assert person != null;
-        Faculty faculty = facultyService.getFacultyByPersonId(person.getPersonId());
-        assert faculty != null;
+        log.info(String.format("[REQUEST]: User %s requested user information", username));
 
-//        JsonObject obj = gson.toJsonTree(account).getAsJsonObject();
-        person.setFaculty(faculty);
-        account.setPerson(person);
-        return gson.toJson(account);
+        AccountPersonInformation accountPersonInformation = accountService
+                .findAccountPersonInformationByUsername(username);
+        assert accountPersonInformation != null;
+
+        return gson.toJson(accountPersonInformation);
     }
 }
