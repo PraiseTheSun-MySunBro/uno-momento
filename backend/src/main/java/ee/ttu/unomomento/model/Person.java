@@ -20,6 +20,8 @@ public class Person implements Serializable {
     private String lastname;
     private Short  personStateCode;
 
+    private Faculty faculty;
+
     @Override
     public String toString() {
         return String.format("Person (%d, %s, %s, %s, %s, %s)", personId, uniId, degreeCode,

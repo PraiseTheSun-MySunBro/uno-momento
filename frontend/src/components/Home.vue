@@ -1,7 +1,7 @@
 <template>
     <!-- List of lectors -->
-    <div id="home-container">
-      <div id="list_of_lecturers">
+    <div class="home__student">
+      <div id="list__of__lecturers">
         <div role="tablist">
           <b-card  id="list-accordion" no-body class="mb-1" v-for="(lecturer, index) in lecturers" :key="index">
             <b-card-header header-tag="header" class="p-1" role="tab">
@@ -12,21 +12,26 @@
                   <span class="when-closed float-right">
                     <i class="fas fa-caret-left"></i>
                 </span>
-                {{ lecturer.firstname }} {{lecturer.lastname}}</b-btn>
+                <em class="lector-name text--sans">{{ lecturer.firstname }} {{ lecturer.lastname }}</em>
+                </b-btn>
             </b-card-header>
             <b-collapse :id="'accordion-' + index" visible accordion="my-accordion" role="tab">
-              <b-card-body>
+              <b-card-body class="theses-list">
                 <!-- List of lectors theses -->
-                <b-list-group class="theses-list">
+                <b-list-group>
                   <b-list-group-item v-for="(thesis, index) in JSON.parse(lecturer.theses)"
                                     :key="index"
                                     href="#"
                                     id="theses-group-item"
                                     @click="showModal(thesis,lecturer)">
-                    {{ thesis.ee_title }}
+                    <em class="thesis-name text--sans">
+                      {{ thesis.ee_title }}
+                    </em>
                     <div class="float-right">
-                      <b-badge variant="dark" pill id="graduade-pill">MAGISTRI</b-badge>
-                      VAATA
+                      <b-badge variant="dark" pill id="graduade-pill">
+                        <em class="degree-name text--sans">{{ thesis.ee_degree }}</em>
+                      </b-badge>
+                      <em class="watch-thesis text--sans">Vaata</em>
                       <i class="fas fa-angle-right fa-lg"></i>
                     </div>
                   </b-list-group-item>
@@ -37,7 +42,13 @@
         </div>
       </div>
       <div id="pagination-container">
-        <b-pagination align="center" size="md" :total-rows="100" v-model="currentPage" :per-page="10">
+        <b-pagination align="center"
+                      hide-goto-end-buttons
+                      hide-ellipsis
+                      size="md"
+                      :total-rows="100"
+                      v-model="currentPage"
+                      :per-page="10">
         </b-pagination>
         <br>
       </div>
@@ -50,26 +61,28 @@
               hide-header
               size="lg">
       <div class="d-block text-center">
-        <b-badge variant="dark" pill id="graduade-pill-modal">MAGISTRI</b-badge>
-        <h2>{{ thesisTitle }}</h2>
-        <h4 id="modal-lecturer-name">
+        <b-badge variant="dark" pill id="graduade-pill-modal">
+          <div class="degree-name">{{ thesisDegree }}</div>
+        </b-badge>
+        <h2 class="text--sans">{{ thesisTitle }}</h2>
+        <h4 class="modal-lecturer-name">
           {{ thesisCuratorFirstName }} {{ thesisCuratorLastName }}
         </h4>
       </div>
       <hr id="modal-hr">
       <!-- Card with theses description -->
-      <b-card id="modal-card-description">
+      <b-card class="modal-card-description">
         <div id="modal-description-container" >
           <div id="modal-description-headline-container">
             <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
-            <h6 id="modal-description-headline">KIRJELDUS</h6>
+            <h5  class="text--sans" id="modal-description-headline">KIRJELDUS</h5>
           </div>
-          <p>{{ thesisDescription }}</p>
+          <p class="text--sans">{{ thesisDescription }}</p>
         </div>
         <div id="modal-tags-container">
           <div id="modal-description-tags-headline-container">
             <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
-            <h6 id="modal-description-headline">MÄRKSÕNAD</h6>
+            <h5 class="text--sans" id="modal-description-headline">MÄRKSÕNAD</h5>
           </div>
         </div>
       </b-card>
@@ -95,6 +108,7 @@ export default {
       /* values for modal form */
       thesisTitle: '',
       thesisDescription: '',
+      thesisDegree: '',
       thesisCuratorFirstName: '',
       thesisCuratorLastName: '',
       /* number of chosen page */
@@ -105,6 +119,7 @@ export default {
     showModal (thesis, lecturer) {
       this.thesisTitle = thesis.ee_title
       this.thesisDescription = thesis.ee_description
+      this.thesisDegree = thesis.ee_degree
       this.thesisCuratorFirstName = lecturer.firstname
       this.thesisCuratorLastName = lecturer.lastname
       this.$refs.myModalRef.show()
@@ -135,27 +150,60 @@ export default {
         })
     }
   },
-  mounted: function () {
-    axios.get('/api/curators')
-      .then(response => {
-        this.lecturers = response.data
-      }).catch(e => {
-        console.error(e.data)
+  created () {
+    console.log('test')
+    this.lecturers = this.$store.getters.getCurators
+    this.$store.dispatch('fetchCurators')
+      .then((data) => {
+        console.log('Curators data has been fetched successfully!')
+        this.lecturers = data
+      })
+      .catch(err => {
+        console.error(err)
       })
   }
 }
 </script>
 
 <style scoped>
-#home-container {
+em {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 36px;
+  font-weight: 500;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+p {
+  font-size: 16px;
+}
+
+.home__student {
   margin-top: 290px;
   margin-bottom: 50px;
   padding-left: 5%;
   padding-right: 5%;
 }
 
-#list_of_lecturers {
+.text--sans {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+#list__of__lecturers {
     margin-bottom: 50px;
+}
+
+.lector-name {
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: none;
 }
 
 #list-accordion {
@@ -169,10 +217,27 @@ export default {
   border-radius: 0px;
 }
 
+.thesis-name {
+  font-style: none;
+  font-weight: 600;
+  text-transform: none;
+}
+
 #graduade-pill {
-  margin-right: 40px;
-  min-width: 120px;
+  margin-right: 70px;
+  min-width: 130px;
   background-color:rgb(66, 139, 202);
+}
+
+.degree-name {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.watch-thesis {
+  text-transform: uppercase;
 }
 
 .card-body {
@@ -190,11 +255,11 @@ export default {
 
 #graduade-pill-modal {
   margin-bottom: 10px;
-  min-width: 120px;
+  min-width: 130px;
   background-color:rgb(66, 139, 202);
 }
 
-#modal-lecturer-name {
+.modal-lecturer-name {
     font-family: 'Times New Roman', Times, serif;
     font-style: italic;
     margin-bottom: 40px;
@@ -207,7 +272,7 @@ export default {
 
 /* Modal card with description and tags */
 
-#modal-card-description {
+.modal-card-description {
     min-height: 450px;
     margin-top: 30px;
     margin-left: 15%;
@@ -307,5 +372,85 @@ export default {
 .collapsed > .when-opened,
 :not(.collapsed) > .when-closed {
   display: none;
+}
+
+@media screen and (max-width: 767px) {
+  /* adaptive for mobile */
+  .home__student {
+    margin-top: 200px;
+    margin-bottom: 10px;
+    padding-left: 0%;
+    padding-right: 0%;
+  }
+
+  #graduade-pill {
+    display: none;
+  }
+
+  .lector-name {
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: none;
+  }
+
+  .theses-list {
+    padding: 3%;
+  }
+
+  .vertical--align {
+    vertical-align: middle;
+  }
+
+  .thesis-name {
+    font-style: none;
+    font-weight: 600;
+    text-transform: none;
+  }
+
+  h2 {
+  font-size: 24px;
+  font-weight: 500;
+  }
+
+  h5 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  .modal-card-description {
+    min-height: 50px;
+    margin-top: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .modal-lecturer-name {
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .degree-name {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  #modal-description-container {
+    min-height: 200px;
+  }
+
+  #modal-description-headline-container {
+    margin-bottom: 15px;
+  }
+
+  #modal-tags-container {
+    min-height: 40px;
+  }
 }
 </style>

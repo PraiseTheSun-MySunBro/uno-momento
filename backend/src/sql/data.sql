@@ -11,8 +11,8 @@ INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (4, 'Doctoral', 'Dokto
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (5, 'Applied', 'Rakendus');
 INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (6, 'Engineering', 'Integreeritud');
 
-INSERT INTO Account (username, password, email) VALUES ('Test1', 'test1', 'mavein@ttu.ee');
-INSERT INTO Account (username, password, email) VALUES ('Test123', 'test123', 'avo.lans@ttu.ee');
+INSERT INTO Account (username, password, email) VALUES ('Test1', '$2a$10$4WiA7O4o.9QXu3kAyM2bSers/nNRqIBYhFeHX6DOKVnbA/bnS.amy', 'mavein@ttu.ee');
+INSERT INTO Account (username, password, email) VALUES ('Test123', '$2a$10$GaRc9..24lDhJdo646fb1e/0Umm1Q2WWCEft78zbkRbANkuJf.mp2', 'avo.lans@ttu.ee');
 
 /* Test data */
 INSERT INTO Account (username, password, email) VALUES ('test3', '$2a$10$cyOS8DkYWTXww30jkU1N.O7uNWn9Whm4QWfOTrZ5as1RMc8eZK/d2', 'test3@ttu.ee');

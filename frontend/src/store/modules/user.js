@@ -5,16 +5,12 @@ const state = {
     lastname: '',
     state: 0,
     roleCode: -1
-  },
-  connectionState: true
+  }
 }
 
 const getters = {
   getUser (state) {
     return state.user
-  },
-  getConnectionState (state) {
-    return state.connectionState
   }
 }
 
@@ -32,7 +28,7 @@ const actions = {
           resolve()
         })
         .catch(err => {
-          commit('connectionState', !!err.response)
+          commit('setConnectionState', !!err.response)
           reject(err)
         })
     })
@@ -40,11 +36,8 @@ const actions = {
 }
 
 const mutations = {
-  fetchUser (state, user) {
-    state.user = user
-  },
-  connectionState (state, connectionState) {
-    state.connectionState = connectionState
+  fetchUser (state, data) {
+    state.user = data
   }
 }
 
