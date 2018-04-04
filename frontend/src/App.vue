@@ -18,7 +18,7 @@
       <!-- Navigation bar -->
       <the-navigation :currentUser="currentUser"/>
       <!-- Faculty name -->
-      <the-faculty-name :faculty="currentUser.person.faculty"/>
+      <the-faculty-name :faculty="faculty"/>
     </div>
 
     <!-- Vue component -->
@@ -80,7 +80,13 @@ export default {
   computed: {
     ...mapGetters({
       currentUser: 'getUser'
-    })
+    }),
+    faculty () {
+      return {
+        eeName: this.currentUser.facultyEeName,
+        enName: this.currentUser.facultyEnName
+      }
+    }
   }
 }
 </script>
