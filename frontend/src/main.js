@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import Vuelidate from 'vuelidate'
 import App from './App'
 import BootstrapVue from 'bootstrap-vue'
 import axios from 'axios'
@@ -17,6 +18,7 @@ Vue.config.devtools = true
 Vue.router = router
 axios.defaults.baseURL = 'http://localhost:9090/'
 
+Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 

@@ -1,6 +1,6 @@
 <template>
   <div class="entrypoint">
-    <b-container class="container__authorisation"
+    <b-container class="container__entrypoint"
                  v-if="!$auth.check()">
       <!-- Sign in form -->
       <b-form class="form__signin sign-in__transaction"
@@ -24,34 +24,37 @@
             <div class="div__button">
               <b-button type="submit"
                         variant="primary"
-                        class="button--signin">
+                        class="button--signin"
+                        :disabled="$v.credentials.username.$invalid
+                                || $v.credentials.password.$invalid">
                 Logi sisse
               </b-button>
-              <p class="label__text forgot-password">Parool ununenud?</p>
+              <p class="text forgot-password">Parool ununenud?</p>
             </div>
           </b-form-group>
       </b-form>
 
       <!-- Image, switches and text -->
-      <div id="authorisation__transaction" class="authorisation__transaction">
+      <div id="entrypoint__transaction" class="entrypoint__transaction">
         <div class="image">
           <div class="image__text text--up">
-            <h2 class="text--sans">Oled uus siin?</h2>
-            <p class="text--sans">Registreeri ja avasta palju uusi võimalusi!</p>
+            <h2 class="text">Oled uus siin?</h2>
+            <p class="text">Registreeri ja avasta palju uusi võimalusi!</p>
           </div>
           <div class="image__text text--in">
-            <h2 class="text--sans">Üks meist?</h2>
-            <p class="text--sans">Kui teil on juba konto, logi sisse. Me igatsesime sind!</p>
+            <h2 class="text">Üks meist?</h2>
+            <p class="text">Kui teil on juba konto, logi sisse. Me igatsesime sind!</p>
           </div>
           <div class="image__button">
-            <span class="label__text text--up">Loo uus konto</span>
-            <span class="label__text text--in">Logi sisse</span>
+            <span class="text text--up">Loo uus konto</span>
+            <span class="text text--in">Logi sisse</span>
           </div>
         </div>
 
         <!-- Registration form -->
         <b-form class="form__registration sign-up__transaction"
                 @submit.prevent="onRegisterSubmit">
+
           <div  class="alert alert-danger"
                 v-if="error && !success">
             <p>There was an error, unable to complete registration.</p>
@@ -63,11 +66,12 @@
           </div>
 
           <div v-if="!back">
-            <div class="row name__nowrap">
+            <div class="row label--nowrap">
               <b-form-group label="<span class='label__text'>Eesnimi</span>"
                             label-for="reg-firstname"
                             class="mb-3 mr-1">
                 <b-form-input id="reg-firstname"
+                              class="label--margin"
                               type="text"
                               v-model="credentials.firstname">
                 </b-form-input>
@@ -76,6 +80,7 @@
                             label-for="reg-lastname"
                             class="mb-3 ml-1">
                 <b-form-input id="reg-lastname"
+                              class="label--margin"
                               type="text"
                               v-model="credentials.lastname">
                 </b-form-input>
@@ -85,6 +90,7 @@
                           label-for="reg-username"
                           class="mb-3">
               <b-form-input id="reg-username"
+                            class="label--margin"
                             type="text"
                             v-model="credentials.username">
               </b-form-input>
@@ -93,6 +99,7 @@
                           label-for="reg-password"
                           class="mb-3">
               <b-form-input id="reg-password"
+                            class="label--margin"
                             type="password"
                             v-model="credentials.password">
               </b-form-input>
@@ -101,6 +108,7 @@
                           label-for="reg-email"
                           class="mb-3">
               <b-form-input id="reg-email"
+                            class="label--margin"
                             type="email"
                             v-model="credentials.email">
               </b-form-input>
@@ -112,12 +120,14 @@
                           label-for="reg-uniid"
                           class="mb-3">
               <b-form-input id="reg-uniid"
+                            class="label--margin"
                             type="text"
                             v-model="credentials.uniid">
               </b-form-input>
             </b-form-group>
             <b-form-group class="div__roles mb-3">
               <b-form-radio-group id="reg-role"
+                                  class="label--margin"
                                   v-model="credentials.role"
                                   :options="roles">
               </b-form-radio-group>
@@ -126,6 +136,7 @@
                           label-for="reg-degree"
                           class="mb-3">
               <b-form-select id="reg-degree"
+                             class="label--margin"
                              type="text"
                              v-model="credentials.degree"
                              :options="degrees"/>
@@ -134,6 +145,7 @@
                           label-for="reg-faculty"
                           class="mb-3">
               <b-form-select id="reg-faculty"
+                             class="label--margin"
                              type="text"
                              v-model="credentials.faculty"
                              :options="faculties"/>
@@ -144,7 +156,12 @@
             <b-button v-if="!back"
                       variant="primary"
                       class="button--continue"
-                      @click="onContinue">
+                      @click="onContinue"
+                      :disabled="$v.credentials.firstname.$invalid
+                              || $v.credentials.lastname.$invalid
+                              || $v.credentials.username.$invalid
+                              || $v.credentials.password.$invalid
+                              || $v.credentials.email.$invalid">
               Edasi
             </b-button>
             <b-button v-if="back"
@@ -156,7 +173,12 @@
             <b-button v-if="back"
                       type="submit"
                       variant="success"
-                      class="button--signup">
+                      class="button--signup"
+                      :disabled="$v.credentials.uniid.$invalid
+                              || $v.credentials.role.$invalid
+                              || $v.credentials.degree.$invalid
+                              || $v.credentials.faculty.$invalid
+                              || $v.credentials.$invalid">
               Loo uus konto
             </b-button>
           </div>
@@ -168,6 +190,10 @@
 </template>
 
 <script>
+import { required, minLength, maxLength, email } from 'vuelidate/lib/validators'
+
+const touchMap = new WeakMap()
+
 export default {
   name: 'EntryPoint',
   data () {
@@ -178,28 +204,28 @@ export default {
         username: '',
         password: '',
         email: '',
-        role: '',
         uniid: '',
+        role: 'student',
         degree: '',
         faculty: ''
       },
       roles: [
-        { text: '<span class="label__text">Tudeng</span>', value: 'student' },
-        { text: '<span class="label__text">Õppejõud</span>', value: 'curator' }
+        { text: '<span class="text">Tudeng</span>', value: 'student' },
+        { text: '<span class="text">Õppejõud</span>', value: 'curator' }
       ],
       degrees: [
-        // { text: '<span class="label__text">Vali</span>', value: null, disabled: true },
-        { text: '<span class="label__text">Bakalaureus</span>', value: 'bachelor' },
-        { text: '<span class="label__text">Magister</span>', value: 'magister' },
-        { text: '<span class="label__text">Doktor</span>', value: 'doctorate' }
+        // { text: '<span class="text">Vali</span>', value: null, disabled: true },
+        { text: '<span class="text">Bakalaureus</span>', value: 'bachelor' },
+        { text: '<span class="text">Magister</span>', value: 'magister' },
+        { text: '<span class="text">Doktor</span>', value: 'doctorate' }
       ],
       faculties: [
-        // { text: '<span class="label__text">Vali</span>', value: null, disabled: true },
-        { text: '<span class="label__text">Infotehnoloogia teaduskond</span>', value: 'infomation technology' },
-        { text: '<span class="label__text">Loodusteaduskond</span>', value: 'science' },
-        { text: '<span class="label__text">Eesti Mereakadeemia</span>', value: 'maritime academy' },
-        { text: '<span class="label__text">Inseneriteaduskond</span>', value: 'engineering' },
-        { text: '<span class="label__text">Majandusteaduskond</span>', value: 'economics' }
+        // { text: '<span class="text">Vali</span>', value: null, disabled: true },
+        { text: '<span class="text">Infotehnoloogia teaduskond</span>', value: 'infomation technology' },
+        { text: '<span class="text">Loodusteaduskond</span>', value: 'science' },
+        { text: '<span class="text">Eesti Mereakadeemia</span>', value: 'maritime academy' },
+        { text: '<span class="text">Inseneriteaduskond</span>', value: 'engineering' },
+        { text: '<span class="text">Majandusteaduskond</span>', value: 'economics' }
       ],
       back: false,
       success: false,
@@ -208,6 +234,13 @@ export default {
     }
   },
   methods: {
+    delayTouch ($v) {
+      $v.$reset()
+      if (touchMap.has($v)) {
+        clearTimeout(touchMap.get($v))
+      }
+      touchMap.set($v, setTimeout($v.$touch, 1000))
+    },
     onLoginSubmit () {
       let app = this
       this.$auth.login({
@@ -261,8 +294,49 @@ export default {
   mounted () {
     document.querySelector('.image__button').addEventListener('click',
       function () {
-        document.querySelector('.container__authorisation').classList.toggle('--signup')
+        document.querySelector('.container__entrypoint').classList.toggle('--signup')
       })
+  },
+  validations: {
+    credentials: {
+      firstname: {
+        required,
+        maxLength: maxLength(1000)
+      },
+      lastname: {
+        required,
+        maxLength: maxLength(1000)
+      },
+      username: {
+        required,
+        minLength: minLength(3),
+        maxLength: maxLength(32)
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(72)
+      },
+      email: {
+        required,
+        email,
+        maxLength: maxLength(256)
+      },
+      role: {
+        required
+      },
+      uniid: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(6)
+      },
+      degree: {
+        required
+      },
+      faculty: {
+        required
+      }
+    }
   }
 }
 </script>
@@ -299,7 +373,6 @@ input:focus {
 }
 
 select {
-  -webkit-appearance: menulist;
   cursor:pointer;
   display: block;
   margin-top: -5px;
@@ -326,12 +399,19 @@ button {
 }
 
 .entrypoint {
-  position: relative;
-  margin-top: 100px;
-  /* transform: translateY(13.5%); */
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  /* alternative */
+  /* position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
 }
 
-.container__authorisation {
+.container__entrypoint {
   overflow: hidden;
   position: relative;
   width: 900px;
@@ -361,7 +441,7 @@ button {
   padding: 30px 120px 0;
 }
 
-.authorisation__transaction {
+.entrypoint__transaction {
   overflow: hidden;
   position: absolute;
   left: 640px;
@@ -375,7 +455,7 @@ button {
   transition: transform 1.2s ease-in-out;
   transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
 }
-.container__authorisation.--signup .authorisation__transaction {
+.container__entrypoint.--signup .entrypoint__transaction {
   -webkit-transform: translate3d(-640px, 0, 0);
           transform: translate3d(-640px, 0, 0);
 }
@@ -384,7 +464,7 @@ button {
   -webkit-transition-timing-function: ease-out;
           transition-timing-function: ease-out;
 }
-.container__authorisation.--signup .sign-in__transaction {
+.container__entrypoint.--signup .sign-in__transaction {
   -webkit-transition-timing-function: ease-in-out;
           transition-timing-function: ease-in-out;
   -webkit-transition-duration: 1.2s;
@@ -397,7 +477,7 @@ button {
   -webkit-transform: translate3d(-900px, 0, 0);
           transform: translate3d(-900px, 0, 0);
 }
-.container__authorisation.--signup .sign-up__transaction {
+.container__entrypoint.--signup .sign-up__transaction {
   -webkit-transform: translate3d(0, 0, 0);
           transform: translate3d(0, 0, 0);
 }
@@ -436,7 +516,7 @@ button {
   background: rgba(0, 0, 0, 0.6);
   -webkit-transform: translate3d(0, 0, 0);
 }
-.container__authorisation.--signup .image:before {
+.container__entrypoint.--signup .image:before {
   -webkit-transform: translate3d(640px, 0, 0);
           transform: translate3d(640px, 0, 0);
 }
@@ -462,7 +542,7 @@ button {
   font-size: 14px;
   line-height: 1.5;
 }
-.container__authorisation.--signup .image__text.text--up {
+.container__entrypoint.--signup .image__text.text--up {
   -webkit-transform: translateX(520px);
           transform: translateX(520px);
 }
@@ -470,7 +550,7 @@ button {
   -webkit-transform: translateX(-520px);
           transform: translateX(-520px);
 }
-.container__authorisation.--signup .image__text.text--in {
+.container__entrypoint.--signup .image__text.text--in {
   -webkit-transform: translateX(0);
           transform: translateX(0);
   -webkit-transform: translate3d(0, 0, 0);
@@ -530,12 +610,12 @@ button {
   -webkit-transform: translateY(-72px);
           transform: translateY(-72px);
 }
-.container__authorisation.--signup .image__button span.text--in {
+.container__entrypoint.--signup .image__button span.text--in {
   -webkit-transform: translateY(0);
           transform: translateY(0);
   -webkit-transform: translate3d(0, 0, 0);
 }
-.container__authorisation.--signup .image__button span.text--up {
+.container__entrypoint.--signup .image__button span.text--up {
   -webkit-transform: translateY(72px);
           transform: translateY(72px);
 }
@@ -553,11 +633,11 @@ button {
   margin-left: 20px;
   width: 100%;
   -webkit-appearance: button;
-  background: rgb(67, 160, 71);
+  background: rgb(0, 183, 76);
   text-transform: uppercase;
 }
 .button--signup:hover {
-  background: rgb(27, 94, 32);
+  background: rgb(0, 130, 54);
 }
 .button--continue {
   -webkit-appearance: button;
@@ -599,15 +679,11 @@ button {
   text-decoration: underline;
 }
 
-.name__nowrap {
+.label--nowrap {
   display: -webkit-flex;
   -webkit-flex-wrap: nowrap;
   display: flex;
   flex-wrap: nowrap;
-}
-
-.text--sans {
-  font-family: 'Source Sans Pro', sans-serif;
 }
 
 .div__roles {
@@ -619,11 +695,11 @@ button {
     width: 160px;
   }
 
-  .authorisation__transaction {
+  .entrypoint__transaction {
     left: 460px;
     padding-left: 180px;
   }
-  .container__authorisation.--signup .authorisation__transaction {
+  .container__entrypoint.--signup .entrypoint__transaction {
     -webkit-transform: translate3d(-460px, 0, 0);
             transform: translate3d(-460px, 0, 0);
   }
@@ -646,7 +722,7 @@ button {
 
 @media screen and (max-width: 767px) {
   /* adaptive for mobile */
-  #authorisation__transaction {
+  #entrypoint__transaction {
     display: none;
   }
 }
