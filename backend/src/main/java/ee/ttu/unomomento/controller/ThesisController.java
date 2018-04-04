@@ -48,6 +48,20 @@ public class ThesisController {
         }
     }
 
+    @PostMapping(value = "/api/thesis/{thesisId}/edit")
+    public ResponseEntity<String> editThesis(@Valid @RequestBody AddThesis thesis, @PathVariable Long thesisId, HttpServletRequest httpRequest) {
+        Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
+        assert authentication != null;
+
+        String username = (String) authentication.getPrincipal();
+        if (thesisService.update(thesis, thesisId, username)) {
+            return new ResponseEntity<>("", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("Some error occurred", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping(value = "/api/thesis/{thesisId}/inactive")
     public ResponseEntity<String> inactiveThesis(@PathVariable Long thesisId, HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);

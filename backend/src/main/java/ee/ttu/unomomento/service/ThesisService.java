@@ -66,6 +66,40 @@ public class ThesisService {
         return true;
     }
 
+    public boolean update(AddThesis thesisTemplate, Long thesisId, String username) {
+        AccountPersonInformation account = accountService.findAccountByUsernameDegreeFacultyRoleCodes(username, thesisTemplate.getDegreeCode(),
+                thesisTemplate.getFacultyCode(), thesisTemplate.getRoleCode());
+
+        if (account == null) return false;
+
+        Object owner = dslContext
+                .select(THESIS_OWNER.PERSON_ID)
+                .from(THESIS_OWNER)
+                .where(THESIS_OWNER.THESIS_ID.eq(thesisId)
+                    .and(THESIS_OWNER.PERSON_ID.eq(account.getPersonId())))
+                .fetchOne("person_id");
+
+        if (owner == null) return false;
+
+        Thesis thesis = new Thesis(thesisId, thesisTemplate.getSupervisorName(), thesisTemplate.getFacultyCode(), null, thesisTemplate.getDegreeCode(),
+                thesisTemplate.getEeTitle(), thesisTemplate.getEnTitle(), thesisTemplate.getEeDescription(), thesisTemplate.getEnDescription());
+        ThesisRecord thesisRecord = dslContext.newRecord(THESIS, thesis);
+        thesisRecord.update();
+
+        dslContext
+                .delete(THESIS_TAG)
+                .where(THESIS_TAG.THESIS_ID.eq(thesisId))
+                .execute();
+
+        for (String tag : thesisTemplate.getTags()) {
+            ThesisTagRecord thesisTagRecord = dslContext.newRecord(THESIS_TAG,
+                    new ThesisTag(thesisId, tag));
+            thesisTagRecord.insert();
+        }
+
+        return true;
+    }
+
     public boolean makeInactive(Long thesisId, String username) {
         Object resultName = dslContext
                 .select(ACCOUNT.USERNAME)
