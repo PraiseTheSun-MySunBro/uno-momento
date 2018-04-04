@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     fullname () {
-      return `${this.currentUser.person.firstname} ${this.currentUser.person.lastname}`
+      return `${this.currentUser.firstname} ${this.currentUser.lastname}`
     }
   },
   props: {
