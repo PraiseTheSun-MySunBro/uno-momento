@@ -1,6 +1,7 @@
 <template>
   <div id="app"
-       v-cloak v-if="$auth.ready()">
+       v-cloak
+       v-if="$auth.ready()">
 
     <!-- Entrypoint page background -->
     <div class="entrypoint__background"
@@ -26,8 +27,7 @@
   <div v-else-if="!$store.getters.getConnectionState">
     <h2>No connection to server (might be you forget to start the server?)</h2>
   </div>
-  <div class="login-page-background"
-       v-else>
+  <div v-else>
     <div style="text-align: center">
       <p style="font-size: 1.5rem; color: white;">Loading...</p>
       <i class="fa fa-spinner fa-spin" style="font-size: 2.5rem;"></i>
@@ -65,15 +65,7 @@ export default {
         console.log('User data has been fetched successfully!')
       })
       .catch(err => {
-        if (err.response.data.exception === 'io.jsonwebtoken.ExpiredJwtException') {
-          this.$auth.logout({
-            success: () => {},
-            error: (err) => {
-              console.error('Logout error', err.response)
-            }
-          })
-        }
-        console.error(err.response)
+        console.error(err)
       })
   },
   computed: {
@@ -92,14 +84,19 @@ html, body {
   position: relative;
 }
 
+button:hover {
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1),
+              0 3px 6px  rgba(0, 0, 0, 0.08);
+}
+
 #app {
   min-height: 100%;
   overflow: auto;
   position: relative;
+  height: 100%;
 }
 
 /* Entrypoint page background */
-
 .entrypoint__background {
   overflow: auto;
   position: relative;
@@ -126,12 +123,19 @@ html, body {
   -webkit-transform: translate3d(0, 0, 0);
 }
 
-.label__text {
+.text {
   font-family: 'Roboto', sans-serif;
 }
 
-/* Home page background (diagonal lines and image) */
+.label__text {
+  font-family: 'Roboto', sans-serif;
+  margin-left: 13px;
+}
+.label--margin {
+  margin-top: -4px;
+}
 
+/* Home page background (diagonal lines and image) */
 .home-page__background {
   height: 100%;
   width: 100%;
@@ -146,7 +150,6 @@ html, body {
   position: absolute;
   z-index: -1;
 }
-
 .home-page__background__image {
   min-height: 400px;
   width: 100%;
@@ -159,14 +162,6 @@ html, body {
   -moz-filter: brightness(55%);
   -o-filter: brightness(55%);
   -ms-filter: brightness(55%);
-}
-
-.login-page-background {
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 [v-cloak] > * { display: none; }
