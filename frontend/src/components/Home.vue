@@ -186,6 +186,11 @@ p {
 }
 
 .home__student {
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1500px;
   margin-top: 290px;
   margin-bottom: 50px;
   padding-left: 5%;
