@@ -408,16 +408,10 @@ button {
 }
 
 .entrypoint {
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-
-  /* alternative */
-  /* position: fixed;
+  position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); */
+  transform: translate(-50%, -50%);
 }
 
 .container__entrypoint {

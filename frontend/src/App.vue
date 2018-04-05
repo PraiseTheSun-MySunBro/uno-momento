@@ -108,7 +108,6 @@ button:hover {
   min-height: 100%;
   overflow: auto;
   position: relative;
-  height: 100%;
 }
 
 /* Entrypoint page background */
@@ -186,6 +185,23 @@ button:hover {
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
+}
+
+@media screen and (max-width: 767px) {
+  /* adaptive for mobile */
+  .home-page__background__image {
+    min-height: 240px;
+    width: 100%;
+    background-image: url(./assets/ttu4.png);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: brightness(55%);
+    -webkit-filter: brightness(55%);
+    -moz-filter: brightness(55%);
+    -o-filter: brightness(55%);
+    -ms-filter: brightness(55%);
+  }
 }
 
 [v-cloak] > * { display: none; }

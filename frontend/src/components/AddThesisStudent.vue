@@ -123,7 +123,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-9">
                   <b-form-group vertical
                             label="Juhendaja:"
                             label-class="text-sm"
@@ -131,7 +131,7 @@
                             class="mb-2">
                     <b-form-select id="choose-thesis-curator"
                                   class="form-control"
-                                  :options="choseOfLecturers"
+                                  :options="listOfLecturers"
                                   required
                                   v-model="form.lecturer"
                                   placeholder="Valige üks">
@@ -140,7 +140,7 @@
                   </b-form-group>
                 </div>
                 <i class="fas fa-question-circle fa-lg icon"
-                    v-b-popover.hover.right="'Valige `Kõik`, kui tahate pakkuda kõigile õppejõudule'"></i>
+                    v-b-popover.hover.right="popoverText"></i>
               </div>
             </b-card>
             <div class="float-right">
@@ -160,11 +160,13 @@ export default {
       show: true,
       status: 'not_accepted',
       secondLanguageCard: false,
+      popoverText: 'Jätta seda "Valige üks", kui tahate pakkuda kõigile õppejõudule',
       /* tag in input field */
       tag: '',
       /* list of theses */
       listOfTheses: [],
-
+      /* list of lecturers  with list of theses */
+      lecturers: [],
       /* for thesis registration */
       form: {
         ee_title: '',
@@ -174,11 +176,10 @@ export default {
         tags: [],
         lecturer: null
       },
-      choseOfLecturers: [
-        { text: 'Valige üks', value: null },
-        'Kõik',
-        'Avo Läns'
-      ]
+      listOfLecturers: [{
+        text: 'Valige üks',
+        value: null
+      }]
     }
   },
   methods: {
@@ -221,7 +222,32 @@ export default {
       /* Trick to reset/clear native browser form validation state */
       this.show = false
       this.$nextTick(() => { this.show = true })
+    },
+    getPersons: function () {
+      console.log("I'm working!")
+      axios.get('/api/curators')
+        .then((response) => {
+          console.log('Response', response)
+        })
+        .catch((error) => {
+          console.error('Error', error)
+        })
     }
+  },
+  mounted () {
+    this.lecturers = this.$store.getters.getCurators
+    this.$store.dispatch('fetchCurators')
+      .then((data) => {
+        console.log('Curators data has been fetched successfully!')
+        this.lecturers = data
+        for (var i = 0, each = this.lecturers.length; i < each; i++) {
+          const lecturer = this.lecturers[i].firstname + ' ' + this.lecturers[i].lastname
+          this.listOfLecturers.push(lecturer)
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 }
 </script>
@@ -276,6 +302,11 @@ export default {
   }
 
   .add__thesis {
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1500px;
     margin-top: 290px;
     margin-bottom: 50px;
     padding-left: 10%;
