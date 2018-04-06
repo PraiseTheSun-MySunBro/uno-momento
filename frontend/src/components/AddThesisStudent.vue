@@ -15,75 +15,98 @@
               <h4 class="text--sans text--color card__title">Nimi ja kirjeldus</h4>
               <hr>
               <div class="name-description__fields">
-                <b-form-group vertical
-                          label="Pealkiri:"
-                          label-class="text-sm"
-                          label-for="add-thesis-name-ee"
-                          class="mb-2 ">
-                  <b-form-input id="add-thesis-name-ee"
-                                type="text"
-                                required
-                                v-model="form.ee_title"
-                                placeholder="Kirjutage oma lõputöö nimi">
-                  </b-form-input>
-                </b-form-group>
-                <b-form-group vertical
-                          label="Kirjeldus:"
-                          label-class="text-sm"
-                          label-for="add-thesis-description-ee"
-                          class="mb-2">
-                  <b-form-textarea id="add-thesis-description-ee"
-                                type="text"
-                                required
-                                :rows="6"
-                                :max-rows="12"
-                                v-model="form.ee_description"
-                                placeholder="Kirjeldage oma idee">
-                  </b-form-textarea>
-                </b-form-group>
-                <b-form-checkbox id="checkbox-language"
-                                v-model="status"
-                                value="accepted"
-                                unchecked-value="not_accepted">
-                                Lisada kirjeldus inglise keeles
-                </b-form-checkbox>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <b-form-group label="Pealkiri:"
+                                  label-class="text-sm"
+                                  label-for="add-thesis-name-ee">
+                      <b-form-input id="add-thesis-name-ee"
+                                    required
+                                    type="text"
+                                    v-model="form.ee_title"
+                                    placeholder="Kirjutage oma lõputöö nimi">
+                      </b-form-input>
+                    </b-form-group>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-9">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <b-form-group label="Kirjeldus:"
+                                  label-class="text-sm"
+                                  label-for="add-thesis-description-ee">
+                      <b-form-textarea id="add-thesis-description-ee"
+                                      required
+                                      type="text"
+                                      :rows="6"
+                                      :max-rows="12"
+                                      v-model="form.ee_description"
+                                      placeholder="Kirjeldage oma idee">
+                      </b-form-textarea>
+                    </b-form-group>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <b-form-checkbox class="checkbox__language"
+                                    plain
+                                    v-model="status"
+                                    value="accepted"
+                                    unchecked-value="not_accepted">
+                                    Lisada kirjeldus inglise keeles
+                    </b-form-checkbox>
+                  </div>
+                </div>
               </div>
-              <b-button class="float-right" v-if="status=='accepted'" @click="showSecondCard">
+              <b-button class="second-card__button" v-if="status=='accepted'" @click="showSecondCard">
                 Inglise keeles
                 <i class="fas fa-arrow-right"></i>
               </b-button>
             </b-card>
             <!-- Card for english language -->
             <b-card class="name-description__card shadow" v-if="secondLanguageCard">
-              <h4 class="text--sans text--color card__title">Name and description (inglise keeles)</h4>
+              <h4 class="text--sans text--color card__title">Name and description</h4>
               <hr>
               <div class="name-description__fields">
-                <b-form-group vertical
-                          label="Name:"
-                          label-class="text-sm"
-                          label-for="add-thesis-name-en"
-                          class="mb-2">
-                  <b-form-input id="add-thesis-name-en"
-                                type="text"
-                                v-model="form.en_title"
-                                placeholder="Enter thesis name">
-                  </b-form-input>
-                </b-form-group>
-                <b-form-group vertical
-                          label="Description:"
-                          label-class="text-sm"
-                          label-for="add-thesis-description-en"
-                          class="mb-2">
-                  <b-form-textarea id="add-thesis-description-en"
-                                type="text"
-                                :rows="6"
-                                :max-rows="12"
-                                v-model="form.en_description"
-                                placeholder="Enter thesis description">
-                  </b-form-textarea>
-                </b-form-group>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <b-form-group label="Name:"
+                                  label-class="text-sm"
+                                  label-for="add-thesis-name-en">
+                      <b-form-input id="add-thesis-name-en"
+                                    required
+                                    type="text"
+                                    v-model="form.en_title"
+                                    placeholder="Enter thesis name">
+                      </b-form-input>
+                    </b-form-group>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-9">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <b-form-group label="Description:"
+                                  label-class="text-sm"
+                                  label-for="add-thesis-description-en">
+                      <b-form-textarea id="add-thesis-description-en"
+                                      required
+                                      type="text"
+                                      :rows="6"
+                                      :max-rows="12"
+                                      v-model="form.en_description"
+                                      placeholder="Enter thesis description">
+                      </b-form-textarea>
+                    </b-form-group>
+                  </div>
+                </div>
               </div>
-              <b-button class="float-left" @click="showFirstCard">
+              <b-button class="first-card__button" @click="showFirstCard">
                 <i class="fas fa-arrow-left"></i>
                 Eesti keeles
               </b-button>
@@ -94,11 +117,9 @@
               <hr>
               <div class="row">
                 <div class="col-sm-9">
-                  <b-form-group vertical
-                            label="Märksõnad:"
-                            label-class="text-sm"
-                            label-for="choose-thesis-curator"
-                            class="mb-2">
+                  <b-form-group label="Märksõnad:"
+                                label-class="text-sm"
+                                label-for="choose-thesis-curator">
                     <b-form-input id="choose-thesis-tags"
                                   class="form-control"
                                   v-model="tag"
@@ -123,16 +144,13 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-9">
-                  <b-form-group vertical
-                            label="Juhendaja:"
-                            label-class="text-sm"
-                            label-for="choose-thesis-curator"
-                            class="mb-2">
+                <div class="col-sm-6">
+                  <b-form-group label="Juhendaja:"
+                                label-class="text-sm"
+                                label-for="choose-thesis-curator">
                     <b-form-select id="choose-thesis-curator"
                                   class="form-control"
                                   :options="listOfLecturers"
-                                  required
                                   v-model="form.lecturer"
                                   placeholder="Valige üks">
                     </b-form-select>
@@ -161,12 +179,10 @@ export default {
       status: 'not_accepted',
       secondLanguageCard: false,
       popoverText: 'Jätta seda "Valige üks", kui tahate pakkuda kõigile õppejõudule',
-      /* tag in input field */
-      tag: '',
-      /* list of theses */
-      listOfTheses: [],
+
       /* list of lecturers  with list of theses */
       lecturers: [],
+
       /* for thesis registration */
       form: {
         ee_title: '',
@@ -176,10 +192,18 @@ export default {
         tags: [],
         lecturer: null
       },
+
+      /* List of lecturers for input-select form */
       listOfLecturers: [{
         text: 'Valige üks',
         value: null
-      }]
+      }],
+
+      /* tag in input field */
+      tag: '',
+
+      /* list of theses */
+      listOfTheses: []
     }
   },
   methods: {
@@ -252,7 +276,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
   h5 {
     font-size: 18px;
@@ -294,12 +318,14 @@ export default {
   }
 
   .fa-question-circle {
-    margin-top: 35px;
+    margin-top: 42px;
   }
 
   .text--color {
     color:rgb(20, 117, 189);
   }
+
+  /* Main container */
 
   .add__thesis {
     left: 0;
@@ -347,21 +373,26 @@ export default {
   }
 
   .cards__conteiner {
-    padding-left: 15%;
-    padding-right: 15%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 950px;
+    padding-left: 10%;
+    padding-right: 10%;
   }
 
   .name-description__card {
-    height: 420px;
+    height: 475px;
     margin-bottom: 30px;
   }
 
   .name-description__fields {
-    padding-right: 15%;
+    padding-right: 80px;
   }
 
   .tags-curator__card {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .submit-button {
@@ -374,10 +405,6 @@ export default {
 
   .submit-button:hover {
       background-color: rgb(46, 100, 148);
-  }
-
-  .col-form-label {
-    padding-bottom: 0px;
   }
 
   .card__title {
@@ -396,6 +423,94 @@ export default {
     background: #fff;
     border: 1px solid rgb(20, 117, 189);
     border-radius: 0.25rem;
+  }
+
+  .first-card__button {
+    color: rgb(66, 139, 202);
+    background-color: #fff;
+    border: 2px solid rgb(66, 139, 202);
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .first-card__button:hover {
+    background-color: rgb(66, 139, 202);
+    color: #fff;
+  }
+
+  .second-card__button {
+    color: rgb(66, 139, 202);
+    background-color: #fff;
+    border: 2px solid rgb(66, 139, 202);
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .second-card__button:hover {
+    background-color: rgb(66, 139, 202);
+    color: #fff;
+  }
+
+  @media screen and (max-width: 767px) {
+    /* adaptive for mobile */
+
+    /* Main container */
+    .add__thesis {
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1500px;
+      margin-top: 200px;
+      margin-bottom: 50px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    h5 {
+      font-size: 12px;
+    }
+
+    h4 {
+      font-size: 16px;
+    }
+
+    h3 {
+      font-size: 28px;
+    }
+    .line--height {
+    line-height: 1;
+    }
+
+    .offer-slogan__container {
+      left:0;
+      right:0;
+      margin-left:auto;
+      margin-right:auto;
+      height: max-content;
+      background-color:rgb(20, 117, 189);
+      color: rgb(246, 249, 252);
+      padding: 10px 0px 5px 15px;
+    }
+
+    .cards__conteiner {
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 800px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .name-description__fields {
+      padding-right: 0;
+    }
+    .fa-question-circle {
+      display: none;
+    }
   }
 
 </style>
