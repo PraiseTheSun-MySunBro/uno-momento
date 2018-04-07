@@ -178,7 +178,7 @@
                               || $v.credentials.role.$invalid
                               || $v.credentials.degree.$invalid
                               || $v.credentials.faculty.$invalid
-                              || $v.credentials.$invalid">
+                              ">
               Loo uus konto
             </b-button>
           </div>

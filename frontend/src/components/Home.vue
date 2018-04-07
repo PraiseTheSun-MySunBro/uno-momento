@@ -252,9 +252,9 @@ p {
 
 /* Pagination */
 
-#pagination-container {}
-
-#pagination {}
+#pagination-container {
+  display: none;
+}
 
 /* Modal form with theses description */
 
