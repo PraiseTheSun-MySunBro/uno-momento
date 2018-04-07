@@ -1,8 +1,8 @@
 package ee.ttu.unomomento.controller;
 
-import ee.ttu.unomomento.model.Account;
+import ee.ttu.unomomento.model.Thesis;
+import ee.ttu.unomomento.model.template.AddThesis;
 import ee.ttu.unomomento.model.template.UserRegistration;
-import ee.ttu.unomomento.service.AccountService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import static ee.ttu.unomomento.security.TokenAuthenticationService.HEADER_STRIN
 import static ee.ttu.unomomento.security.TokenAuthenticationService.TOKEN_PREFIX;
 import static ee.ttu.unomomento.security.TokenAuthenticationService.createToken;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,20 +22,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest {
+public class ThesisControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void shouldNotRegisterNotValidatedForm() throws Exception {
+    public void shouldNotAddThesisWithNotValidatedForm() throws Exception {
+        String token = createToken("Test");
+
+        assertNotNull(token);
         mockMvc
-                .perform(post("/auth/register", new UserRegistration("", "", "", "", "", "", null, null, null)))
+                .perform(post("/api/thesis",
+                        new AddThesis(null, null, null, "", "", "", "", null, null))
+                    .header(HEADER_STRING, TOKEN_PREFIX + token))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void shouldReturnBadRequestFromUserDataWithNoToken() throws Exception {
+    public void shouldReturnUnauthorizedRequestFromUserDataWithNoToken() throws Exception {
         mockMvc
                 .perform(get("/auth/user"))
                 .andExpect(status().isUnauthorized());
@@ -48,7 +52,9 @@ public class AuthControllerTest {
 
         assertNotNull(token);
         mockMvc
-                .perform(get("/auth/user").header(HEADER_STRING, TOKEN_PREFIX + token))
+                .perform(post("/api/thesis",
+                        new AddThesis((short) 1, (short) 1, (short) 1, "Test", "Test", "Test", "Test", null, null))
+                    .header(HEADER_STRING, TOKEN_PREFIX + token))
                 .andExpect(status().isBadRequest());
     }
 }

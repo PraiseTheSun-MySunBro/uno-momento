@@ -174,7 +174,7 @@
                       type="submit"
                       variant="success"
                       class="button--signup"
-                      :disabled="$v.credentials.uniid.$invalid
+                      :disabled="$v.credentials.uniId.$invalid
                               || $v.credentials.role.$invalid
                               || $v.credentials.degree.$invalid
                               || $v.credentials.faculty.$invalid
@@ -334,7 +334,7 @@ export default {
       role: {
         required
       },
-      uniid: {
+      uniId: {
         required,
         minLength: minLength(6),
         maxLength: maxLength(6)

@@ -35,13 +35,13 @@ public class ThesisController {
     }
 
     @PostMapping(value = "/api/thesis")
-    public ResponseEntity<String> addThesis(@Valid @RequestBody AddThesis thesis, HttpServletRequest httpRequest) {
+    public ResponseEntity<?> addThesis(@Valid @RequestBody AddThesis thesis, HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
-        assert authentication != null;
+        if (authentication == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         String username = (String) authentication.getPrincipal();
         if (thesisService.save(thesis, username)) {
-            return new ResponseEntity<>("", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>("Some error occurred", HttpStatus.BAD_REQUEST);
@@ -49,13 +49,13 @@ public class ThesisController {
     }
 
     @PostMapping(value = "/api/thesis/{thesisId}/edit")
-    public ResponseEntity<String> editThesis(@Valid @RequestBody AddThesis thesis, @PathVariable Long thesisId, HttpServletRequest httpRequest) {
+    public ResponseEntity<?> editThesis(@Valid @RequestBody AddThesis thesis, @PathVariable Long thesisId, HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
-        assert authentication != null;
+        if (authentication == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         String username = (String) authentication.getPrincipal();
         if (thesisService.update(thesis, thesisId, username)) {
-            return new ResponseEntity<>("", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>("Some error occurred", HttpStatus.BAD_REQUEST);
@@ -63,13 +63,13 @@ public class ThesisController {
     }
 
     @PostMapping(value = "/api/thesis/{thesisId}/inactive")
-    public ResponseEntity<String> inactiveThesis(@PathVariable Long thesisId, HttpServletRequest httpRequest) {
+    public ResponseEntity<?> inactiveThesis(@PathVariable Long thesisId, HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
-        assert authentication != null;
+        if (authentication == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         String username = (String) authentication.getPrincipal();
         if (thesisService.makeInactive(thesisId, username)) {
-            return new ResponseEntity<>("", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>("Some error occurred", HttpStatus.BAD_REQUEST);
