@@ -12,10 +12,23 @@
     <b-collapse id="nav-collapse"
                 is-nav>
       <b-navbar-nav>
+        <b-nav-item-dropdown>
+          <template slot="button-content">
+            <em class="lang">{{ language }}</em>
+          </template>
+          <b-dropdown-item href="#" @click="chooseEesti">
+            <img src="/static/ee.svg" class="navbar-flag">
+            <em>Eesti</em>
+          </b-dropdown-item>
+          <b-dropdown-item href="#" @click="chooseEnglish">
+            <img src="/static/gb.svg" class="navbar-flag">
+            <em>English</em>
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
         <b-nav-item :to="{ name: 'home' }">
           <em>Pealeht</em>
         </b-nav-item>
-        <b-nav-item :to="{ name: 'addThesisStudent' }">
+        <b-nav-item  href="#" @click="addThesis">
           <em>Lõputöö lisamine</em>
         </b-nav-item>
       </b-navbar-nav>
@@ -58,10 +71,24 @@ export default {
   name: 'TheNavigation',
   data () {
     return {
+      language: 'EESTI',
       logo: require('../assets/TTU_peamine_logo_EST_Valge.png')
     }
   },
   methods: {
+    chooseEesti: function () {
+      this.language = 'EESTI'
+    },
+    chooseEnglish: function () {
+      this.language = 'ENGLISH'
+    },
+    addThesis: function () {
+      if (this.currentUser.roleCode === 1) {
+        this.$router.push('/thesis/add/student')
+      } if (this.currentUser.roleCode === 2) {
+        this.$router.push('/thesis/add/lecturer')
+      }
+    },
     logout () {
       this.$auth.logout({
         success: () => {
@@ -112,8 +139,18 @@ em {
   margin-right: 5px;
 }
 
+.lang {
+  margin-right: 5px;
+}
+
 .navbar-icon {
   margin-right: 5px;
+}
+
+.navbar-flag {
+  margin-right: 5px;
+  width: 20px;
+  height: 15px;
 }
 
 @media screen and (max-width: 767px) {
