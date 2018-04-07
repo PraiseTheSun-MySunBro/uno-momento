@@ -1,0 +1,7 @@
+{
+  "helloWorld": "Hello World!",
+  "usernameLabel": "Username",
+  "passwordLabel": "Password",
+  "logInBtnText": "Log in",
+  "forgottenPasswordText": "Forgot password?"
+}
