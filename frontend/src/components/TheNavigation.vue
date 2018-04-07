@@ -11,7 +11,18 @@
     </b-navbar-brand>
     <b-collapse id="nav-collapse"
                 is-nav>
+
       <b-navbar-nav>
+        <b-nav-item :to="{ name: 'home' }">
+          <em>Pealeht</em>
+        </b-nav-item>
+        <b-nav-item  href="#" @click="addThesis">
+          <em>Lõputöö lisamine</em>
+        </b-nav-item>
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown>
           <template slot="button-content">
             <em class="lang">{{ language }}</em>
@@ -25,16 +36,6 @@
             <em>English</em>
           </b-dropdown-item>
         </b-nav-item-dropdown>
-        <b-nav-item :to="{ name: 'home' }">
-          <em>Pealeht</em>
-        </b-nav-item>
-        <b-nav-item  href="#" @click="addThesis">
-          <em>Lõputöö lisamine</em>
-        </b-nav-item>
-      </b-navbar-nav>
-
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown right>
 
           <!-- Using button-content slot -->

@@ -1,8 +1,6 @@
 package ee.ttu.unomomento.controller;
 
-import ee.ttu.unomomento.model.Thesis;
 import ee.ttu.unomomento.model.template.AddThesis;
-import ee.ttu.unomomento.model.template.UserRegistration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
