@@ -4,7 +4,10 @@ import ee.ttu.unomomento.service.PersonService;
 import ee.ttu.unomomento.validator.PersonValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.JSONFormat;
+import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,20 +31,12 @@ public class PersonController {
     }
 
     @GetMapping(value = "/api/curators")
-    public String getCuratorsByPages(@RequestParam(required = false) Integer p) {
+    public ResponseEntity<?> getCuratorsByPages(@RequestParam(required = false) Integer p) {
         log.info(String.format("Get Curators: %s", p != null ? "page = " + p.toString() : "All"));
-        return ((p != null)
-                    ? personService.getAllCuratorsWithThesesByPages(--p, CURATORS_PER_PAGE)
-                    : personService.getAllCuratorsWithTheses())
-                .formatJSON(jsonFormat);
-    }
+        Result<?> result = (p != null)
+                ? personService.getAllCuratorsWithThesesByPages(--p, CURATORS_PER_PAGE)
+                : personService.getAllCuratorsWithTheses();
 
-    // @GetMapping(value = "/api/persons/{personId}")
-    public String getPersonById(@PathVariable Long personId) {
-        log.info(String.format("Get Person by ID: %d", personId));
-        return personService
-                .getPersonById(personId)
-                .formatJSON(jsonFormat);
+        return new ResponseEntity<>(result.formatJSON(jsonFormat), HttpStatus.OK);
     }
-
 }

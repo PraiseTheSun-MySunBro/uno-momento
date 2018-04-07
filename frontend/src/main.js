@@ -7,6 +7,7 @@ import BootstrapVue from 'bootstrap-vue'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueAuth from '@websanova/vue-auth'
+import VueLang from 'vue-lang'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -22,6 +23,12 @@ Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 
+const locales = {
+  en: require('./../static/lang/en.json'),
+  ee: require('./../static/lang/ee.json')
+}
+Vue.use(VueLang, { lang: 'en', locales: locales })
+
 window.axios = axios
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
@@ -31,6 +38,15 @@ Vue.use(VueAuth, {
   router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
   refreshData: {
     enabled: false
+  },
+  loginData: {
+    redirect: '/home'
+  },
+  logoutData: {
+    redirect: '/'
+  },
+  registerData: {
+    redirect: null
   }
 })
 

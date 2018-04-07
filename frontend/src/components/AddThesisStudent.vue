@@ -380,21 +380,6 @@ export default {
         }
       }
     }
-  },
-  mounted () {
-    this.lecturers = this.$store.getters.getCurators
-    this.$store.dispatch('fetchCurators')
-      .then((data) => {
-        console.log('Curators data has been fetched successfully!')
-        this.lecturers = data
-        for (var i = 0, each = this.lecturers.length; i < each; i++) {
-          const lecturer = this.lecturers[i].firstname + ' ' + this.lecturers[i].lastname
-          this.listOfLecturers.push(lecturer)
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
   }
 }
 </script>

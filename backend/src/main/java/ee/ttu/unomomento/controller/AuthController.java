@@ -37,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "/auth/register", produces = "application/json")
-    public ResponseEntity<String> register(@Valid @RequestBody UserRegistration userRegistration) {
+    public ResponseEntity<?> register(@Valid @RequestBody UserRegistration userRegistration) {
         log.info(String.format("[REQUEST]: User %s requested registration", userRegistration.getUsername()));
         try {
             accountService.saveAccount(userRegistration);
@@ -50,17 +50,17 @@ public class AuthController {
     }
 
     @GetMapping(value = "/auth/user", produces = "application/json")
-    public String getAccount(HttpServletRequest httpRequest) {
+    public ResponseEntity<?> getAccount(HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
-        assert authentication != null;
+        if (authentication == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         String username = (String) authentication.getPrincipal();
         log.info(String.format("[REQUEST]: User %s requested user information", username));
 
         AccountPersonInformation accountPersonInformation = accountService
                 .findAccountPersonInformationByUsername(username);
-        assert accountPersonInformation != null;
+        if (accountPersonInformation == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        return gson.toJson(accountPersonInformation);
+        return new ResponseEntity<>(gson.toJson(accountPersonInformation), HttpStatus.OK);
     }
 }

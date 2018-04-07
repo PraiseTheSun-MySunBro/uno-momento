@@ -5,7 +5,7 @@
       <!-- Sign in form -->
       <b-form class="form__signin sign-in__transaction"
               @submit.prevent="onLoginSubmit">
-          <b-form-group label="<span class='label__text'>Kasutajanimi</span>"
+          <b-form-group :label="`<span class='label__text'>${$lang.usernameLabel}</span>`"
                         label-for="auth-username"
                         class="mb-2">
             <b-form-input id="auth-username"
@@ -13,7 +13,7 @@
                           v-model="credentials.username">
             </b-form-input>
           </b-form-group>
-          <b-form-group label="<span class='label__text'>Parool</span>"
+          <b-form-group :label="`<span class='label__text'>${$lang.passwordLabel}</span>`"
                         label-for="auth-password">
             <b-form-input id="auth-password"
                           type="password"
@@ -27,9 +27,9 @@
                         class="button--signin"
                         :disabled="$v.credentials.username.$invalid
                                 || $v.credentials.password.$invalid">
-                Logi sisse
+                {{ $lang.logInBtnText }}
               </b-button>
-              <p class="text forgot-password">Parool ununenud?</p>
+              <p class="text forgot-password">{{ $lang.forgottenPasswordText }}</p>
             </div>
           </b-form-group>
       </b-form>
@@ -174,7 +174,7 @@
                       type="submit"
                       variant="success"
                       class="button--signup"
-                      :disabled="$v.credentials.uniid.$invalid
+                      :disabled="$v.credentials.uniId.$invalid
                               || $v.credentials.role.$invalid
                               || $v.credentials.degree.$invalid
                               || $v.credentials.faculty.$invalid
@@ -334,7 +334,7 @@ export default {
       role: {
         required
       },
-      uniid: {
+      uniId: {
         required,
         minLength: minLength(6),
         maxLength: maxLength(6)
