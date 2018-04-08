@@ -13,19 +13,6 @@
                 is-nav>
 
       <b-navbar-nav>
-        <b-nav-item-dropdown>
-          <template slot="button-content">
-            <em class="lang">{{ language }}</em>
-          </template>
-          <b-dropdown-item href="#" @click="chooseEesti">
-            <img src="/static/ee.svg" class="navbar-flag">
-            <em>Eesti</em>
-          </b-dropdown-item>
-          <b-dropdown-item href="#" @click="chooseEnglish">
-            <img src="/static/gb.svg" class="navbar-flag">
-            <em>English</em>
-          </b-dropdown-item>
-        </b-nav-item-dropdown>
         <b-nav-item :to="{ name: 'home' }">
           <em>Pealeht</em>
         </b-nav-item>
@@ -99,7 +86,7 @@ export default {
     addThesis: function () {
       if (this.currentUser.roleCode === 1) {
         this.$router.push('/thesis/add/student')
-      } if (this.currentUser.roleCode === 2) {
+      } else if (this.currentUser.roleCode === 2) {
         this.$router.push('/thesis/add/lecturer')
       }
     },
@@ -107,6 +94,7 @@ export default {
       this.$auth.logout({
         success: () => {
           // app.success = true
+          this.$store.dispatch('resetUser')
         },
         error: (err) => {
           // app.error = true
