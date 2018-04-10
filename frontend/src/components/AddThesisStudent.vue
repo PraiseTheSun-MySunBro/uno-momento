@@ -170,7 +170,8 @@
               <div class="float-right">
                 <b-button class="submit__button"
                           variant="primary"
-                          @click="showSubmitModal">
+                          @click="showSubmitModal"
+                          :disabled="$v.form.$invalid">
                           Paku
                 </b-button>
               </div>
