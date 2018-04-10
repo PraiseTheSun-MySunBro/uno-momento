@@ -335,7 +335,7 @@
                   Tagasi
             </b-btn>
             <b-btn class="modal-button-edit button btn--grey"
-                  
+
                   @click="changeThesis">
                   Muutuda
             </b-btn>

@@ -83,6 +83,21 @@ public class ThesisController {
         }
     }
 
+    @PostMapping(value = "/api/thesis/{thesisId}/active")
+    public ResponseEntity<?> activeThesis(@PathVariable Long thesisId, HttpServletRequest httpRequest) {
+        Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
+        if (authentication == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        String username = authentication.getName();
+
+        if (thesisService.makeActive(thesisId, username)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("Some error occurred", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(value = "/api/thesis/workplace")
     public ResponseEntity<?> getWorkplaceTheses(HttpServletRequest httpRequest) {
         Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);

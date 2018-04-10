@@ -87,7 +87,7 @@ public class ThesisService {
 
         Long thesisId = thesisTemplate.getThesisId();
         if (thesisId == null) return false;
-        
+
         Object owner = dslContext
                 .select(THESIS_OWNER.PERSON_ID)
                 .from(THESIS_OWNER)
@@ -133,10 +133,33 @@ public class ThesisService {
         }
 
         dslContext
-            .update(THESIS)
-            .set(THESIS.THESIS_STATE_CODE, (short) 2)
-            .where(THESIS.THESIS_ID.eq(thesisId))
-            .execute();
+                .update(THESIS)
+                .set(THESIS.THESIS_STATE_CODE, (short) 2)
+                .where(THESIS.THESIS_ID.eq(thesisId))
+                .execute();
+
+        return true;
+    }
+
+    public boolean makeActive(Long thesisId, String username) {
+        Object resultName = dslContext
+                .select(ACCOUNT.USERNAME)
+                .from(THESIS_OWNER)
+                .innerJoin(PERSON).using(PERSON.PERSON_ID)
+                .innerJoin(PERSON_ACCOUNT_OWNER).using(PERSON.PERSON_ID)
+                .innerJoin(ACCOUNT).using(ACCOUNT.ACCOUNT_ID)
+                .where(THESIS_OWNER.THESIS_ID.eq(thesisId))
+                .fetchOne("username");
+
+        if (resultName == null || !resultName.toString().equals(username)) {
+            return false;
+        }
+
+        dslContext
+                .update(THESIS)
+                .set(THESIS.THESIS_STATE_CODE, (short) 1)
+                .where(THESIS.THESIS_ID.eq(thesisId))
+                .execute();
 
         return true;
     }

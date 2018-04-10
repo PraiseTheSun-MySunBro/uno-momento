@@ -85,7 +85,7 @@
                                   Valida
                                   <i class="fas fa-check"></i>
                                 </b-button>
-                                <b-button size="sm" class="btn--red button" @click="deactivateThesis">
+                                <b-button size="sm" class="btn--red button" @click="deactivateThesis(thesis)">
                                   Loobu
                                   <i class="fas fa-times fa-md"></i>
                                 </b-button>
@@ -118,7 +118,7 @@
                                   Muuda
                                   <i class="fas fa-edit"></i>
                                 </b-button>
-                                <b-button size="sm" class="btn--red button" @click="deactivateThesis">
+                                <b-button size="sm" class="btn--red button" @click="deactivateThesis(thesis)">
                                   Kustuta
                                   <i class="fas fa-trash-alt fa-md"></i>
                                 </b-button>
@@ -153,7 +153,7 @@
                                 Muuda
                                 <i class="fas fa-edit"></i>
                               </b-button>
-                              <b-button size="sm" class="button btn--green" @click="activateThesis">
+                              <b-button size="sm" class="button btn--green" @click="activateThesis(thesis)">
                                 Aktiveerida
                                 <i class="fas fa-plus"></i>
                               </b-button>
@@ -319,12 +319,12 @@
         <!-- if modal not submitted by lecturer -->
         <b-btn class="modal-button-activate button btn--blue"
               v-if="modal.thesisStateCode === 2"
-              @click="activateThesis">
+              @click="activateThesis(modal)">
               Aktiveerida
         </b-btn>
         <b-btn class="modal-button-deactivate button btn--blue"
               v-if="modal.thesisStateCode === 1"
-              @click="deactivateThesis">
+              @click="deactivateThesis(modal)">
               Kustuta
         </b-btn>
         <!-- if modal submitted by lecturer -->
@@ -335,7 +335,7 @@
         </b-btn>
         <b-btn class="modal-button-deactivate button btn--blue"
               v-if="modal.thesisStateCode === 3"
-              @click="deactivateThesis">
+              @click="deactivateThesis(modal)">
               Loobu
         </b-btn>
       </div>
@@ -410,6 +410,7 @@ export default {
       this.modal.eeDescription = thesis.eeDescription
       this.modal.fullName = thesis.fullName
       this.modal.tags = thesis.tags
+      this.modal.thesisId = thesis.thesisId
       this.modal.thesisStateCode = thesis.thesisStateCode
       this.$refs.myModalRef.show()
     },
@@ -430,19 +431,35 @@ export default {
     deleteCandidation: function () {
 
     },
-    activateThesis: function () {
-      for (var i = 0; i < this.MyTheses.length; i++) {
-        if (this.thesisTitle === this.MyTheses[i].ee_title) {
-          console.log(this.MyTheses[i].state)
-        }
-      }
+    activateThesis: function (thesis) {
+      // for (var i = 0; i < this.MyTheses.length; i++) {
+      //   if (this.thesisTitle === this.MyTheses[i].ee_title) {
+      //     console.log(this.MyTheses[i].state)
+      //   }
+      // }
+
+      axios.post(`/api/thesis/${thesis.thesisId}/active`)
+        .then(res => {
+
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
-    deactivateThesis: function () {
-      for (var i = 0; i < this.MyTheses.length; i++) {
-        if (this.thesisTitle === this.MyTheses[i].ee_title) {
-          console.log(this.MyTheses[i].state)
-        }
-      }
+    deactivateThesis: function (thesis) {
+      // for (var i = 0; i < getMyOwnTheses.length; i++) {
+      //   if (getMyOwnTheses[i] === this.MyTheses[i].ee_title) {
+      //     console.log(this.MyTheses[i].state)
+      //   }
+      // }
+
+      axios.post(`/api/thesis/${thesis.thesisId}/inactive`)
+        .then(res => {
+
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
     changeThesis: function (thesis) {
       this.$store.dispatch('fetchThesis', thesis)
