@@ -11,7 +11,6 @@
     </b-navbar-brand>
     <b-collapse id="nav-collapse"
                 is-nav>
-
       <b-navbar-nav>
         <b-nav-item :to="{ name: 'home' }">
           <em>Pealeht</em>
@@ -50,7 +49,7 @@
           </b-dropdown-item>
           <b-dropdown-divider></b-dropdown-divider>
 
-          <b-dropdown-item :to="{ name: 'workplace' }">
+          <b-dropdown-item href="#" @click="chooseWorkplace">
             <i class="fas fa-briefcase fa-lg navbar-icon"></i>
             <em>Töölaud</em>
           </b-dropdown-item>
@@ -88,6 +87,13 @@ export default {
         this.$router.push('/thesis/add/student')
       } else if (this.currentUser.roleCode === 2) {
         this.$router.push('/thesis/add/lecturer')
+      }
+    },
+    chooseWorkplace: function () {
+      if (this.currentUser.roleCode === 1) {
+        this.$router.push('/thesis/workplace/student')
+      } if (this.currentUser.roleCode === 2) {
+        this.$router.push('/thesis/workplace/lecturer')
       }
     },
     logout () {
