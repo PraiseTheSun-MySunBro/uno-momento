@@ -5,8 +5,9 @@ import EntryPoint from '@/components/EntryPoint'
 import Home from '@/components/Home'
 import AddThesisStudent from '@/components/AddThesisStudent'
 import AddThesisLecturer from '@/components/AddThesisLecturer'
+import WorkplaceStudent from '@/components/WorkplaceStudent'
+import WorkplaceLecturer from '@/components/WorkplaceLecturer'
 import UserProfile from '@/components/UserProfile'
-import UserWorkplace from '@/components/UserWorkplace'
 
 Vue.use(Router)
 
@@ -30,6 +31,7 @@ export default new Router({
     },
     {
       path: '/thesis/add/student',
+      alias: '/thesis/edit',
       name: 'addThesisStudent',
       component: AddThesisStudent,
       meta: {
@@ -38,8 +40,25 @@ export default new Router({
     },
     {
       path: '/thesis/add/lecturer',
+      alias: '/thesis/edit',
       name: 'addThesisLecturer',
       component: AddThesisLecturer,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/thesis/workplace/student',
+      name: 'WorkplaceStudent',
+      component: WorkplaceStudent,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/thesis/workplace/lecturer',
+      name: 'WorkplaceLecturer',
+      component: WorkplaceLecturer,
       meta: {
         auth: true
       }
@@ -48,14 +67,6 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: UserProfile,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: '/workplace',
-      name: 'workplace',
-      component: UserWorkplace,
       meta: {
         auth: true
       }

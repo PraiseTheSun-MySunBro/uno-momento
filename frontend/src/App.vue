@@ -187,6 +187,39 @@ button:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+/* for Workplace components */
+
+  /* for Tabs */
+  .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: rgb(246, 249, 252);
+    border-bottom-color: rgb(246, 249, 252);
+  }
+
+  a {
+      color: rgb(66, 139, 202);
+      text-decoration: none;
+      background-color: transparent;
+      -webkit-text-decoration-skip: objects;
+  }
+
+  .btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+  }
+
+  .btn-secondary:not(:disabled):not(.disabled):active,
+  .btn-secondary:not(:disabled):not(.disabled).active,
+  .show > .btn-secondary.dropdown-toggle {
+    border: 1px solid;
+    background-color: rgb(66, 139, 202);
+    color: #fff;
+    border: 1px solid rgb(66, 139, 202);
+  }
+  .btn-secondary:not(:disabled):not(.disabled):active:focus,
+  .btn-secondary:not(:disabled):not(.disabled).active:focus,
+  .show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+  }
+
 @media screen and (max-width: 767px) {
   /* adaptive for mobile */
   .home-page__background__image {
