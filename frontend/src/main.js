@@ -40,10 +40,10 @@ Vue.use(VueAuth, {
     enabled: false
   },
   loginData: {
-    redirect: '/home'
+    redirect: '/login'
   },
   logoutData: {
-    redirect: '/'
+    redirect: '/login'
   },
   registerData: {
     redirect: null

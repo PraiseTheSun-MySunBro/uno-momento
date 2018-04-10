@@ -264,7 +264,7 @@ export default {
           console.error(err)
         },
         rememberMe: true,
-        redirect: '/home',
+        redirect: '/',
         fetchUser: null
       })
     },

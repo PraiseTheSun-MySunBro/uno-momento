@@ -38,7 +38,7 @@
                                       label-for="add-thesis-name-ee">
                           <b-form-input id="add-thesis-name-ee"
                                         type="text"
-                                        v-model="form.ee_title"
+                                        v-model="form.eeTitle"
                                         placeholder="Kirjutage oma lõputöö nimi">
                           </b-form-input>
                         </b-form-group>
@@ -57,7 +57,7 @@
                                           type="text"
                                           :rows="6"
                                           :max-rows="12"
-                                          v-model="form.ee_description"
+                                          v-model="form.eeDescription"
                                           placeholder="Kirjeldage oma idee">
                           </b-form-textarea>
                         </b-form-group>
@@ -90,7 +90,7 @@
                                       label-for="add-thesis-name-en">
                           <b-form-input id="add-thesis-name-en"
                                         type="text"
-                                        v-model="form.en_title"
+                                        v-model="form.enTitle"
                                         placeholder="Kirjutage oma lõputöö nimi">
                           </b-form-input>
                         </b-form-group>
@@ -109,7 +109,7 @@
                                           type="text"
                                           :rows="6"
                                           :max-rows="12"
-                                          v-model="form.en_description"
+                                          v-model="form.enDescription"
                                           placeholder="Kirjeldage oma idee">
                           </b-form-textarea>
                         </b-form-group>
@@ -157,7 +157,7 @@
                                 label-for="choose-thesis-co-supervisor">
                     <b-form-input id="choose-thesis-co-supervisor"
                                 type="text"
-                                v-model="form.co_supervisor"
+                                v-model="form.supervisorName"
                                 placeholder="Kirjutage kaasjuhendaja nimi">
                     </b-form-input>
                   </b-form-group>
@@ -166,8 +166,7 @@
               <div class="float-right">
                 <b-button class="submit__button"
                           variant="primary"
-                          @click="showSubmitModal"
-                          :disabled="$v.form.$invalid">
+                          @click="showSubmitModal">
                           Paku
                 </b-button>
               </div>
@@ -193,6 +192,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -207,12 +207,12 @@ export default {
 
       /* for thesis registration */
       form: {
-        ee_title: '',
-        ee_description: '',
-        en_title: '',
-        en_description: '',
+        eeTitle: '',
+        eeDescription: '',
+        enTitle: '',
+        enDescription: '',
         tags: [],
-        co_supervisor: ''
+        supervisorName: ''
       },
       /* tag in input field */
       tag: ''
@@ -228,13 +228,13 @@ export default {
     },
     closeEstonianCard: function () {
       this.estonianCard = false
-      this.form.ee_title = ''
-      this.form.ee_description = ''
+      this.form.eeTitle = ''
+      this.form.eeDescription = ''
     },
     closeEnglishCard: function () {
       this.englishCard = false
-      this.form.en_title = ''
-      this.form.en_description = ''
+      this.form.enTitle = ''
+      this.form.enDescription = ''
     },
     /* methods for tags */
     addTag: function (tag) {
@@ -267,35 +267,55 @@ export default {
     /* methods for adding */
     onThesisSubmit () {
       /* Reset our form values */
-      this.form.ee_title = ''
-      this.form.en_title = ''
-      this.form.ee_description = ''
-      this.form.en_description = ''
-      this.form.co_supervisor = ''
-      this.form.tags = []
-      this.tag = ''
-      this.estonianCard = false
-      this.englishCard = false
-      this.$refs.myModalRef.hide()
+      axios.post('/api/thesis/', {
+        eeTitle: this.form.eeTitle,
+        enTitle: this.form.enTitle,
+        eeDescription: this.form.eeDescription,
+        enDescription: this.form.enDescription,
+        supervisorName: this.form.supervisorName,
+        degreeCode: this.currentUser.degreeCode,
+        facultyCode: this.currentUser.facultyCode,
+        roleCode: this.currentUser.roleCode
+      })
+        .then(res => {
+          this.form.eeTitle = ''
+          this.form.enTitle = ''
+          this.form.eeDescription = ''
+          this.form.enDescription = ''
+          this.form.supervisorName = ''
+          this.form.tags = []
+          this.tag = ''
+          this.estonianCard = false
+          this.englishCard = false
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
+      this.hideSubmitModal()
     }
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: 'getUser'
+    })
   },
   validations () {
     if (this.estonianCard && this.englishCard) {
       return {
         form: {
-          ee_title: {
+          eeTitle: {
             required
           },
-          ee_description: {
+          eeDescription: {
             required
           },
-          en_title: {
+          enTitle: {
             required
           },
-          en_description: {
+          enDescription: {
             required
           },
-          co_supervisor: {
+          supervisorName: {
             required
           }
         }
@@ -303,31 +323,31 @@ export default {
     } if (this.estonianCard && !this.englishCard) {
       return {
         form: {
-          ee_title: {
+          eeTitle: {
             required
           },
-          ee_description: {
+          eeDescription: {
             required
           },
-          co_supervisor: {
+          supervisorName: {
             required
           },
-          en_title: {},
-          en_description: {}
+          enTitle: {},
+          enDescription: {}
         }
       }
     } if (!this.estonianCard && this.englishCard) {
       return {
         form: {
-          ee_title: {},
-          ee_description: {},
-          en_title: {
+          eeTitle: {},
+          eeDescription: {},
+          enTitle: {
             required
           },
-          en_description: {
+          enDescription: {
             required
           },
-          co_supervisor: {
+          supervisorName: {
             required
           }
         }
@@ -335,19 +355,19 @@ export default {
     } else {
       return {
         form: {
-          ee_title: {
+          eeTitle: {
             required
           },
-          ee_description: {
+          eeDescription: {
             required
           },
-          en_title: {
+          enTitle: {
             required
           },
-          en_description: {
+          enDescription: {
             required
           },
-          co_supervisor: {
+          supervisorName: {
             required
           }
         }

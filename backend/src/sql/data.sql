@@ -13,6 +13,7 @@ INSERT INTO Degree (degree_code, en_name, ee_name) VALUES (6, 'Engineering', 'In
 
 INSERT INTO Account (username, password, email) VALUES ('mavein', '$2a$10$NJYSvPT1dZuaAZwjLGFET.1vEEqRj.TD8R.hgDZmxIklY49sXbJpS', 'mavein@ttu.ee');
 INSERT INTO Account (username, password, email) VALUES ('avlans', '$2a$10$Ogjqnrtcw8f4FFMg4Uj03O/7POLz1T1vVS221EHgjy9lYXeRB6FaW', 'avo.lans@ttu.ee');
+INSERT INTO Account (username, password, email) VALUES ('agolub', '$2a$10$Ogjqnrtcw8f4FFMg4Uj03O/7POLz1T1vVS221EHgjy9lYXeRB6FaW', 'ago.luberg@ttu.ee');
 
 /* Test data */
 INSERT INTO Account (username, password, email) VALUES ('eriktest', '$2a$10$cyOS8DkYWTXww30jkU1N.O7uNWn9Whm4QWfOTrZ5as1RMc8eZK/d2', 'eriktest@ttu.ee');
@@ -22,6 +23,7 @@ INSERT INTO Account (username, password, email) VALUES ('denistest', '$2a$10$waw
 
 INSERT INTO Person (degree_code, firstname, lastname, uni_id) VALUES (1, 'Mart', 'Vein', 'mavein');
 INSERT INTO Person (degree_code, firstname, lastname, uni_id) VALUES (3, 'Avo', 'Läns', 'avlans');
+INSERT INTO Person (degree_code, firstname, lastname, uni_id) VALUES (3, 'Ago', 'Luberg', 'agolub');
 
 INSERT INTO Person (degree_code, firstname, lastname, uni_id) VALUES (1, 'Erik', 'Priis', 'erpris');
 INSERT INTO Person (degree_code, firstname, lastname, uni_id) VALUES (1, 'Oleg', 'Kartašov', 'olkart');
@@ -29,6 +31,7 @@ INSERT INTO Person (degree_code, firstname, lastname, uni_id) VALUES (1, 'Denis'
 
 INSERT INTO Person_Account_Owner (person_id, account_id) VALUES (1, 1);
 INSERT INTO Person_Account_Owner (person_id, account_id) VALUES (2, 2);
+INSERT INTO Person_Account_Owner (person_id, account_id) VALUES (3, 3);
 
 INSERT INTO Person_Account_Owner (person_id, account_id) VALUES (3, 3);
 INSERT INTO Person_Account_Owner (person_id, account_id) VALUES (4, 4);
@@ -45,6 +48,7 @@ INSERT INTO Faculty (faculty_code, en_name, ee_name) VALUES (5, 'Estonian Mariti
 
 INSERT INTO Person_Role (person_id, role_code) VALUES (1, 1);
 INSERT INTO Person_Role (person_id, role_code) VALUES (2, 2);
+INSERT INTO Person_Role (person_id, role_code) VALUES (3, 2);
 
 INSERT INTO Person_Role (person_id, role_code) VALUES (3, 1);
 INSERT INTO Person_Role (person_id, role_code) VALUES (4, 1);
@@ -52,6 +56,7 @@ INSERT INTO Person_Role (person_id, role_code) VALUES (5, 1);
 
 INSERT INTO Person_Faculty (person_id, faculty_code) VALUES (1, 3);
 INSERT INTO Person_Faculty (person_id, faculty_code) VALUES (2, 3);
+INSERT INTO Person_Faculty (person_id, faculty_code) VALUES (3, 3);
 
 INSERT INTO Person_Faculty (person_id, faculty_code) VALUES (3, 3);
 INSERT INTO Person_Faculty (person_id, faculty_code) VALUES (4, 3);

@@ -18,6 +18,7 @@ import ee.ttu.unomomento.db.tables.Role;
 import ee.ttu.unomomento.db.tables.Thesis;
 import ee.ttu.unomomento.db.tables.ThesisCandidate;
 import ee.ttu.unomomento.db.tables.ThesisOwner;
+import ee.ttu.unomomento.db.tables.ThesisPicked;
 import ee.ttu.unomomento.db.tables.ThesisState;
 import ee.ttu.unomomento.db.tables.ThesisTag;
 
@@ -106,6 +107,11 @@ public class Tables {
      * The table <code>public.thesis_owner</code>.
      */
     public static final ThesisOwner THESIS_OWNER = ee.ttu.unomomento.db.tables.ThesisOwner.THESIS_OWNER;
+
+    /**
+     * The table <code>public.thesis_picked</code>.
+     */
+    public static final ThesisPicked THESIS_PICKED = ee.ttu.unomomento.db.tables.ThesisPicked.THESIS_PICKED;
 
     /**
      * 1 -- Active, 2 - Inactive, 3 - Reserved

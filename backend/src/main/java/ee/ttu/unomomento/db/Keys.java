@@ -17,6 +17,7 @@ import ee.ttu.unomomento.db.tables.Role;
 import ee.ttu.unomomento.db.tables.Thesis;
 import ee.ttu.unomomento.db.tables.ThesisCandidate;
 import ee.ttu.unomomento.db.tables.ThesisOwner;
+import ee.ttu.unomomento.db.tables.ThesisPicked;
 import ee.ttu.unomomento.db.tables.ThesisState;
 import ee.ttu.unomomento.db.tables.ThesisTag;
 import ee.ttu.unomomento.db.tables.records.AccountRecord;
@@ -31,6 +32,7 @@ import ee.ttu.unomomento.db.tables.records.PersonRoleRecord;
 import ee.ttu.unomomento.db.tables.records.RoleRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisCandidateRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisOwnerRecord;
+import ee.ttu.unomomento.db.tables.records.ThesisPickedRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisStateRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisTagRecord;
@@ -91,6 +93,7 @@ public class Keys {
     public static final UniqueKey<ThesisRecord> PK_THESIS_THESIS_ID = UniqueKeys0.PK_THESIS_THESIS_ID;
     public static final UniqueKey<ThesisCandidateRecord> PK_THESIS_CANDIDATE_THESIS_ID_CANDIDATE_ID = UniqueKeys0.PK_THESIS_CANDIDATE_THESIS_ID_CANDIDATE_ID;
     public static final UniqueKey<ThesisOwnerRecord> PK_THESIS_OWNER_THESIS_ID_PERSON_ID = UniqueKeys0.PK_THESIS_OWNER_THESIS_ID_PERSON_ID;
+    public static final UniqueKey<ThesisPickedRecord> PK_THESIS_PICKED_THESIS_ID_PERSON_ID = UniqueKeys0.PK_THESIS_PICKED_THESIS_ID_PERSON_ID;
     public static final UniqueKey<ThesisStateRecord> PK_THESIS_STATE_THESIS_STATE_CODE = UniqueKeys0.PK_THESIS_STATE_THESIS_STATE_CODE;
     public static final UniqueKey<ThesisStateRecord> AK_THESIS_STATE_EE_NAME = UniqueKeys0.AK_THESIS_STATE_EE_NAME;
     public static final UniqueKey<ThesisStateRecord> AK_THESIS_STATE_EN_NAME = UniqueKeys0.AK_THESIS_STATE_EN_NAME;
@@ -117,6 +120,9 @@ public class Keys {
     public static final ForeignKey<ThesisOwnerRecord, ThesisRecord> THESIS_OWNER__FK_THESIS_OWNER_THESIS_ID = ForeignKeys0.THESIS_OWNER__FK_THESIS_OWNER_THESIS_ID;
     public static final ForeignKey<ThesisOwnerRecord, PersonRecord> THESIS_OWNER__FK_THESIS_OWNER_PERSON_ID = ForeignKeys0.THESIS_OWNER__FK_THESIS_OWNER_PERSON_ID;
     public static final ForeignKey<ThesisOwnerRecord, RoleRecord> THESIS_OWNER__FK_THESIS_OWNER_ROLE_CODE = ForeignKeys0.THESIS_OWNER__FK_THESIS_OWNER_ROLE_CODE;
+    public static final ForeignKey<ThesisPickedRecord, ThesisRecord> THESIS_PICKED__FK_THESIS_PICKED_THESIS_ID = ForeignKeys0.THESIS_PICKED__FK_THESIS_PICKED_THESIS_ID;
+    public static final ForeignKey<ThesisPickedRecord, PersonRecord> THESIS_PICKED__FK_THESIS_PICKED_PERSON_ID = ForeignKeys0.THESIS_PICKED__FK_THESIS_PICKED_PERSON_ID;
+    public static final ForeignKey<ThesisPickedRecord, DegreeRecord> THESIS_PICKED__FK_THESIS_PICKED_DEGREE_CODE = ForeignKeys0.THESIS_PICKED__FK_THESIS_PICKED_DEGREE_CODE;
     public static final ForeignKey<ThesisTagRecord, ThesisRecord> THESIS_TAG__FK_THESIS_TAG_THESIS_ID = ForeignKeys0.THESIS_TAG__FK_THESIS_TAG_THESIS_ID;
 
     // -------------------------------------------------------------------------
@@ -152,6 +158,7 @@ public class Keys {
         public static final UniqueKey<ThesisRecord> PK_THESIS_THESIS_ID = createUniqueKey(Thesis.THESIS, "pk_thesis_thesis_id", Thesis.THESIS.THESIS_ID);
         public static final UniqueKey<ThesisCandidateRecord> PK_THESIS_CANDIDATE_THESIS_ID_CANDIDATE_ID = createUniqueKey(ThesisCandidate.THESIS_CANDIDATE, "pk_thesis_candidate_thesis_id_candidate_id", ThesisCandidate.THESIS_CANDIDATE.THESIS_ID, ThesisCandidate.THESIS_CANDIDATE.CANDIDATE_ID);
         public static final UniqueKey<ThesisOwnerRecord> PK_THESIS_OWNER_THESIS_ID_PERSON_ID = createUniqueKey(ThesisOwner.THESIS_OWNER, "pk_thesis_owner_thesis_id_person_id", ThesisOwner.THESIS_OWNER.THESIS_ID, ThesisOwner.THESIS_OWNER.PERSON_ID);
+        public static final UniqueKey<ThesisPickedRecord> PK_THESIS_PICKED_THESIS_ID_PERSON_ID = createUniqueKey(ThesisPicked.THESIS_PICKED, "pk_thesis_picked_thesis_id_person_id", ThesisPicked.THESIS_PICKED.THESIS_ID, ThesisPicked.THESIS_PICKED.PERSON_ID);
         public static final UniqueKey<ThesisStateRecord> PK_THESIS_STATE_THESIS_STATE_CODE = createUniqueKey(ThesisState.THESIS_STATE, "pk_thesis_state_thesis_state_code", ThesisState.THESIS_STATE.THESIS_STATE_CODE);
         public static final UniqueKey<ThesisStateRecord> AK_THESIS_STATE_EE_NAME = createUniqueKey(ThesisState.THESIS_STATE, "ak_thesis_state_ee_name", ThesisState.THESIS_STATE.EE_NAME);
         public static final UniqueKey<ThesisStateRecord> AK_THESIS_STATE_EN_NAME = createUniqueKey(ThesisState.THESIS_STATE, "ak_thesis_state_en_name", ThesisState.THESIS_STATE.EN_NAME);
@@ -176,6 +183,9 @@ public class Keys {
         public static final ForeignKey<ThesisOwnerRecord, ThesisRecord> THESIS_OWNER__FK_THESIS_OWNER_THESIS_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_THESIS_THESIS_ID, ThesisOwner.THESIS_OWNER, "thesis_owner__fk_thesis_owner_thesis_id", ThesisOwner.THESIS_OWNER.THESIS_ID);
         public static final ForeignKey<ThesisOwnerRecord, PersonRecord> THESIS_OWNER__FK_THESIS_OWNER_PERSON_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_PERSON_PERSON_ID, ThesisOwner.THESIS_OWNER, "thesis_owner__fk_thesis_owner_person_id", ThesisOwner.THESIS_OWNER.PERSON_ID);
         public static final ForeignKey<ThesisOwnerRecord, RoleRecord> THESIS_OWNER__FK_THESIS_OWNER_ROLE_CODE = createForeignKey(ee.ttu.unomomento.db.Keys.PK_ROLE_PERSON_ROLE_CODE, ThesisOwner.THESIS_OWNER, "thesis_owner__fk_thesis_owner_role_code", ThesisOwner.THESIS_OWNER.ROLE_CODE);
+        public static final ForeignKey<ThesisPickedRecord, ThesisRecord> THESIS_PICKED__FK_THESIS_PICKED_THESIS_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_THESIS_THESIS_ID, ThesisPicked.THESIS_PICKED, "thesis_picked__fk_thesis_picked_thesis_id", ThesisPicked.THESIS_PICKED.THESIS_ID);
+        public static final ForeignKey<ThesisPickedRecord, PersonRecord> THESIS_PICKED__FK_THESIS_PICKED_PERSON_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_PERSON_PERSON_ID, ThesisPicked.THESIS_PICKED, "thesis_picked__fk_thesis_picked_person_id", ThesisPicked.THESIS_PICKED.PERSON_ID);
+        public static final ForeignKey<ThesisPickedRecord, DegreeRecord> THESIS_PICKED__FK_THESIS_PICKED_DEGREE_CODE = createForeignKey(ee.ttu.unomomento.db.Keys.PK_DEGREE_DEGREE_CODE, ThesisPicked.THESIS_PICKED, "thesis_picked__fk_thesis_picked_degree_code", ThesisPicked.THESIS_PICKED.DEGREE_CODE);
         public static final ForeignKey<ThesisTagRecord, ThesisRecord> THESIS_TAG__FK_THESIS_TAG_THESIS_ID = createForeignKey(ee.ttu.unomomento.db.Keys.PK_THESIS_THESIS_ID, ThesisTag.THESIS_TAG, "thesis_tag__fk_thesis_tag_thesis_id", ThesisTag.THESIS_TAG.THESIS_ID);
     }
 }

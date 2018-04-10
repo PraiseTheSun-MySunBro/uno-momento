@@ -210,14 +210,14 @@ export default {
       lecturers: [],
 
       /* for thesis registration */
-      form: {
-        eeTitle: '',
-        eeDescription: '',
-        enTitle: '',
-        enDescription: '',
-        tags: [],
-        lecturer: null
-      },
+      // form: {
+      //   eeTitle: '',
+      //   eeDescription: '',
+      //   enTitle: '',
+      //   enDescription: '',
+      //   tags: [],
+      //   lecturer: null
+      // },
 
       /* List of lecturers for input-select form */
       listOfLecturers: [{
@@ -281,7 +281,8 @@ export default {
     /* methods for adding */
     onThesisSubmit () {
       /* Reset our form values */
-      axios.post('/api/thesis/', {
+      axios.post('/api/thesis/edit', {
+        thesisId: this.$route.params.thesis.thesisId,
         eeTitle: this.form.eeTitle,
         enTitle: this.form.enTitle,
         eeDescription: this.form.eeDescription,
@@ -318,6 +319,11 @@ export default {
     }
   },
   mounted () {
+    // this.form = this.$route.params.thesis
+    console.log(this.$lang)
+    this.englishCard = this.form.enTitle !== ''
+    this.estonianCard = this.form.eeTitle !== ''
+
     this.lecturers = this.$store.getters.getCurators
     this.$store.dispatch('fetchCurators')
       .then((data) => {
@@ -332,9 +338,13 @@ export default {
         console.error(err)
       })
   },
+  destroyed () {
+    this.$store.dispatch('resetThesis')
+  },
   computed: {
     ...mapGetters({
-      currentUser: 'getUser'
+      currentUser: 'getUser',
+      form: 'getThesis'
     })
   },
   validations () {

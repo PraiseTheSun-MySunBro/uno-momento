@@ -33,7 +33,7 @@ const actions = {
         })
     })
   },
-  resetUser({ commit }) {
+  resetUser ({ commit }) {
     commit('resetUser')
   }
 }
@@ -48,7 +48,7 @@ const mutations = {
       firstname: '',
       lastname: '',
       state: 0,
-      roleCode = -1;
+      roleCode: -1
     }
   }
 }

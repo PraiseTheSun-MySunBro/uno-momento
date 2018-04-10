@@ -101,13 +101,14 @@ export default {
         success: () => {
           // app.success = true
           this.$store.dispatch('resetUser')
+          this.$store.dispatch('resetWorkplace')
         },
         error: (err) => {
           // app.error = true
           // app.errors = err.response.data
           console.error(err.response)
         },
-        redirect: '/'
+        redirect: '/login'
       })
     }
   },
