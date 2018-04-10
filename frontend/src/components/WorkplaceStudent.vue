@@ -12,7 +12,7 @@
                   <template slot="title" class="tab__name">
                       <em class="text--sans">Valitud lõputöö</em>
                   </template>
-                  <b-card class="chosen-thesis__card" v-if="Object.keys(getMyPickedThesis).length !== 0">
+                  <b-card class="chosen-thesis__card" v-if="getMyPickedThesis != null && Object.keys(getMyPickedThesis).length !== 0">
                     <h2 class="text--sans text-center">{{ getMyPickedThesis.eeTitle }}</h2>
                     <h3 class="modal-lecturer-name text--sans text-center">{{ getMyPickedThesis.fullName }}, {{ getMyPickedThesis.supervisorName }}</h3>
                     <hr class="hr__chosen">
@@ -57,7 +57,7 @@
                           </b-button>
                       </b-button-group>
                   </div>
-                  <div v-if="Object.keys(getMyOwnTheses).length !== 0">
+                  <div v-if="getMyOwnTheses != null && Object.keys(getMyOwnTheses).length !== 0">
                     <!-- Active theses -->
                     <div class="active-theses__list" v-if="activeThesesButtonState">
                       <div class="my-submitted__theses">
@@ -185,7 +185,7 @@
                           </b-button>
                       </b-button-group>
                   </div>
-                  <div v-if="Object.keys(getMyCandidateTheses).length !== 0">
+                  <div v-if="getMyCandidateTheses != null && Object.keys(getMyCandidateTheses).length !== 0">
                       <!-- Submitted theses -->
                       <div class="active-theses__list" v-if="submittedThesesButtonState">
                           <div class="thesis-group__label">

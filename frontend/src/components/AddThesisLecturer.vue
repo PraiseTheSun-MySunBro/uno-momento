@@ -152,6 +152,20 @@
               </div>
               <div class="row">
                 <div class="col-sm-9">
+                  <b-form-group label="Kraad:"
+                                label-class="text-sm"
+                                label-for="choose-thesis-degree">
+                    <b-form-select id="choose-thesis-degree"
+                                  class="form-control"
+                                  :options="degrees"
+                                  v-model="form.degree"
+                                  placeholder="Valige üks">
+                    </b-form-select>
+                  </b-form-group>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-9">
                   <b-form-group label="Kaasjuhendaja:"
                                 label-class="text-sm"
                                 label-for="choose-thesis-co-supervisor">
@@ -166,7 +180,8 @@
               <div class="float-right">
                 <b-button class="submit__button"
                           variant="primary"
-                          @click="showSubmitModal">
+                          @click="showSubmitModal"
+                          :disabled="$v.form.$invalid">
                           Paku
                 </b-button>
               </div>
@@ -211,11 +226,20 @@ export default {
         eeDescription: '',
         enTitle: '',
         enDescription: '',
+        degree: '',
         tags: [],
         supervisorName: ''
       },
       /* tag in input field */
-      tag: ''
+      tag: '',
+
+      degrees: [
+        { text: '<span class="label__text">Bakalaureus</span>', value: 2 },
+        { text: '<span class="label__text">Magister</span>', value: 3 },
+        { text: '<span class="label__text">Doktor</span>', value: 4 },
+        { text: '<span class="label__text">Rakendus</span>', value: 5 },
+        { text: '<span class="label__text">Inseneeri</span>', value: 6 }
+      ],
     }
   },
   methods: {
@@ -283,6 +307,7 @@ export default {
           this.form.eeDescription = ''
           this.form.enDescription = ''
           this.form.supervisorName = ''
+          this.form.degree = ''
           this.form.tags = []
           this.tag = ''
           this.estonianCard = false
@@ -317,6 +342,9 @@ export default {
           },
           supervisorName: {
             required
+          },
+          degree: {
+            required
           }
         }
       }
@@ -333,7 +361,10 @@ export default {
             required
           },
           enTitle: {},
-          enDescription: {}
+          enDescription: {},
+          degree: {
+            required
+          }
         }
       }
     } if (!this.estonianCard && this.englishCard) {
@@ -348,6 +379,9 @@ export default {
             required
           },
           supervisorName: {
+            required
+          },
+          degree: {
             required
           }
         }
@@ -368,6 +402,9 @@ export default {
             required
           },
           supervisorName: {
+            required
+          },
+          degree: {
             required
           }
         }
