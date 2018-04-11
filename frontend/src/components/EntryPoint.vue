@@ -1,7 +1,8 @@
 <template>
   <div class="entrypoint">
     <b-container class="container__entrypoint"
-                 v-if="!$auth.check()">
+                 v-if="!$auth.check()"
+                 v-bind:class="{ '--signup': isActive }">
       <!-- Sign in form -->
       <b-form class="form__signin sign-in__transaction"
               @submit.prevent="onLoginSubmit">
@@ -27,7 +28,7 @@
                         class="button--signin"
                         :disabled="$v.credentials.username.$invalid
                                 || $v.credentials.password.$invalid">
-                {{ $lang.logInBtnText }}
+                {{ $lang.signinButtonText }}
               </b-button>
               <p class="text forgot-password">{{ $lang.forgottenPasswordText }}</p>
             </div>
@@ -38,16 +39,17 @@
       <div id="entrypoint__transaction" class="entrypoint__transaction">
         <div class="image">
           <div class="image__text text--up">
-            <h2 class="text">Oled uus siin?</h2>
-            <p class="text">Registreeri ja avasta palju uusi võimalusi!</p>
+            <h2 class="text">{{ $lang.firstTimeHereHeader }}</h2>
+            <p class="text">{{ $lang.firstTimeHereText }}</p>
           </div>
           <div class="image__text text--in">
-            <h2 class="text">Üks meist?</h2>
-            <p class="text">Kui teil on juba konto, logi sisse. Me igatsesime sind!</p>
+            <h2 class="text">{{ $lang.commonHereHeader }}</h2>
+            <p class="text">{{ $lang.commonHereText }}</p>
           </div>
-          <div class="image__button">
-            <span class="text text--up">Loo uus konto</span>
-            <span class="text text--in">Logi sisse</span>
+          <div class="image__button"
+               @click="isActive = !isActive">
+            <span class="text text--up">{{ $lang.createNewText }}</span>
+            <span class="text text--in">{{ $lang.loginText }}</span>
           </div>
         </div>
 
@@ -67,7 +69,7 @@
 
           <div v-if="!back">
             <div class="row label--nowrap">
-              <b-form-group label="<span class='label__text'>Eesnimi</span>"
+              <b-form-group :label="`<span class='label__text'>${$lang.firstnameLabel}</span>`"
                             label-for="reg-firstname"
                             class="mb-3 mr-1">
                 <b-form-input id="reg-firstname"
@@ -76,7 +78,7 @@
                               v-model="credentials.firstname">
                 </b-form-input>
               </b-form-group>
-              <b-form-group label="<span class='label__text'>Perekonnanimi</span>"
+              <b-form-group :label="`<span class='label__text'>${$lang.lastnameLabel}</span>`"
                             label-for="reg-lastname"
                             class="mb-3 ml-1">
                 <b-form-input id="reg-lastname"
@@ -86,7 +88,7 @@
                 </b-form-input>
               </b-form-group>
             </div>
-            <b-form-group label="<span class='label__text'>Kasutajanimi</span>"
+            <b-form-group :label="`<span class='label__text'>${$lang.usernameLabel}</span>`"
                           label-for="reg-username"
                           class="mb-3">
               <b-form-input id="reg-username"
@@ -95,7 +97,7 @@
                             v-model="credentials.username">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="<span class='label__text'>Parool</span>"
+            <b-form-group :label="`<span class='label__text'>${$lang.passwordLabel}</span>`"
                           label-for="reg-password"
                           class="mb-3">
               <b-form-input id="reg-password"
@@ -104,7 +106,7 @@
                             v-model="credentials.password">
               </b-form-input>
             </b-form-group>
-            <b-form-group label="<span class='label__text'>E-post</span>"
+            <b-form-group :label="`<span class='label__text'>${$lang.emailLabel}</span>`"
                           label-for="reg-email"
                           class="mb-3">
               <b-form-input id="reg-email"
@@ -116,7 +118,7 @@
           </div>
 
           <div v-if="back">
-            <b-form-group label="<span class='label__text'>Uni-ID</span>"
+            <b-form-group :label="`<span class='label__text'>${$lang.uniIdLabel}</span>`"
                           label-for="reg-uniid"
                           class="mb-3">
               <b-form-input id="reg-uniid"
@@ -132,7 +134,7 @@
                                   :options="roles">
               </b-form-radio-group>
             </b-form-group>
-            <b-form-group label="<span class='label__text'>Kraad</span>"
+            <b-form-group :label="`<span class='label__text'>${$lang.degreeLabel}</span>`"
                           label-for="reg-degree"
                           class="mb-3">
               <b-form-select id="reg-degree"
@@ -141,7 +143,7 @@
                              v-model="credentials.degree"
                              :options="degrees"/>
             </b-form-group>
-            <b-form-group label="<span class='label__text'>Teaduskond</span>"
+            <b-form-group :label="`<span class='label__text'>${$lang.facultyLabel}</span>`"
                           label-for="reg-faculty"
                           class="mb-3">
               <b-form-select id="reg-faculty"
@@ -162,13 +164,13 @@
                               || $v.credentials.username.$invalid
                               || $v.credentials.password.$invalid
                               || $v.credentials.email.$invalid">
-              Edasi
+              {{ $lang.continueButtonText }}
             </b-button>
             <b-button v-if="back"
                       variant="secondary"
                       class="button--back"
                       @click="onBack">
-              Tagasi
+              {{ $lang.backButtonText }}
             </b-button>
             <b-button v-if="back"
                       type="submit"
@@ -179,7 +181,7 @@
                               || $v.credentials.degree.$invalid
                               || $v.credentials.faculty.$invalid
                               ">
-              Loo uus konto
+              {{ $lang.signupButtonText }}
             </b-button>
           </div>
 
@@ -204,7 +206,7 @@ export default {
         username: '',
         password: '',
         email: '',
-        role: '',
+        role: 1,
         uniId: '',
         degree: '',
         faculty: ''
@@ -230,6 +232,7 @@ export default {
         { text: '<span class="label__text">Inseneriteaduskond</span>', value: 2 },
         { text: '<span class="label__text">Majandusteaduskond</span>', value: 1 }
       ],
+      isActive: false,
       back: false,
       success: false,
       error: false,
@@ -299,12 +302,6 @@ export default {
         redirect: null
       })
     }
-  },
-  mounted () {
-    document.querySelector('.image__button').addEventListener('click',
-      function () {
-        document.querySelector('.container__entrypoint').classList.toggle('--signup')
-      })
   },
   validations: {
     credentials: {
@@ -417,6 +414,7 @@ button {
 .container__entrypoint {
   overflow: hidden;
   position: relative;
+  max-width: 1050px;
   width: 900px;
   height: 550px;
   margin: 0 auto;
@@ -690,7 +688,7 @@ button {
 }
 
 .div__roles {
-  margin-left: 101px;
+  margin-left: 25%;
 }
 
 @media screen and (max-width: 991px) {
@@ -716,10 +714,6 @@ button {
     width: 460px;
     padding: 30px 50px 0;
     margin-left: 80px;
-  }
-
-  .div__roles {
-    margin-left: 89px;
   }
 }
 
