@@ -274,6 +274,7 @@ export default {
     /* modal submition form */
     hideSubmitModal: function () {
       this.$refs.myModalRef.hide()
+      this.$router.push({name: 'WorkplaceStudent'})
     },
     showSubmitModal: function () {
       this.$refs.myModalRef.show()
@@ -289,7 +290,8 @@ export default {
         enDescription: this.form.enDescription,
         degreeCode: this.currentUser.degreeCode,
         facultyCode: this.currentUser.facultyCode,
-        roleCode: this.currentUser.roleCode
+        roleCode: this.currentUser.roleCode,
+        tags: this.form.tags
       })
         .then(res => {
           this.form.eeTitle = ''
@@ -581,60 +583,63 @@ export default {
   /* Buttons */
   .add__button {
       background-color: #28a745;
-      border:none;
+      border: 1px solid #28a745;
   }
 
   .add__button:hover {
       background-color: #218839;
-      border:none;
+      border: 1px solid #218839;
   }
 
   .close__button {
     background-color: rgb(219, 70, 70);
+    border: 1px solid rgb(219, 70, 70);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    border: none;
   }
 
   .close__button:hover {
       background-color: rgb(177, 40, 40);
+      border: 1px solid rgb(177, 40, 40);
       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-      border: none;
   }
 
   .submit__button {
     font-weight: 300;
     background-color: rgb(66, 139, 202);
+    border: 1px solid rgb(66, 139, 202);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 100px;
-    border: none;
   }
 
   .submit__button:hover {
       background-color: rgb(46, 100, 148);
+      border: 1px solid rgb(46, 100, 148);
   }
 
   .modal-button__submit {
     font-weight: 300;
     background-color: rgb(66, 139, 202);
+    border: 1px solid rgb(66, 139, 202);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 50px;
-    border: none;
   }
 
   .modal-button__submit:hover {
       background-color: rgb(46, 100, 148);
+      border: 1px solid rgb(46, 100, 148);
   }
 
   .modal-button__cancel {
     font-weight: 300;
     background-color: rgb(127, 128, 131);
+    border: 1px solid rgb(127, 128, 131);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 50px;
-    border: none;
   }
 
   .modal-button__cancel:hover {
     background-color: rgb(104, 102, 102);
+    border: 1px solid rgb(104, 102, 102);
   }
 
   @media screen and (max-width: 767px) {

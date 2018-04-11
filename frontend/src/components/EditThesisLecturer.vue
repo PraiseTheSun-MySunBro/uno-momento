@@ -3,14 +3,14 @@
     <div class="add-thesis__container">
       <div class="offer-slogan__container">
         <div class="offer__slogans">
-          <h5 class="text--sans line--height">Peas on head mõtted millest saab hea lõpputöö idee?</h5>
-          <h5 class="text--sans line--height">Jaga neid õppejõududega või vali ühe konkreetse ja paku talle oma idee!</h5>
+          <h5 class="text--sans line--height">On huvi pakkuda tudengile hea lõpputöö idee?</h5>
+          <h5 class="text--sans line--height">Pakutage tudengitele oma idee!</h5>
         </div>
       </div>
       <b-card class="form__container">
         <b-form>
           <div class="card__conteiner">
-            <h2 class="text--sans text--grey main-slogan">PAKU OMA LÕPUTÖÖ IDEE</h2>
+            <h2 class="text--sans text--grey main-slogan">LÕPUTÖÖ LISAMINE</h2>
             <b-card class="name-description__card shadow">
               <h4 class="text--sans text--blue card__title">Nimi ja kirjeldus</h4>
               <hr>
@@ -139,7 +139,7 @@
               <div class="row">
                 <div class="col-sm-9">
                   <div class="tags">
-                    <div v-for="(tag, index) in form.tags"
+                    <div v-for="(tag,index) in form.tags"
                         :key="index"
                         class="tag__container">
                       <div class="tag">
@@ -151,21 +151,31 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-6">
-                  <b-form-group label="Juhendaja:"
+                <div class="col-sm-9">
+                  <b-form-group label="Kraad:"
                                 label-class="text-sm"
-                                label-for="choose-thesis-curator">
-                    <b-form-select id="choose-thesis-curator"
+                                label-for="choose-thesis-degree">
+                    <b-form-select id="choose-thesis-degree"
                                   class="form-control"
-                                  :options="listOfLecturers"
-                                  v-model="form.lecturer"
+                                  :options="degrees"
+                                  v-model="form.degree"
                                   placeholder="Valige üks">
                     </b-form-select>
-                    <small class="text-muted">Valige üks variant järgmiste hulgast</small>
                   </b-form-group>
                 </div>
-                <i class="fas fa-question-circle fa-lg icon"
-                    v-b-popover.hover.right="popoverText"></i>
+              </div>
+              <div class="row">
+                <div class="col-sm-9">
+                  <b-form-group label="Kaasjuhendaja:"
+                                label-class="text-sm"
+                                label-for="choose-thesis-co-supervisor">
+                    <b-form-input id="choose-thesis-co-supervisor"
+                                type="text"
+                                v-model="form.supervisorName"
+                                placeholder="Kirjutage kaasjuhendaja nimi">
+                    </b-form-input>
+                  </b-form-group>
+                </div>
               </div>
               <div class="float-right">
                 <b-button class="submit__button"
@@ -205,9 +215,9 @@ export default {
       show: true,
       estonianCard: false,
       englishCard: false,
-      popoverText: 'Jätta seda "Saada kõigile", kui tahate pakkuda kõigile õppejõudule',
+      popoverText: 'Jätta seda "Valige üks", kui tahate pakkuda kõigile õppejõudule',
 
-      /* list of lecturers  with list of theses */
+      /* list of lecturers */
       lecturers: [],
 
       /* for thesis registration */
@@ -216,21 +226,20 @@ export default {
         eeDescription: '',
         enTitle: '',
         enDescription: '',
+        degree: '',
         tags: [],
-        lecturer: null
+        supervisorName: ''
       },
-
-      /* List of lecturers for input-select form */
-      listOfLecturers: [{
-        text: 'Saada kõigile',
-        value: null
-      }],
-
       /* tag in input field */
       tag: '',
 
-      /* list of theses */
-      listOfTheses: []
+      degrees: [
+        { text: '<span class="label__text">Bakalaureus</span>', value: 2 },
+        { text: '<span class="label__text">Magister</span>', value: 3 },
+        { text: '<span class="label__text">Doktor</span>', value: 4 },
+        { text: '<span class="label__text">Rakendus</span>', value: 5 },
+        { text: '<span class="label__text">Inseneeri</span>', value: 6 }
+      ],
     }
   },
   methods: {
@@ -287,52 +296,28 @@ export default {
         enTitle: this.form.enTitle,
         eeDescription: this.form.eeDescription,
         enDescription: this.form.enDescription,
+        supervisorName: this.form.supervisorName,
         degreeCode: this.currentUser.degreeCode,
         facultyCode: this.currentUser.facultyCode,
-        roleCode: this.currentUser.roleCode,
-        tags: this.form.tags
+        roleCode: this.currentUser.roleCode
       })
         .then(res => {
           this.form.eeTitle = ''
           this.form.enTitle = ''
           this.form.eeDescription = ''
           this.form.enDescription = ''
-          this.form.lecturer = null
+          this.form.supervisorName = ''
+          this.form.degree = ''
           this.form.tags = []
           this.tag = ''
           this.estonianCard = false
           this.englishCard = false
-          this.hideSubmitModal()
         })
         .catch(err => {
           console.error(err.response)
         })
-    },
-    getPersons: function () {
-      console.log("I'm working!")
-      axios.get('/api/curators')
-        .then((response) => {
-          console.log('Response', response)
-        })
-        .catch((error) => {
-          console.error('Error', error)
-        })
+      this.hideSubmitModal()
     }
-  },
-  mounted () {
-    this.lecturers = this.$store.getters.getCurators
-    this.$store.dispatch('fetchCurators')
-      .then((data) => {
-        console.log('Curators data has been fetched successfully!')
-        this.lecturers = data
-        for (var i = 0, each = this.lecturers.length; i < each; i++) {
-          const lecturer = this.lecturers[i].firstname + ' ' + this.lecturers[i].lastname
-          this.listOfLecturers.push(lecturer)
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
   },
   computed: {
     ...mapGetters({
@@ -354,6 +339,12 @@ export default {
           },
           enDescription: {
             required
+          },
+          supervisorName: {
+            required
+          },
+          degree: {
+            required
           }
         }
       }
@@ -366,8 +357,14 @@ export default {
           eeDescription: {
             required
           },
+          supervisorName: {
+            required
+          },
           enTitle: {},
-          enDescription: {}
+          enDescription: {},
+          degree: {
+            required
+          }
         }
       }
     } if (!this.estonianCard && this.englishCard) {
@@ -379,6 +376,12 @@ export default {
             required
           },
           enDescription: {
+            required
+          },
+          supervisorName: {
+            required
+          },
+          degree: {
             required
           }
         }
@@ -396,6 +399,12 @@ export default {
             required
           },
           enDescription: {
+            required
+          },
+          supervisorName: {
+            required
+          },
+          degree: {
             required
           }
         }
@@ -429,7 +438,6 @@ export default {
   }
 
   .fa-question-circle {
-    color: rgb(66, 139, 202);
     margin-top: 42px;
   }
 
@@ -450,7 +458,7 @@ export default {
   }
 
   h3 {
-    font-size: 22px;
+    font-size: 26px;
   }
 
   h2 {
@@ -573,63 +581,60 @@ export default {
   /* Buttons */
   .add__button {
       background-color: #28a745;
-      border: 1px solid #28a745;
+      border:none;
   }
 
   .add__button:hover {
       background-color: #218839;
-      border: 1px solid #218839;
+      border:none;
   }
 
   .close__button {
     background-color: rgb(219, 70, 70);
-    border: 1px solid rgb(219, 70, 70);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    border: none;
   }
 
   .close__button:hover {
       background-color: rgb(177, 40, 40);
-      border: 1px solid rgb(177, 40, 40);
       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+      border: none;
   }
 
   .submit__button {
     font-weight: 300;
     background-color: rgb(66, 139, 202);
-    border: 1px solid rgb(66, 139, 202);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 100px;
+    border: none;
   }
 
   .submit__button:hover {
       background-color: rgb(46, 100, 148);
-      border: 1px solid rgb(46, 100, 148);
   }
 
   .modal-button__submit {
     font-weight: 300;
     background-color: rgb(66, 139, 202);
-    border: 1px solid rgb(66, 139, 202);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 50px;
+    border: none;
   }
 
   .modal-button__submit:hover {
       background-color: rgb(46, 100, 148);
-      border: 1px solid rgb(46, 100, 148);
   }
 
   .modal-button__cancel {
     font-weight: 300;
     background-color: rgb(127, 128, 131);
-    border: 1px solid rgb(127, 128, 131);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 50px;
+    border: none;
   }
 
   .modal-button__cancel:hover {
     background-color: rgb(104, 102, 102);
-    border: 1px solid rgb(104, 102, 102);
   }
 
   @media screen and (max-width: 767px) {

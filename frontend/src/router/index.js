@@ -8,8 +8,9 @@ import AddThesisLecturer from '@/components/AddThesisLecturer'
 import WorkplaceStudent from '@/components/WorkplaceStudent'
 import WorkplaceLecturer from '@/components/WorkplaceLecturer'
 import UserProfile from '@/components/UserProfile'
-import EditThesis from '@/components/EditThesis'
 import PageNotFound from '@/components/PageNotFound'
+import EditThesisStudent from '@/components/EditThesisStudent'
+import EditThesisLecturer from '@/components/EditThesisLecturer'
 
 Vue.use(Router)
 
@@ -79,8 +80,16 @@ export default new Router({
     },
     {
       path: '/thesis/edit',
-      name: 'editThesis',
-      component: EditThesis,
+      name: 'editThesisStudent',
+      component: EditThesisStudent,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/thesis/edit',
+      name: 'editThesisLecturer',
+      component: EditThesisLecturer,
       meta: {
         auth: true
       }

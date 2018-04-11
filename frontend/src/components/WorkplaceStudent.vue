@@ -8,7 +8,7 @@
           <div class="tabs__container">
             <b-tabs>
               <!-- final thesis -->
-              <b-tab v-on:click="myChosenThesisLabel">
+              <b-tab v-on:click="changeTab(1)">
                   <template slot="title" class="tab__name">
                       <em class="text--sans">Valitud lõputöö</em>
                   </template>
@@ -39,7 +39,7 @@
                   </div>
               </b-tab>
               <!-- My offered theses -->
-              <b-tab active v-on:click="myOfferLabel">
+              <b-tab active v-on:click="changeTab(2)">
                   <template slot="title" class="tab__name">
                       <em class="text--sans">Minu pakkumised</em>
                   </template>
@@ -71,12 +71,12 @@
                                               :key="index">
                               <div class="d-flex w-100 justify-content-between">
                                 <h3 class="mb-1">{{ thesis.eeTitle}}</h3>
-                                <small class="text-muted">3 days ago</small>
+                                <small class="text-muted"></small>
                               </div>
                               <h6 class="mb-1  text--sans short__description">
                                 {{ thesis.eeDescription }}
                               </h6>
-                              <small class="text-muted">{{ thesis.fullName }}</small>
+                              <small class="text-muted"></small>
                               <div class="float-right">
                                 <b-button size="sm" class="button btn--blue" @click="showModal(thesis)">
                                   Vaata detailid
@@ -104,22 +104,24 @@
                                               :key="index">
                               <div class="d-flex w-100 justify-content-between">
                                 <h3 class="mb-1">{{ thesis.eeTitle}}</h3>
-                                <small class="text-muted">3 days ago</small>
+                                <small class="text-muted"></small>
                               </div>
                               <h6 class="mb-1  text--sans short__description">
                                 {{ thesis.eeDescription }}
                               </h6>
-                              <small class="text-muted">{{ thesis.fullName }}</small>
+                              <small class="text-muted"></small>
                               <div class="float-right">
                                 <b-button size="sm" class="button btn--blue" @click="showModal(thesis)">
                                   Vaata detailid
                                 </b-button>
                                 <b-button size="sm" class="button btn--grey" @click="changeThesis(thesis)">
-                                  Muuda
+                                  Muutuda
                                   <i class="fas fa-edit"></i>
                                 </b-button>
-                                <b-button size="sm" class="btn--red button" @click="deactivateThesis(thesis)">
-                                  Kustuta
+                                <b-button size="sm"
+                                          class="btn--red button"
+                                          @click="deactivateThesis(thesis)">
+                                  Deaktiveerida
                                   <i class="fas fa-trash-alt fa-md"></i>
                                 </b-button>
                               </div>
@@ -139,21 +141,23 @@
                                           :key="index">
                             <div class="d-flex w-100 justify-content-between">
                               <h3 class="mb-1">{{ thesis.eeTitle}}</h3>
-                              <small class="text-muted">3 days ago</small>
+                              <small class="text-muted"></small>
                             </div>
                             <h6 class="mb-1  text--sans short__description">
                               {{ thesis.eeDescription }}
                             </h6>
-                            <small class="text-muted">{{ thesis.fullName }}</small>
+                            <small class="text-muted"></small>
                             <div class="float-right">
                               <b-button size="sm" class="button btn--blue" @click="showModal(thesis)">
                                 Vaata detailid
                               </b-button>
                               <b-button size="sm" class="button btn--grey" @click="changeThesis(thesis)">
-                                Muuda
+                                Muutuda
                                 <i class="fas fa-edit"></i>
                               </b-button>
-                              <b-button size="sm" class="button btn--green" @click="activateThesis(thesis)">
+                              <b-button size="sm"
+                                        class="button btn--green"
+                                        @click="activateThesis(thesis)">
                                 Aktiveerida
                                 <i class="fas fa-plus"></i>
                               </b-button>
@@ -167,7 +171,7 @@
                   </div>
               </b-tab>
               <!-- My candidations -->
-              <b-tab v-on:click="myCandidationLabel">
+              <b-tab v-on:click="changeTab(3)">
                   <template slot="title">
                       <em class="text--sans">Minu kandideerimised</em>
                   </template>
@@ -198,12 +202,12 @@
                                                 :key="index">
                                   <div class="d-flex w-100 justify-content-between">
                                       <h3 class="mb-1">{{ thesis.eeTitle}}</h3>
-                                      <small class="text-muted">3 days ago</small>
+                                      <small class="text-muted"></small>
                                   </div>
                                   <h6 class="mb-1  text--sans short__description">
                                     {{ thesis.eeDescription }}
                                   </h6>
-                                  <small class="text-muted">{{ thesis.fullName }}</small>
+                                  <small class="text-muted"></small>
                                   <div class="float-right">
                                     <b-button size="sm" class="button btn--blue" @click="showModal(thesis)">
                                       Vaata detailid
@@ -232,12 +236,12 @@
                                                 :key="index">
                                   <div class="d-flex w-100 justify-content-between">
                                       <h3 class="mb-1">{{ thesis.eeTitle }}</h3>
-                                      <small class="text-muted">3 days ago</small>
+                                      <small class="text-muted"></small>
                                   </div>
                                   <h6 class="mb-1  text--sans short__description">
                                     {{ thesis.eeDescription }}
                                   </h6>
-                                  <small class="text-muted">{{ thesis.fullName }}</small>
+                                  <small class="text-muted"></small>
                                   <div class="float-right">
                                     <b-button size="sm" class="button btn--blue" @click="showModal(thesis)">
                                       Vaata detailid
@@ -267,81 +271,125 @@
             hide-footer
             hide-header
             size="lg">
-      <div class="d-block text-center">
-        <h2 class="text--sans">{{ modal.eeTitle }}</h2>
-        <h4 class="modal-lecturer-name" v-if="chosenTab === 'Minu Kandideerimised'">
-          {{ modal.fullName }}
-        </h4>
-      </div>
-      <hr class="modal-hr__offer" v-if="chosenTab === 'Minu Pakkumised'">
-      <hr class="modal-hr__candidation" v-if="chosenTab === 'Minu Kandideerimised'">
-      <!-- Card with theses description -->
-      <b-card class="modal-card-description">
-        <div id="modal-description-container" >
-          <div id="modal-description-headline-container">
-            <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
-            <h5  class="text--sans" id="modal-description-headline">KIRJELDUS</h5>
+    <div class="d-block text-center">
+      <h2 class="text--sans">{{ modalThesisName }}</h2>
+      <h4 class="modal-lecturer-name" v-if="tabNo === 3">
+        {{ modal.fullName }}
+      </h4>
+    </div>
+    <hr class="modal-hr__offer">
+    <!-- Card with theses description -->
+    <b-tabs class="modal-card-description">
+        <!-- Tab with thesis information in estonian -->
+      <b-tab title="Eesti Keeles" active @click="choseEstonianThesisName">
+        <b-card class="card-in__tab">
+          <div id="modal-description-container" >
+            <div id="modal-description-headline-container">
+              <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
+              <h5  class="text--sans" id="modal-description-headline">KIRJELDUS</h5>
+            </div>
+            <div class="modal__content">
+              <h5 class="text--sans">{{ modal.eeDescription }}</h5>
+            </div>
           </div>
-          <div class="modal__content">
-            <h5 class="text--sans">{{ modal.eeDescription }}</h5>
+          <div id="modal-tags-container">
+            <div id="modal-description-tags-headline-container">
+              <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
+              <h5 class="text--sans" id="modal-description-headline">MÄRKSÕNAD</h5>
+              <div v-for="(tag, index) in modal.tags" :key="index" class="modal__content">
+                <h5 class="text--sans">- {{ tag }}</h5>
+              </div>
+            </div>
           </div>
-        </div>
-        <div id="modal-tags-container">
-          <div id="modal-description-tags-headline-container">
-            <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
-            <h5 class="text--sans" id="modal-description-headline">MÄRKSÕNAD</h5>
+          <div id="modal-lecturers-container" v-if="tabNo === 2">
+            <div id="modal-description-lecturers-headline-container">
+              <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
+              <h5 class="text--sans" id="modal-description-headline">ÕPPEJÕUD</h5>
+            </div>
+            <div class="modal__content">
+              <h5 class="text--sans"></h5>
+            </div>
           </div>
-          <div class="modal__content" v-for="(tag, index) in modal.tags" :key="index">
-            <h5 class="text--sans">- {{ tag }}</h5>
+        </b-card>
+        
+      </b-tab>
+      <!-- Tab with thesis information in english -->
+      <b-tab title="Inglise Keeles" @click="choseEnglishThesisName">
+        <b-card class="card-in__tab">
+          <div id="modal-description-container" >
+            <div id="modal-description-headline-container">
+              <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
+              <h5  class="text--sans" id="modal-description-headline">KIRJELDUS</h5>
+            </div>
+            <div class="modal__content">
+              <h5 class="text--sans">{{ modal.enDescription }}</h5>
+            </div>
           </div>
-        </div>
-        <div id="modal-lecturers-container" v-if="chosenTab === 'Minu Pakkumised'">
-          <div id="modal-description-lecturers-headline-container">
-            <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
-            <h5 class="text--sans" id="modal-description-headline">ÕPPEJÕUD</h5>
+          <div id="modal-tags-container">
+            <div id="modal-description-tags-headline-container">
+              <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
+              <h5 class="text--sans" id="modal-description-headline">MÄRKSÕNAD</h5>
+              <div v-for="(tag, index) in modal.tags" :key="index" class="modal__content">
+                <h5 class="text--sans">- {{ tag }}</h5>
+              </div>
+            </div>
           </div>
-          <div class="modal__content">
-            <h5 class="text--sans">- {{ modal.fullName }}</h5>
+          <div id="modal-lecturers-container" v-if="tabNo === 2">
+            <div id="modal-description-lecturers-headline-container">
+              <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
+              <h5 class="text--sans" id="modal-description-headline">ÕPPEJÕUD</h5>
+            </div>
+            <div class="modal__content">
+              <h5 class="text--sans"></h5>
+            </div>
           </div>
-        </div>
-      </b-card>
-      <!-- Buttons in my offered thesis modal -->
-      <div class="modal-buttons-container__offer" v-if="chosenTab === 'Minu Pakkumised'">
+        </b-card>
+      </b-tab>
+    </b-tabs>
+    <!-- Buttons in my offered thesis modal -->
+      <div class="modal-buttons-container__offer" v-if="tabNo === 2">
         <b-btn class="modal-button-back button btn--blue"
-              @click="hideModal">
+              @click="hideModal"
+              size="sm">
               Tagasi
         </b-btn>
-        <b-btn class="modal-button-edit button btn--blue"
+        <b-btn class="modal-button-edit button btn--grey"
               v-if="[1, 2].includes(modal.thesisStateCode)"
-              @click="changeThesis(modal)">
-              Muuda
+              @click="changeThesis(modal)"
+              size="sm">
+              Muutuda
         </b-btn>
         <!-- if modal not submitted by lecturer -->
-        <b-btn class="modal-button-activate button btn--blue"
+        <b-btn class="modal-button-activate button btn--green"
               v-if="modal.thesisStateCode === 2"
-              @click="activateThesis(modal)">
+              @click="activateThesis(modal)"
+              size="sm">
               Aktiveerida
         </b-btn>
-        <b-btn class="modal-button-deactivate button btn--blue"
+        <b-btn class="modal-button-deactivate button btn--red"
               v-if="modal.thesisStateCode === 1"
-              @click="deactivateThesis(modal)">
-              Kustuta
+              @click="deactivateThesis(modal)"
+              size="sm">
+              Deaktiveerida
         </b-btn>
         <!-- if modal submitted by lecturer -->
-        <b-btn class="modal-button-edit button btn--blue"
+        <b-btn class="modal-button-edit button btn--green"
               v-if="modal.thesisStateCode === 3"
-              @click="submitThesis(modal)">
+              @click="submitThesis(modal)"
+              size="sm">
               Valida
         </b-btn>
-        <b-btn class="modal-button-deactivate button btn--blue"
+        <b-btn class="modal-button-deactivate button btn--red"
               v-if="modal.thesisStateCode === 3"
-              @click="deactivateThesis(modal)">
+              @click="deactivateThesis(modal)"
+              size="sm">
               Loobu
         </b-btn>
       </div>
-      <div class="modal-buttons-container__candidate" v-if="chosenTab === 'Minu Kandideerimised'">
-        <b-btn class="modal-button-back button btn--blue" @click="hideModal">Tagasi</b-btn>
-        <b-btn class="modal-button-deny button btn--blue" @click="deleteCandidation">Tühista</b-btn>
+      <div class="modal-buttons-container__candidate" v-if="tabNo === 3">
+        <b-btn class="modal-button-back button btn--blue" @click="hideModal" size="sm">Tagasi</b-btn>
+        <b-btn class="modal-button-edit button btn--green" size="sm">Valida</b-btn>
+        <b-btn class="modal-button-deny button btn--red" @click="deleteCandidation" size="sm">Loobu</b-btn>
       </div>
     </b-modal>
   </div>
@@ -355,15 +403,19 @@ export default {
   data () {
     return {
       chosenTab: 'Minu Pakkumised',
+      tabNo: 2,
       activeThesesButtonState: true,
       disableThesesButtonState: false,
       submittedThesesButtonState: true,
       notSubmittedThesesButtonState: false,
 
       /* values for modal form */
+      modalThesisName: '',
       modal: {
         eeTitle: '',
         eeDescription: '',
+        enTitle: '',
+        enDescription: '',
         fullName: '',
         tags: [],
         thesisStateCode: ''
@@ -387,6 +439,7 @@ export default {
     chooseDisabled: function () {
       this.disableThesesButtonState = true
       this.activeThesesButtonState = false
+
     },
     chooseSubmitted: function () {
       this.submittedThesesButtonState = true
@@ -396,18 +449,40 @@ export default {
       this.notSubmittedThesesButtonState = true
       this.submittedThesesButtonState = false
     },
-    myChosenThesisLabel: function () {
-      this.chosenTab = 'Valitud lõputöö'
+    changeTab: function (tabNo) {
+      if (tabNo === 1) {
+        this.chosenTab = 'Valitud lõputöö'
+        this.tabNo = 1
+      }
+      if (tabNo === 2) {
+        this.chosenTab = 'Minu Pakkumised'
+        this.tabNo = 2
+      }
+      if (tabNo === 3) {
+        this.chosenTab = 'Minu Kandideerimised'
+        this.tabNo = 3
+      }
     },
-    myCandidationLabel: function () {
-      this.chosenTab = 'Minu Kandideerimised'
+    choseEstonianThesisName: function () {
+      if (this.modal.eeTitle === '') {
+        this.modalThesisName = this.modal.enTitle
+      } else {
+        this.modalThesisName = this.modal.eeTitle
+      }
     },
-    myOfferLabel: function () {
-      this.chosenTab = 'Minu Pakkumised'
+    choseEnglishThesisName: function () {
+      if (this.modal.enTitle === '') {
+        this.modalThesisName = this.modal.eeTitle
+      } else {
+        this.modalThesisName = this.modal.enTitle
+      }
     },
     showModal: function (thesis) {
+      this.modalThesisName = thesis.eeTitle
       this.modal.eeTitle = thesis.eeTitle
       this.modal.eeDescription = thesis.eeDescription
+      this.modal.enTitle = thesis.enTitle
+      this.modal.enDescription = thesis.enDescription
       this.modal.fullName = thesis.fullName
       this.modal.tags = thesis.tags
       this.modal.thesisId = thesis.thesisId
@@ -432,12 +507,7 @@ export default {
 
     },
     activateThesis: function (thesis) {
-      // for (var i = 0; i < this.MyTheses.length; i++) {
-      //   if (this.thesisTitle === this.MyTheses[i].ee_title) {
-      //     console.log(this.MyTheses[i].state)
-      //   }
-      // }
-
+      this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
       axios.post(`/api/thesis/${thesis.thesisId}/active`)
         .then(res => {
 
@@ -447,12 +517,7 @@ export default {
         })
     },
     deactivateThesis: function (thesis) {
-      // for (var i = 0; i < getMyOwnTheses.length; i++) {
-      //   if (getMyOwnTheses[i] === this.MyTheses[i].ee_title) {
-      //     console.log(this.MyTheses[i].state)
-      //   }
-      // }
-
+      this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
       axios.post(`/api/thesis/${thesis.thesisId}/inactive`)
         .then(res => {
 
@@ -463,7 +528,7 @@ export default {
     },
     changeThesis: function (thesis) {
       this.$store.dispatch('fetchThesis', thesis)
-      this.$router.push({name: 'editThesis', params: { 'thesis': thesis }})
+      this.$router.push({name: 'editThesisStudent', params: { 'thesis': thesis }})
     }
   },
   computed: {
@@ -745,6 +810,12 @@ export default {
 
     .modal__content {
       margin-left: 40px;
+    }
+
+    .card-in__tab {
+      border-top-left-radius:0;
+      border-top-right-radius:0;
+      border-top: none; 
     }
 
     /* Modal description and tags headlines */
