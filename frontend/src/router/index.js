@@ -22,7 +22,7 @@ export default new Router({
       name: 'PageNotFound'
     },
     {
-      path: '/',
+      path: '/login',
       name: 'entry',
       component: EntryPoint,
       meta: {
