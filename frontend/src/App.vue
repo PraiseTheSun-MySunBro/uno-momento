@@ -22,7 +22,7 @@
     </div>
 
     <!-- Vue component -->
-    <router-view />
+    <router-view :currentUser="currentUser"/>
   </div>
   <div v-else-if="!$store.getters.getConnectionState">
     <h2>No connection to server (might be you forget to start the server?)</h2>
