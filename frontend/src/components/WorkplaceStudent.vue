@@ -311,7 +311,7 @@
             </div>
           </div>
         </b-card>
-        
+
       </b-tab>
       <!-- Tab with thesis information in english -->
       <b-tab title="Inglise Keeles" @click="choseEnglishThesisName">
@@ -507,7 +507,8 @@ export default {
 
     },
     activateThesis: function (thesis) {
-      this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
+      // this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
+      this.$store.dispatch('removeThesis', thesis)
       axios.post(`/api/thesis/${thesis.thesisId}/active`)
         .then(res => {
 
@@ -517,7 +518,8 @@ export default {
         })
     },
     deactivateThesis: function (thesis) {
-      this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
+      // this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
+      this.$store.dispatch('removeThesis', thesis)
       axios.post(`/api/thesis/${thesis.thesisId}/inactive`)
         .then(res => {
 
@@ -815,7 +817,7 @@ export default {
     .card-in__tab {
       border-top-left-radius:0;
       border-top-right-radius:0;
-      border-top: none; 
+      border-top: none;
     }
 
     /* Modal description and tags headlines */

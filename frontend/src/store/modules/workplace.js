@@ -30,6 +30,9 @@ const actions = {
         })
     })
   },
+  removeThesis({commit}, thesis) {
+    commit('removeThesis', thesis)
+  },
   resetWorkplace ({ commit }) {
     commit('resetWorkplace')
   }
@@ -40,6 +43,9 @@ const mutations = {
     state.myOwnTheses = data.myOwnTheses
     state.myCandidateTheses = data.myCandidates
     state.myPickedThesis = data.pickedThesis
+  },
+  removeThesis(state, thesis) {
+    state.myOwnTheses.splice(state.myOwnTheses.indexOf(thesis), 1);
   },
   resetWorkplace (state) {
     state.myOwnTheses = []
