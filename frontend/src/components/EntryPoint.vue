@@ -263,7 +263,7 @@ export default {
         },
         error: (err) => {
           app.error = true
-          app.errors = err
+          app.errors = err.response
           console.error(err)
         },
         rememberMe: true,
@@ -296,7 +296,7 @@ export default {
         },
         error: (err) => {
           app.error = true
-          app.errors = `${err.response.data.status} ${err.response.data.error} - ${err.response.data.message}`
+          app.errors = `${err.response.data.status} ${err.response.data.error}`
           console.error(err.response)
         },
         redirect: null

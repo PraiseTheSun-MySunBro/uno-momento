@@ -1,5 +1,5 @@
 <template>
-  <div class="add__thesis">
+  <div class="add__thesis" v-if="currentUser.roleCode === 1">
     <div class="add-thesis__container">
       <div class="offer-slogan__container">
         <div class="offer__slogans">

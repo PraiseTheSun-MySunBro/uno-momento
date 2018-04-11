@@ -57,7 +57,7 @@ public class ThesisService {
         if (degreeCode < 4) degreeCode++;
         else return false;
 
-        Long accountId = account.getAccountId();
+        Long personId = account.getPersonId();
         Thesis thesis = new Thesis(null, thesisTemplate.getSupervisorName(), thesisTemplate.getFacultyCode(), null, degreeCode,
                 thesisTemplate.getEeTitle(), thesisTemplate.getEnTitle(), thesisTemplate.getEeDescription(), thesisTemplate.getEnDescription());
         ThesisRecord thesisRecord = dslContext.newRecord(THESIS, thesis);
@@ -65,7 +65,7 @@ public class ThesisService {
 
         Long thesisId = thesisRecord.getThesisId();
         ThesisOwnerRecord thesisOwnerRecord = dslContext.newRecord(THESIS_OWNER,
-                new ThesisOwner(thesisId, accountId, thesisTemplate.getRoleCode()));
+                new ThesisOwner(thesisId, personId, thesisTemplate.getRoleCode()));
         thesisOwnerRecord.insert();
 
         if (thesisTemplate.getTags() != null) {
@@ -202,7 +202,7 @@ public class ThesisService {
     public WorkplaceDTO getMyPickedThesis(String username) {
         return dslContext
                 .select(THESIS.THESIS_ID, THESIS.EE_TITLE, THESIS.EN_TITLE, THESIS.EE_DESCRIPTION, THESIS.EN_DESCRIPTION, THESIS.REG_TIME,
-                        THESIS.THESIS_STATE_CODE, concat(PERSON.FIRSTNAME, DSL.val(" "), PERSON.LASTNAME).as("full_name"),
+                        THESIS.THESIS_STATE_CODE,
                         THESIS.SUPERVISOR_NAME, arrayAgg(THESIS_TAG.TAG_NAME).as("tags"))
                 .from(THESIS)
                 .innerJoin(THESIS_PICKED).using(THESIS.THESIS_ID)
@@ -214,6 +214,16 @@ public class ThesisService {
                 .groupBy(THESIS.THESIS_ID, THESIS.EE_TITLE, THESIS.EN_TITLE, THESIS.EE_DESCRIPTION, THESIS.EN_DESCRIPTION, THESIS.REG_TIME, PERSON.FIRSTNAME,
                         PERSON.LASTNAME, THESIS.SUPERVISOR_NAME)
                 .fetchOneInto(WorkplaceDTO.class);
+    }
+
+    public String getOwnerByThesisId(Long thesisId) {
+        return dslContext
+                .select(concat(PERSON.FIRSTNAME, DSL.val(" "), PERSON.LASTNAME).as("full_name"))
+                .from(THESIS)
+                    .innerJoin(THESIS_OWNER).using(THESIS_OWNER.THESIS_ID)
+                    .innerJoin(PERSON).using(PERSON.PERSON_ID)
+                .where(THESIS.THESIS_ID.eq(thesisId))
+                .fetchOne("full_name").toString();
     }
 
     public Result<?> getAllTheses() {

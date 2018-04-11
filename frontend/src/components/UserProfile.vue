@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" style="margin-top: 290px">
     <b-container class="container__profile">
       <b-row>
 

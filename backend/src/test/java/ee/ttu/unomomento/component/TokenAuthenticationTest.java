@@ -30,10 +30,10 @@ public class TokenAuthenticationTest {
             .andExpect(status().isForbidden());
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void shouldGenerateToken() throws Exception {
-        String token = createToken("Test");
+        String token = createToken("eriktest");
 
         assertNotNull(token);
         mockMvc

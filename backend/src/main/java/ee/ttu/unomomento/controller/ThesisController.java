@@ -107,6 +107,8 @@ public class ThesisController {
 
         WorkplaceQueryDTO workplaceQueryDTO = new WorkplaceQueryDTO();
         WorkplaceDTO myPickedThesis = thesisService.getMyPickedThesis(username);
+        if (myPickedThesis != null)
+            myPickedThesis.setFullName(thesisService.getOwnerByThesisId(myPickedThesis.getThesisId()));
         List<WorkplaceDTO> myOwnTheses = thesisService.getAllMyOwnTheses(username);
         List<WorkplaceDTO> myCandidates = thesisService.getAllMyCandidateTheses(username);
         workplaceQueryDTO.setPickedThesis(myPickedThesis);

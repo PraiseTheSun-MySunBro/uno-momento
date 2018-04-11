@@ -98,7 +98,7 @@
             <div id="modal-lecturers-container">
               <div id="modal-description-lecturers-headline-container">
                 <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
-                <h5 class="text--sans" id="modal-description-headline">KAASJUHEND</h5>
+                <h5 class="text--sans" id="modal-description-headline">KAASJUHENDAJA</h5>
               </div>
               <div class="modal__content">
                 <h5 class="text--sans">{{ modal.supervisor_name }}</h5>
@@ -135,7 +135,7 @@
             <div id="modal-lecturers-container">
               <div id="modal-description-lecturers-headline-container">
                 <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
-                <h5 class="text--sans" id="modal-description-headline">KAASJUHEND</h5>
+                <h5 class="text--sans" id="modal-description-headline">KAASJUHENDAJA</h5>
               </div>
               <div class="modal__content">
                 <h5 class="text--sans">{{ modal.supervisor_name }}</h5>

@@ -104,7 +104,7 @@
                                   Vaata detailid
                                 </b-button>
                                 <b-button size="sm" class="button btn--grey" @click="changeThesis(thesis)">
-                                  Muutuda
+                                  Muuda
                                   <i class="fas fa-edit"></i>
                                 </b-button>
                                 <b-button size="sm"
@@ -145,7 +145,7 @@
                                 Vaata detailid
                               </b-button>
                               <b-button size="sm" class="button btn--grey" @click="changeThesis(thesis)">
-                                Muutuda
+                                Muuda
                                 <i class="fas fa-edit"></i>
                               </b-button>
                               <b-button size="sm"
@@ -313,7 +313,7 @@
               v-if="[1, 2].includes(modal.thesisStateCode)"
               @click="changeThesis(modal)"
               size="sm">
-              Muutuda
+              Muuda
         </b-btn>
         <!-- if modal not submitted by lecturer -->
         <b-btn class="modal-button-activate button btn--green"

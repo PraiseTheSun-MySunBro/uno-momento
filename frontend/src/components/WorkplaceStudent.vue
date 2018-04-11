@@ -115,7 +115,7 @@
                                   Vaata detailid
                                 </b-button>
                                 <b-button size="sm" class="button btn--grey" @click="changeThesis(thesis)">
-                                  Muutuda
+                                  Muuda
                                   <i class="fas fa-edit"></i>
                                 </b-button>
                                 <b-button size="sm"
@@ -152,7 +152,7 @@
                                 Vaata detailid
                               </b-button>
                               <b-button size="sm" class="button btn--grey" @click="changeThesis(thesis)">
-                                Muutuda
+                                Muuda
                                 <i class="fas fa-edit"></i>
                               </b-button>
                               <b-button size="sm"
@@ -301,7 +301,7 @@
               </div>
             </div>
           </div>
-          <div id="modal-lecturers-container" v-if="tabNo === 2">
+          <!--<div id="modal-lecturers-container" v-if="tabNo === 2">
             <div id="modal-description-lecturers-headline-container">
               <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
               <h5 class="text--sans" id="modal-description-headline">ÕPPEJÕUD</h5>
@@ -309,7 +309,7 @@
             <div class="modal__content">
               <h5 class="text--sans"></h5>
             </div>
-          </div>
+          </div>-->
         </b-card>
 
       </b-tab>
@@ -334,7 +334,7 @@
               </div>
             </div>
           </div>
-          <div id="modal-lecturers-container" v-if="tabNo === 2">
+          <!--<div id="modal-lecturers-container" v-if="tabNo === 2">
             <div id="modal-description-lecturers-headline-container">
               <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
               <h5 class="text--sans" id="modal-description-headline">ÕPPEJÕUD</h5>
@@ -342,7 +342,7 @@
             <div class="modal__content">
               <h5 class="text--sans"></h5>
             </div>
-          </div>
+          </div>-->
         </b-card>
       </b-tab>
     </b-tabs>
@@ -357,7 +357,7 @@
               v-if="[1, 2].includes(modal.thesisStateCode)"
               @click="changeThesis(modal)"
               size="sm">
-              Muutuda
+              Muuda
         </b-btn>
         <!-- if modal not submitted by lecturer -->
         <b-btn class="modal-button-activate button btn--green"
@@ -439,7 +439,6 @@ export default {
     chooseDisabled: function () {
       this.disableThesesButtonState = true
       this.activeThesesButtonState = false
-
     },
     chooseSubmitted: function () {
       this.submittedThesesButtonState = true
@@ -508,7 +507,7 @@ export default {
     },
     activateThesis: function (thesis) {
       // this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
-      this.$store.dispatch('removeThesis', thesis)
+      this.$store.dispatch('removeThesis', thesis, 1)
       axios.post(`/api/thesis/${thesis.thesisId}/active`)
         .then(res => {
 
@@ -519,7 +518,7 @@ export default {
     },
     deactivateThesis: function (thesis) {
       // this.getMyOwnTheses.splice(this.getMyOwnTheses.indexOf(thesis), 1)
-      this.$store.dispatch('removeThesis', thesis)
+      this.$store.dispatch('removeThesis', thesis, 2)
       axios.post(`/api/thesis/${thesis.thesisId}/inactive`)
         .then(res => {
 
