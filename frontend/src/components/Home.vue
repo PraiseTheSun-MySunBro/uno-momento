@@ -1,6 +1,6 @@
 <template>
     <!-- List of lectors -->
-    <div class="home__student">
+    <div class="home__student" v-if="Object.keys(lecturers).length !== 0">
       <div id="list__of__lecturers">
         <div role="tablist" >
           <b-card  id="list-accordion" no-body class="mb-1">
@@ -95,6 +95,15 @@
                 </div>
               </div>
             </div>
+            <div id="modal-lecturers-container">
+              <div id="modal-description-lecturers-headline-container">
+                <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
+                <h5 class="text--sans" id="modal-description-headline">KAASJUHEND</h5>
+              </div>
+              <div class="modal__content">
+                <h5 class="text--sans">{{ modal.supervisor_name }}</h5>
+              </div>
+            </div>
           </b-card>
           <div id="modal-buttons-container">
             <b-btn class="modal-button-back" @click="hideModal">Tagasi</b-btn>
@@ -121,6 +130,15 @@
                 <div v-for="(tag, index) in modal.tags" :key="index" class="modal__content">
                   <p class="text--sans">- {{ tag }}</p>
                 </div>
+              </div>
+            </div>
+            <div id="modal-lecturers-container">
+              <div id="modal-description-lecturers-headline-container">
+                <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
+                <h5 class="text--sans" id="modal-description-headline">KAASJUHEND</h5>
+              </div>
+              <div class="modal__content">
+                <h5 class="text--sans">{{ modal.supervisor_name }}</h5>
               </div>
             </div>
           </b-card>
@@ -156,6 +174,7 @@ export default {
         thesisDegree: '',
         thesisCuratorFirstName: '',
         thesisCuratorLastName: '',
+        supervisor_name: ''
       },
       /* number of chosen page */
       currentPage: 1
@@ -172,16 +191,25 @@ export default {
       this.modal.thesisDegree = thesis.ee_degree
       this.modal.thesisCuratorFirstName = lecturer.firstname
       this.modal.thesisCuratorLastName = lecturer.lastname
+      this.modal.supervisor_name = thesis.supervisor_name
       this.$refs.myModalRef.show()
     },
     hideModal: function () {
       this.$refs.myModalRef.hide()
     },
     choseEstonianThesisName: function () {
-      this.modalThesisName = this.modal.ee_title
+      if (this.modal.ee_title === '') {
+        this.modalThesisName = this.modal.en_title
+      } else {
+        this.modalThesisName = this.modal.ee_title
+      }
     },
     choseEnglishThesisName: function () {
-      this.modalThesisName = this.modal.en_title
+      if (this.modal.en_title === '') {
+        this.modalThesisName = this.modal.ee_title
+      } else {
+        this.modalThesisName = this.modal.en_title
+      }
     },
     candidateThesis: function () {
       this.candidate = false
@@ -369,6 +397,15 @@ p {
   .modal__content {
     margin-left: 40px;
   }
+
+  #modal-lecturers-container {
+      min-height: 100px;
+    }
+
+    #modal-description-lecturers-headline-container {
+      margin-top: 20px;
+      margin-bottom: 15px;
+    }
 
   /* Modal description and tags headlines */
   #modal-description-icon {

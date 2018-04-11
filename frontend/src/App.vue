@@ -22,13 +22,12 @@
     </div>
 
     <!-- Vue component -->
-    <router-view />
+    <router-view :currentUser="currentUser"/>
   </div>
   <div v-else-if="!$store.getters.getConnectionState">
     <h2>No connection to server (might be you forget to start the server?)</h2>
   </div>
-  <div class="login-page-background"
-       v-else>
+  <div v-else>
     <div style="text-align: center">
       <p style="font-size: 1.5rem; color: white;">Loading...</p>
       <i class="fa fa-spinner fa-spin" style="font-size: 2.5rem;"></i>
@@ -38,10 +37,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
 import TheNavigation from './components/TheNavigation'
 import TheFacultyName from './components/TheFacultyName'
-
 export default {
   name: 'App',
   components: {
@@ -98,18 +95,15 @@ html, body {
   padding: 0;
   position: relative;
 }
-
 button:hover {
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1),
               0 3px 6px  rgba(0, 0, 0, 0.08);
 }
-
 #app {
   min-height: 100%;
   overflow: auto;
   position: relative;
 }
-
 /* Entrypoint page background */
 .entrypoint__background {
   overflow: auto;
@@ -121,13 +115,11 @@ button:hover {
   top: -5%;
   left: -5%;
   z-index: -1;
-
   display: block;
   background-image: url(./assets/ttu2.png);
   background-size:cover;
   width: 110%;
   height: 110%;
-
   -webkit-filter: blur(10px);
   -moz-filter: blur(10px);
   -o-filter: blur(10px);
@@ -136,11 +128,9 @@ button:hover {
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
 }
-
 .text {
   font-family: 'Roboto', sans-serif;
 }
-
 .label__text {
   font-family: 'Roboto', sans-serif;
   margin-left: 13px;
@@ -148,7 +138,6 @@ button:hover {
 .label--margin {
   margin-top: -4px;
 }
-
 /* Home page background (diagonal lines and image) */
 .home-page__background {
   height: 100%;
@@ -164,7 +153,6 @@ button:hover {
   position: absolute;
   z-index: -1;
 }
-
 .home-page__background__image {
   min-height: 400px;
   width: 100%;
@@ -178,34 +166,21 @@ button:hover {
   -o-filter: brightness(55%);
   -ms-filter: brightness(55%);
 }
-
-.login-page-background {
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
 /* for Workplace components */
-
   /* for Tabs */
   .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
     background-color: rgb(246, 249, 252);
     border-bottom-color: rgb(246, 249, 252);
   }
-
   a {
       color: rgb(66, 139, 202);
       text-decoration: none;
       background-color: transparent;
       -webkit-text-decoration-skip: objects;
   }
-
   .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
   }
-
   .btn-secondary:not(:disabled):not(.disabled):active,
   .btn-secondary:not(:disabled):not(.disabled).active,
   .show > .btn-secondary.dropdown-toggle {
@@ -219,7 +194,6 @@ button:hover {
   .show > .btn-secondary.dropdown-toggle:focus {
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
   }
-
 @media screen and (max-width: 767px) {
   /* adaptive for mobile */
   .home-page__background__image {
@@ -236,6 +210,5 @@ button:hover {
     -ms-filter: brightness(55%);
   }
 }
-
 [v-cloak] > * { display: none; }
 </style>
