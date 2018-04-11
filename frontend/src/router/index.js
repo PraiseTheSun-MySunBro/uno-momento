@@ -9,13 +9,20 @@ import WorkplaceStudent from '@/components/WorkplaceStudent'
 import WorkplaceLecturer from '@/components/WorkplaceLecturer'
 import UserProfile from '@/components/UserProfile'
 import EditThesis from '@/components/EditThesis'
+import PageNotFound from '@/components/PageNotFound'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
-      path: '/login',
+      path: '*',
+      component: PageNotFound,
+      name: 'PageNotFound'
+    },
+    {
+      path: '/',
       name: 'entry',
       component: EntryPoint,
       meta: {

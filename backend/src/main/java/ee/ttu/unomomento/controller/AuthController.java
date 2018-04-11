@@ -1,6 +1,7 @@
 package ee.ttu.unomomento.controller;
 
 import com.google.gson.Gson;
+import ee.ttu.unomomento.model.Account;
 import ee.ttu.unomomento.model.template.AccountPersonInformation;
 import ee.ttu.unomomento.model.template.UserRegistration;
 import ee.ttu.unomomento.security.TokenAuthenticationService;
@@ -45,7 +46,7 @@ public class AuthController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (DataAccessException e) {
             log.info(String.format("[RESULT]: Some error with user %s registration", userRegistration.getUsername()));
-            return new ResponseEntity<>("Some error occured " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Some error occurred " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -63,4 +64,19 @@ public class AuthController {
 
         return new ResponseEntity<>(gson.toJson(accountPersonInformation), HttpStatus.OK);
     }
+
+/* TODO: Account settings update integration */
+//    @PostMapping(value = "/auth/update", produces = "application/json")
+//    public ResponseEntity<?> update(@Valid @RequestBody Account account) {
+//        log.info(String.format("[REQUEST]: Account %s requested", account.getUsername()));
+//        if (accountService.findAccountById(account.getAccountId()) == null) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        try {
+//            accountService.updateAccount(account);
+//            log.info(String.format("[RESULT]: Account successfully updated %s", account.getUsername()));
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (DataAccessException e) {
+//            log.info(String.format("[RESULT]: Some error with account %s update", account.getUsername()));
+//            return new ResponseEntity<>("Some error occurred " + e.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }

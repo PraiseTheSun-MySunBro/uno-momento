@@ -34,6 +34,27 @@ public class AccountService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+/* TODO: Account settings update saving */
+//    public void updateAccount(Account account) {
+//        Account updated = findAccountById(account.getAccountId());
+//        updated.setEmail(account.getEmail());
+//        updated.setUsername(account.getUsername());
+//        updated.setUsername(account.getPassword());
+//    }
+//
+//    public Account findAccountById(Long accountId) {
+//        Result<?> result = dslContext
+//                .select()
+//                .from(ACCOUNT)
+//                .where(ACCOUNT.ACCOUNT_ID.eq(accountId))
+//                .fetch();
+//        try {
+//            return result.get(0).into(Account.class);
+//        } catch (IndexOutOfBoundsException e) {
+//            return null;
+//        }
+//    }
+
     public void saveAccount(UserRegistration userRegistration) {
         Account account = new Account();
         account.setUsername(userRegistration.getUsername());

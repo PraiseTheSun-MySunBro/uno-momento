@@ -22,13 +22,12 @@
     </div>
 
     <!-- Vue component -->
-    <router-view />
+    <router-view :currentUser="currentUser"/>
   </div>
   <div v-else-if="!$store.getters.getConnectionState">
     <h2>No connection to server (might be you forget to start the server?)</h2>
   </div>
-  <div class="login-page-background"
-       v-else>
+  <div v-else>
     <div style="text-align: center">
       <p style="font-size: 1.5rem; color: white;">Loading...</p>
       <i class="fa fa-spinner fa-spin" style="font-size: 2.5rem;"></i>
@@ -177,14 +176,6 @@ button:hover {
   -moz-filter: brightness(55%);
   -o-filter: brightness(55%);
   -ms-filter: brightness(55%);
-}
-
-.login-page-background {
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* for Workplace components */
