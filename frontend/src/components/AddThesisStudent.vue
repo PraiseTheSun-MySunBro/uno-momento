@@ -1,5 +1,5 @@
 <template>
-  <div class="add__thesis">
+  <div class="add__thesis" v-if="currentUser.roleCode === 1">
     <div class="add-thesis__container">
       <div class="offer-slogan__container">
         <div class="offer__slogans">
@@ -38,7 +38,7 @@
                                       label-for="add-thesis-name-ee">
                           <b-form-input id="add-thesis-name-ee"
                                         type="text"
-                                        v-model="form.ee_title"
+                                        v-model="form.eeTitle"
                                         placeholder="Kirjutage oma lõputöö nimi">
                           </b-form-input>
                         </b-form-group>
@@ -57,7 +57,7 @@
                                           type="text"
                                           :rows="6"
                                           :max-rows="12"
-                                          v-model="form.ee_description"
+                                          v-model="form.eeDescription"
                                           placeholder="Kirjeldage oma idee">
                           </b-form-textarea>
                         </b-form-group>
@@ -90,7 +90,7 @@
                                       label-for="add-thesis-name-en">
                           <b-form-input id="add-thesis-name-en"
                                         type="text"
-                                        v-model="form.en_title"
+                                        v-model="form.enTitle"
                                         placeholder="Kirjutage oma lõputöö nimi">
                           </b-form-input>
                         </b-form-group>
@@ -109,7 +109,7 @@
                                           type="text"
                                           :rows="6"
                                           :max-rows="12"
-                                          v-model="form.en_description"
+                                          v-model="form.enDescription"
                                           placeholder="Kirjeldage oma idee">
                           </b-form-textarea>
                         </b-form-group>
@@ -139,7 +139,7 @@
               <div class="row">
                 <div class="col-sm-9">
                   <div class="tags">
-                    <div v-for="(tag,index) in form.tags"
+                    <div v-for="(tag, index) in form.tags"
                         :key="index"
                         class="tag__container">
                       <div class="tag">
@@ -197,6 +197,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators'
+import { mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -204,24 +205,24 @@ export default {
       show: true,
       estonianCard: false,
       englishCard: false,
-      popoverText: 'Jätta seda "Valige üks", kui tahate pakkuda kõigile õppejõudule',
+      popoverText: 'Jätta seda "Saada kõigile", kui tahate pakkuda kõigile õppejõudule',
 
       /* list of lecturers  with list of theses */
       lecturers: [],
 
       /* for thesis registration */
       form: {
-        ee_title: '',
-        ee_description: '',
-        en_title: '',
-        en_description: '',
+        eeTitle: '',
+        eeDescription: '',
+        enTitle: '',
+        enDescription: '',
         tags: [],
         lecturer: null
       },
 
       /* List of lecturers for input-select form */
       listOfLecturers: [{
-        text: 'Valige üks',
+        text: 'Saada kõigile',
         value: null
       }],
 
@@ -242,13 +243,13 @@ export default {
     },
     closeEstonianCard: function () {
       this.estonianCard = false
-      this.form.ee_title = ''
-      this.form.ee_description = ''
+      this.form.eeTitle = ''
+      this.form.eeDescription = ''
     },
     closeEnglishCard: function () {
       this.englishCard = false
-      this.form.en_title = ''
-      this.form.en_description = ''
+      this.form.enTitle = ''
+      this.form.enDescription = ''
     },
     /* methods for tags */
     addTag: function (tag) {
@@ -281,16 +282,31 @@ export default {
     /* methods for adding */
     onThesisSubmit () {
       /* Reset our form values */
-      this.form.ee_title = ''
-      this.form.en_title = ''
-      this.form.ee_description = ''
-      this.form.en_description = ''
-      this.form.lecturer = null
-      this.form.tags = []
-      this.tag = ''
-      this.estonianCard = false
-      this.englishCard = false
-      this.$refs.myModalRef.hide()
+      axios.post('/api/thesis/', {
+        eeTitle: this.form.eeTitle,
+        enTitle: this.form.enTitle,
+        eeDescription: this.form.eeDescription,
+        enDescription: this.form.enDescription,
+        degreeCode: this.currentUser.degreeCode,
+        facultyCode: this.currentUser.facultyCode,
+        roleCode: this.currentUser.roleCode,
+        tags: this.form.tags
+      })
+        .then(res => {
+          this.form.eeTitle = ''
+          this.form.enTitle = ''
+          this.form.eeDescription = ''
+          this.form.enDescription = ''
+          this.form.lecturer = null
+          this.form.tags = []
+          this.tag = ''
+          this.estonianCard = false
+          this.englishCard = false
+          this.hideSubmitModal()
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
     getPersons: function () {
       console.log("I'm working!")
@@ -318,20 +334,25 @@ export default {
         console.error(err)
       })
   },
+  computed: {
+    ...mapGetters({
+      currentUser: 'getUser'
+    })
+  },
   validations () {
     if (this.estonianCard && this.englishCard) {
       return {
         form: {
-          ee_title: {
+          eeTitle: {
             required
           },
-          ee_description: {
+          eeDescription: {
             required
           },
-          en_title: {
+          enTitle: {
             required
           },
-          en_description: {
+          enDescription: {
             required
           }
         }
@@ -339,25 +360,25 @@ export default {
     } if (this.estonianCard && !this.englishCard) {
       return {
         form: {
-          ee_title: {
+          eeTitle: {
             required
           },
-          ee_description: {
+          eeDescription: {
             required
           },
-          en_title: {},
-          en_description: {}
+          enTitle: {},
+          enDescription: {}
         }
       }
     } if (!this.estonianCard && this.englishCard) {
       return {
         form: {
-          ee_title: {},
-          ee_description: {},
-          en_title: {
+          eeTitle: {},
+          eeDescription: {},
+          enTitle: {
             required
           },
-          en_description: {
+          enDescription: {
             required
           }
         }
@@ -365,16 +386,16 @@ export default {
     } else {
       return {
         form: {
-          ee_title: {
+          eeTitle: {
             required
           },
-          ee_description: {
+          eeDescription: {
             required
           },
-          en_title: {
+          enTitle: {
             required
           },
-          en_description: {
+          enDescription: {
             required
           }
         }
@@ -552,60 +573,63 @@ export default {
   /* Buttons */
   .add__button {
       background-color: #28a745;
-      border:none;
+      border: 1px solid #28a745;
   }
 
   .add__button:hover {
       background-color: #218839;
-      border:none;
+      border: 1px solid #218839;
   }
 
   .close__button {
     background-color: rgb(219, 70, 70);
+    border: 1px solid rgb(219, 70, 70);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    border: none;
   }
 
   .close__button:hover {
       background-color: rgb(177, 40, 40);
+      border: 1px solid rgb(177, 40, 40);
       box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-      border: none;
   }
 
   .submit__button {
     font-weight: 300;
     background-color: rgb(66, 139, 202);
+    border: 1px solid rgb(66, 139, 202);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 100px;
-    border: none;
   }
 
   .submit__button:hover {
       background-color: rgb(46, 100, 148);
+      border: 1px solid rgb(46, 100, 148);
   }
 
   .modal-button__submit {
     font-weight: 300;
     background-color: rgb(66, 139, 202);
+    border: 1px solid rgb(66, 139, 202);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 50px;
-    border: none;
   }
 
   .modal-button__submit:hover {
       background-color: rgb(46, 100, 148);
+      border: 1px solid rgb(46, 100, 148);
   }
 
   .modal-button__cancel {
     font-weight: 300;
     background-color: rgb(127, 128, 131);
+    border: 1px solid rgb(127, 128, 131);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     width: 50px;
-    border: none;
   }
 
   .modal-button__cancel:hover {
     background-color: rgb(104, 102, 102);
+    border: 1px solid rgb(104, 102, 102);
   }
 
   @media screen and (max-width: 767px) {

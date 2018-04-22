@@ -1,6 +1,7 @@
 package ee.ttu.unomomento.component;
 
 import ee.ttu.unomomento.security.TokenAuthenticationService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,10 @@ public class TokenAuthenticationTest {
             .andExpect(status().isForbidden());
     }
 
+    //@Ignore
     @Test
     public void shouldGenerateToken() throws Exception {
-        String token = createToken("Test");
+        String token = createToken("eriktest");
 
         assertNotNull(token);
         mockMvc

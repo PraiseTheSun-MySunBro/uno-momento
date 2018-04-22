@@ -27,7 +27,7 @@ const locales = {
   en: require('./../static/lang/en.json'),
   ee: require('./../static/lang/ee.json')
 }
-Vue.use(VueLang, { lang: 'en', locales: locales })
+Vue.use(VueLang, { lang: 'ee', locales: locales })
 
 window.axios = axios
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
@@ -40,10 +40,10 @@ Vue.use(VueAuth, {
     enabled: false
   },
   loginData: {
-    redirect: '/home'
+    redirect: '/login'
   },
   logoutData: {
-    redirect: '/'
+    redirect: '/login'
   },
   registerData: {
     redirect: null

@@ -18,6 +18,7 @@ import ee.ttu.unomomento.db.tables.Role;
 import ee.ttu.unomomento.db.tables.Thesis;
 import ee.ttu.unomomento.db.tables.ThesisCandidate;
 import ee.ttu.unomomento.db.tables.ThesisOwner;
+import ee.ttu.unomomento.db.tables.ThesisPicked;
 import ee.ttu.unomomento.db.tables.ThesisState;
 import ee.ttu.unomomento.db.tables.ThesisTag;
 
@@ -46,7 +47,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Public extends SchemaImpl {
 
-    private static final long serialVersionUID = -943726303;
+    private static final long serialVersionUID = -1858916109;
 
     /**
      * The reference instance of <code>public</code>
@@ -124,6 +125,11 @@ public class Public extends SchemaImpl {
     public final ThesisOwner THESIS_OWNER = ee.ttu.unomomento.db.tables.ThesisOwner.THESIS_OWNER;
 
     /**
+     * The table <code>public.thesis_picked</code>.
+     */
+    public final ThesisPicked THESIS_PICKED = ee.ttu.unomomento.db.tables.ThesisPicked.THESIS_PICKED;
+
+    /**
      * 1 -- Active, 2 - Inactive, 3 - Reserved
      */
     public final ThesisState THESIS_STATE = ee.ttu.unomomento.db.tables.ThesisState.THESIS_STATE;
@@ -186,6 +192,7 @@ public class Public extends SchemaImpl {
             Thesis.THESIS,
             ThesisCandidate.THESIS_CANDIDATE,
             ThesisOwner.THESIS_OWNER,
+            ThesisPicked.THESIS_PICKED,
             ThesisState.THESIS_STATE,
             ThesisTag.THESIS_TAG);
     }

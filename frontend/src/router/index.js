@@ -9,6 +9,8 @@ import WorkplaceStudent from '@/components/WorkplaceStudent'
 import WorkplaceLecturer from '@/components/WorkplaceLecturer'
 import UserProfile from '@/components/UserProfile'
 import PageNotFound from '@/components/PageNotFound'
+import EditThesisStudent from '@/components/EditThesisStudent'
+import EditThesisLecturer from '@/components/EditThesisLecturer'
 
 Vue.use(Router)
 
@@ -21,7 +23,7 @@ export default new Router({
       name: 'PageNotFound'
     },
     {
-      path: '/',
+      path: '/login',
       name: 'entry',
       component: EntryPoint,
       meta: {
@@ -29,7 +31,7 @@ export default new Router({
       }
     },
     {
-      path: '/home',
+      path: '/',
       name: 'home',
       component: Home,
       meta: {
@@ -38,7 +40,6 @@ export default new Router({
     },
     {
       path: '/thesis/add/student',
-      alias: '/thesis/edit',
       name: 'addThesisStudent',
       component: AddThesisStudent,
       meta: {
@@ -47,7 +48,6 @@ export default new Router({
     },
     {
       path: '/thesis/add/lecturer',
-      alias: '/thesis/edit',
       name: 'addThesisLecturer',
       component: AddThesisLecturer,
       meta: {
@@ -74,6 +74,22 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: UserProfile,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/thesis/edit',
+      name: 'editThesisStudent',
+      component: EditThesisStudent,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/thesis/edit',
+      name: 'editThesisLecturer',
+      component: EditThesisLecturer,
       meta: {
         auth: true
       }

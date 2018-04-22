@@ -1,15 +1,11 @@
 package ee.ttu.unomomento.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CuratorsWithTheses implements Serializable {
@@ -20,10 +16,5 @@ public class CuratorsWithTheses implements Serializable {
     private String lastname;
     private Short  personStateCode;
     private Object theses;
-
-    @Override
-    public String toString() {
-        return String.format("CuratorsWithTheses (%d, %s, %s, %s, %s, %s, %s)", personId, uniId, degreeCode,
-                firstname, lastname, personStateCode, theses);
-    }
+    private String[] tags;
 }

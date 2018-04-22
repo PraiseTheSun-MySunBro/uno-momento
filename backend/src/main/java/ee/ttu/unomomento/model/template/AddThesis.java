@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AddThesis implements Serializable {
 
+    private Long thesisId;
     private Short facultyCode;
     private Short degreeCode;
     private Short roleCode;

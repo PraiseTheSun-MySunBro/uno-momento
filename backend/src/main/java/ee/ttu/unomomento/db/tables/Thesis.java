@@ -8,6 +8,7 @@ import ee.ttu.unomomento.db.Keys;
 import ee.ttu.unomomento.db.Public;
 import ee.ttu.unomomento.db.tables.records.ThesisRecord;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Thesis extends TableImpl<ThesisRecord> {
 
-    private static final long serialVersionUID = -1708033526;
+    private static final long serialVersionUID = -858514322;
 
     /**
      * The reference instance of <code>public.thesis</code>
@@ -95,6 +96,11 @@ public class Thesis extends TableImpl<ThesisRecord> {
      * The column <code>public.thesis.en_description</code>.
      */
     public final TableField<ThesisRecord, String> EN_DESCRIPTION = createField("en_description", org.jooq.impl.SQLDataType.VARCHAR.length(1000), this, "");
+
+    /**
+     * The column <code>public.thesis.reg_time</code>.
+     */
+    public final TableField<ThesisRecord, Timestamp> REG_TIME = createField("reg_time", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("now()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * Create a <code>public.thesis</code> table reference

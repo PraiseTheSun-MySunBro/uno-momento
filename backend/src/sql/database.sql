@@ -142,7 +142,7 @@ CREATE TABLE Thesis (
   en_description VARCHAR(1000),
   reg_time TIMESTAMP NOT NULL DEFAULT now(),
   CONSTRAINT PK_Thesis_thesis_id PRIMARY KEY (thesis_id),
-  CONSTRAINT CK_Thesis_supervisor_name CHECK (supervisor_name ~ '^[[:alpha:]]+$'),
+  CONSTRAINT CK_Thesis_supervisor_name CHECK (supervisor_name ~ '^[[:alpha:]\s]*$'),
   CONSTRAINT FK_Thesis_faculty_code FOREIGN KEY (faculty_code) REFERENCES Faculty (faculty_code) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FK_Thesis_thesis_state_code FOREIGN KEY (thesis_state_code) REFERENCES Thesis_State (thesis_state_code) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT FK_Thesis_degree_code FOREIGN KEY (degree_code) REFERENCES Degree (degree_code) ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -150,8 +150,6 @@ CREATE TABLE Thesis (
   CONSTRAINT CK_Thesis_reg_time CHECK (reg_time <= now())
 );
 
-CREATE UNIQUE INDEX IXAK_Thesis_en_title ON Thesis (en_title ASC);
-CREATE UNIQUE INDEX IXAK_Thesis_ee_title ON Thesis (ee_title ASC);
 CREATE INDEX IXFK_Thesis_faculty_code ON Thesis (faculty_code ASC);
 CREATE INDEX IXFK_Thesis_State_thesis_state_code ON Thesis_State (thesis_state_code ASC);
 
@@ -184,6 +182,16 @@ CREATE TABLE Thesis_Owner (
 
 CREATE INDEX IXFK_Thesis_Owner_person_id ON Thesis_Owner (person_id ASC);
 CREATE INDEX IXFK_Thesis_Owner_role_code ON Thesis_Owner (role_code ASC);
+
+CREATE TABLE thesis_picked (
+  thesis_id BIGINT NOT NULL,
+  person_id BIGINT NOT NULL,
+  CONSTRAINT PK_thesis_picked_thesis_id_person_id PRIMARY KEY (thesis_id, person_id),
+  CONSTRAINT FK_thesis_picked_thesis_id FOREIGN KEY (thesis_id) REFERENCES thesis (thesis_id) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT FK_thesis_picked_person_id FOREIGN KEY (person_id) REFERENCES person (person_id) ON DELETE CASCADE ON UPDATE RESTRICT
+);
+
+CREATE INDEX IXFK_thesis_picked_person_id ON thesis_picked (person_id ASC);
 
 CREATE OR REPLACE VIEW curators_with_theses WITH (security_barrier) AS
  SELECT p.person_id,

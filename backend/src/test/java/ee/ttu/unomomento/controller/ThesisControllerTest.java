@@ -32,7 +32,7 @@ public class ThesisControllerTest {
         assertNotNull(token);
         mockMvc
                 .perform(post("/api/thesis",
-                        new AddThesis(null, null, null, "", "", "", "", null, null))
+                        new AddThesis(null, null, null, null, "", "", "", "", null, null))
                     .header(HEADER_STRING, TOKEN_PREFIX + token))
                 .andExpect(status().isBadRequest());
     }
@@ -51,7 +51,7 @@ public class ThesisControllerTest {
         assertNotNull(token);
         mockMvc
                 .perform(post("/api/thesis",
-                        new AddThesis((short) 1, (short) 1, (short) 1, "Test", "Test", "Test", "Test", null, null))
+                        new AddThesis(null, (short) 1, (short) 1, (short) 1, "Test", "Test", "Test", "Test", null, null))
                     .header(HEADER_STRING, TOKEN_PREFIX + token))
                 .andExpect(status().isBadRequest());
     }

@@ -25,9 +25,26 @@ public class PersonService {
         this.dslContext = dslContext;
     }
 
-    public Result<?> getAllCuratorsWithTheses() {
-        return allCuratorsQuery()
-                .fetch();
+    public Result<?> getAllCuratorsWithTheses(Short facultyCode) {
+        return dslContext.fetch("SELECT p.person_id,\n" +
+                "  p.uni_id,\n" +
+                "  p.degree_code,\n" +
+                "  p.firstname,\n" +
+                "  p.lastname,\n" +
+                "  p.person_state_code,\n" +
+                "  array_to_json(array_agg(r.*)) AS theses\n" +
+                "FROM person p\n" +
+                "  INNER JOIN thesis_owner tho USING (person_id)\n" +
+                "  INNER JOIN person_role pr USING (person_id)\n" +
+                "  INNER JOIN (\n" +
+                "               SELECT t.*, d.en_name AS en_degree, d.ee_name AS ee_degree, array_agg(tag_name) AS tags\n" +
+                "               FROM thesis t\n" +
+                "                 INNER JOIN degree d ON t.degree_code = d.degree_code\n" +
+                "                 LEFT JOIN thesis_tag USING (thesis_id)\n" +
+                "               GROUP BY t.thesis_id, d.en_name, d.ee_name\n" +
+                "             ) r ON r.thesis_id = tho.thesis_id\n" +
+                "WHERE (pr.role_code = 2)\n" +
+                "GROUP BY p.person_id;");
     }
 
     public Result<?> getAllCuratorsWithThesesByPages(int p, int limit) {

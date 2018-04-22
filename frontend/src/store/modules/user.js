@@ -32,12 +32,24 @@ const actions = {
           reject(err)
         })
     })
+  },
+  resetUser ({ commit }) {
+    commit('resetUser')
   }
 }
 
 const mutations = {
   fetchUser (state, data) {
     state.user = data
+  },
+  resetUser (state) {
+    state.user = {
+      id: -1,
+      firstname: '',
+      lastname: '',
+      state: 0,
+      roleCode: -1
+    }
   }
 }
 

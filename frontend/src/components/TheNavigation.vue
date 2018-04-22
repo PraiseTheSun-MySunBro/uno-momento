@@ -85,7 +85,7 @@ export default {
     addThesis: function () {
       if (this.currentUser.roleCode === 1) {
         this.$router.push('/thesis/add/student')
-      } if (this.currentUser.roleCode === 2) {
+      } else if (this.currentUser.roleCode === 2) {
         this.$router.push('/thesis/add/lecturer')
       }
     },
@@ -100,13 +100,15 @@ export default {
       this.$auth.logout({
         success: () => {
           // app.success = true
+          this.$store.dispatch('resetUser')
+          this.$store.dispatch('resetWorkplace')
         },
         error: (err) => {
           // app.error = true
           // app.errors = err.response.data
           console.error(err.response)
         },
-        redirect: '/'
+        redirect: '/login'
       })
     }
   },

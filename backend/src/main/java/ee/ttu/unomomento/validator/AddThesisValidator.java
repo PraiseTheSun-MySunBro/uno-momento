@@ -34,7 +34,7 @@ public class AddThesisValidator implements Validator {
             errors.reject("enTitle.enDescription.must.be.filled");
         }
 
-        if (addThesis.getTags().size() > 5) {
+        if (addThesis.getTags() != null && addThesis.getTags().size() > 5) {
             errors.reject("thesisTags.max.amount.could.be.5");
         }
 

@@ -1,10 +1,11 @@
 <template>
     <!-- List of lectors -->
-    <div class="home__student">
+    <div class="home__student" v-if="Object.keys(lecturers).length !== 0">
       <div id="list__of__lecturers">
-        <div role="tablist">
-          <b-card  id="list-accordion" no-body class="mb-1" v-for="(lecturer, index) in lecturers" :key="index">
-            <b-card-header header-tag="header" class="p-1" role="tab">
+        <div role="tablist" >
+          <b-card  id="list-accordion" no-body class="mb-1">
+            <div v-for="(lecturer, index) in lecturers" :key="index">
+              <b-card-header header-tag="header" class="p-1" role="tab">
               <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="light" class="text-left">
                 <span class="when-opened float-right">
                   <i class="fas fa-caret-down"></i>
@@ -38,6 +39,7 @@
                 </b-list-group>
               </b-card-body>
             </b-collapse>
+            </div>
           </b-card>
         </div>
       </div>
@@ -62,35 +64,91 @@
               size="lg">
       <div class="d-block text-center">
         <b-badge variant="dark" pill id="graduade-pill-modal">
-          <div class="degree-name">{{ thesisDegree }}</div>
+          <div class="degree-name">{{ modal.thesisDegree }}</div>
         </b-badge>
-        <h2 class="text--sans">{{ thesisTitle }}</h2>
+        <h2 class="text--sans">{{ modalThesisName }}</h2>
         <h4 class="modal-lecturer-name">
-          {{ thesisCuratorFirstName }} {{ thesisCuratorLastName }}
+          {{ modal.thesisCuratorFirstName }} {{ modal.thesisCuratorLastName }}
         </h4>
       </div>
       <hr id="modal-hr">
       <!-- Card with theses description -->
-      <b-card class="modal-card-description">
-        <div id="modal-description-container" >
-          <div id="modal-description-headline-container">
-            <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
-            <h5  class="text--sans" id="modal-description-headline">KIRJELDUS</h5>
+      <b-tabs class="modal-card-description">
+         <!-- Tab with thesis information in estonian -->
+        <b-tab title="Eesti Keeles" active @click="choseEstonianThesisName">
+          <b-card class="card-in__tab">
+            <div id="modal-description-container" >
+              <div id="modal-description-headline-container">
+                <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
+                <h5  class="text--sans" id="modal-description-headline">KIRJELDUS</h5>
+              </div>
+              <div class="modal__content">
+                <p class="text--sans">{{ modal.ee_description }}</p>
+              </div>
+            </div>
+            <div id="modal-tags-container">
+              <div id="modal-description-tags-headline-container">
+                <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
+                <h5 class="text--sans" id="modal-description-headline">MÄRKSÕNAD</h5>
+                <div v-for="(tag, index) in modal.tags" :key="index" class="modal__content">
+                  <p class="text--sans">- {{ tag }}</p>
+                </div>
+              </div>
+            </div>
+            <div id="modal-lecturers-container">
+              <div id="modal-description-lecturers-headline-container">
+                <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
+                <h5 class="text--sans" id="modal-description-headline">KAASJUHENDAJA</h5>
+              </div>
+              <div class="modal__content">
+                <h5 class="text--sans">{{ modal.supervisor_name }}</h5>
+              </div>
+            </div>
+          </b-card>
+          <div id="modal-buttons-container">
+            <b-btn class="modal-button-back" @click="hideModal">Tagasi</b-btn>
+            <b-btn class="modal-button-candidate" v-if="candidate" @click="candidateThesis">Kandideeri</b-btn>
+            <b-btn class="modal-button-deny" v-if="!candidate" @click="denyThesisCandidation">Tühista</b-btn>
           </div>
-          <p class="text--sans">{{ thesisDescription }}</p>
-        </div>
-        <div id="modal-tags-container">
-          <div id="modal-description-tags-headline-container">
-            <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
-            <h5 class="text--sans" id="modal-description-headline">MÄRKSÕNAD</h5>
+        </b-tab>
+        <!-- Tab with thesis information in english -->
+        <b-tab title="Inglise Keeles" @click="choseEnglishThesisName">
+          <b-card class="card-in__tab">
+            <div id="modal-description-container" >
+              <div id="modal-description-headline-container">
+                <i id="modal-description-icon" class="fas fa-info-circle fa-2x"></i>
+                <h5  class="text--sans" id="modal-description-headline">KIRJELDUS</h5>
+              </div>
+              <div class="modal__content">
+                <p class="text--sans">{{ modal.en_description }}</p>
+              </div>
+            </div>
+            <div id="modal-tags-container">
+              <div id="modal-description-tags-headline-container">
+                <i id="modal-description-icon" class="fas fa-tag fa-2x"></i>
+                <h5 class="text--sans" id="modal-description-headline">MÄRKSÕNAD</h5>
+                <div v-for="(tag, index) in modal.tags" :key="index" class="modal__content">
+                  <p class="text--sans">- {{ tag }}</p>
+                </div>
+              </div>
+            </div>
+            <div id="modal-lecturers-container">
+              <div id="modal-description-lecturers-headline-container">
+                <i id="modal-description-icon" class="fas fa-user fa-2x"></i>
+                <h5 class="text--sans" id="modal-description-headline">KAASJUHENDAJA</h5>
+              </div>
+              <div class="modal__content">
+                <h5 class="text--sans">{{ modal.supervisor_name }}</h5>
+              </div>
+            </div>
+          </b-card>
+          <div id="modal-buttons-container">
+            <b-btn class="modal-button-back" @click="hideModal">Tagasi</b-btn>
+            <b-btn class="modal-button-candidate" v-if="candidate" @click="candidateThesis">Kandideeri</b-btn>
+            <b-btn class="modal-button-deny" v-if="!candidate" @click="denyThesisCandidation">Tühista</b-btn>
           </div>
-        </div>
-      </b-card>
-      <div id="modal-buttons-container">
-        <b-btn class="modal-button-back" @click="hideModal">Tagasi</b-btn>
-        <b-btn class="modal-button-candidate" v-if="candidate" @click="candidateThesis">Kandideeri</b-btn>
-        <b-btn class="modal-button-deny" v-if="!candidate" @click="denyThesisCandidation">Tühista</b-btn>
-      </div>
+        </b-tab>
+      </b-tabs>
     </b-modal>
     </div>
 </template>
@@ -106,26 +164,52 @@ export default {
       /* list of lecturers  with list of theses */
       lecturers: [],
       /* values for modal form */
-      thesisTitle: '',
-      thesisDescription: '',
-      thesisDegree: '',
-      thesisCuratorFirstName: '',
-      thesisCuratorLastName: '',
+      modalThesisName: '',
+      modal: {
+        ee_title: '',
+        ee_description: '',
+        en_title: '',
+        en_description: '',
+        tags: [],
+        thesisDegree: '',
+        thesisCuratorFirstName: '',
+        thesisCuratorLastName: '',
+        supervisor_name: ''
+      },
       /* number of chosen page */
       currentPage: 1
     }
   },
   methods: {
     showModal (thesis, lecturer) {
-      this.thesisTitle = thesis.ee_title
-      this.thesisDescription = thesis.ee_description
-      this.thesisDegree = thesis.ee_degree
-      this.thesisCuratorFirstName = lecturer.firstname
-      this.thesisCuratorLastName = lecturer.lastname
+      this.modalThesisName = thesis.ee_title
+      this.modal.ee_title = thesis.ee_title
+      this.modal.en_title = thesis.en_title
+      this.modal.ee_description = thesis.ee_description
+      this.modal.en_description = thesis.en_description
+      this.modal.tags = thesis.tags
+      this.modal.thesisDegree = thesis.ee_degree
+      this.modal.thesisCuratorFirstName = lecturer.firstname
+      this.modal.thesisCuratorLastName = lecturer.lastname
+      this.modal.supervisor_name = thesis.supervisor_name
       this.$refs.myModalRef.show()
     },
     hideModal: function () {
       this.$refs.myModalRef.hide()
+    },
+    choseEstonianThesisName: function () {
+      if (this.modal.ee_title === '') {
+        this.modalThesisName = this.modal.en_title
+      } else {
+        this.modalThesisName = this.modal.ee_title
+      }
+    },
+    choseEnglishThesisName: function () {
+      if (this.modal.en_title === '') {
+        this.modalThesisName = this.modal.ee_title
+      } else {
+        this.modalThesisName = this.modal.en_title
+      }
     },
     candidateThesis: function () {
       this.candidate = false
@@ -212,7 +296,7 @@ p {
 }
 
 #list-accordion {
-  border-top: 4px solid rgb(66, 139, 202);
+  border-top: 6px solid rgb(66, 139, 202);
   border-radius: 0px;
 }
 
@@ -265,9 +349,9 @@ p {
 }
 
 .modal-lecturer-name {
-    font-family: 'Times New Roman', Times, serif;
-    font-style: italic;
-    margin-bottom: 40px;
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  margin-bottom: 40px;
 }
 
 #modal-hr {
@@ -278,16 +362,22 @@ p {
 /* Modal card with description and tags */
 
 .modal-card-description {
-    min-height: 450px;
-    margin-top: 30px;
-    margin-left: 15%;
-    margin-right: 15%;
+  min-height: 450px;
+  margin-top: 30px;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+
+.card-in__tab {
+  border-top-left-radius:0;
+  border-top-right-radius:0;
+  border-top: none; 
 }
 
   /* Description container */
 
   #modal-description-container {
-    min-height: 300px;
+    min-height: 200px;
   }
 
   #modal-description-headline-container {
@@ -303,6 +393,19 @@ p {
   #modal-description-tags-headline-container {
     margin-bottom: 15px;
   }
+
+  .modal__content {
+    margin-left: 40px;
+  }
+
+  #modal-lecturers-container {
+      min-height: 100px;
+    }
+
+    #modal-description-lecturers-headline-container {
+      margin-top: 20px;
+      margin-bottom: 15px;
+    }
 
   /* Modal description and tags headlines */
   #modal-description-icon {
