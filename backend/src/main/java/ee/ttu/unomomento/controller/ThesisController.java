@@ -117,4 +117,28 @@ public class ThesisController {
 
         return new ResponseEntity<>(gson.toJson(workplaceQueryDTO), HttpStatus.OK);
     }
+
+    @PutMapping(value = "/api/thesis/candidate/{id}", produces = "application/json")
+    public ResponseEntity<?> candidateThesis(@PathVariable Long id, HttpServletRequest httpRequest) {
+        Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
+        if (authentication == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        String username = authentication.getName();
+
+        boolean candidated = thesisService.candidateThesis(id, username);
+        if (!candidated) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/api/thesis/uncandidate/{id}", produces = "application/json")
+    public ResponseEntity<?> uncandidateThesis(@PathVariable Long id, HttpServletRequest httpRequest) {
+        Authentication authentication = TokenAuthenticationService.getAuthentication(httpRequest);
+        if (authentication == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        String username = authentication.getName();
+
+        boolean uncandidated = thesisService.uncandidateThesis(id, username);
+        if (!uncandidated) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

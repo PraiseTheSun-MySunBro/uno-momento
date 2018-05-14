@@ -1,27 +1,22 @@
 package ee.ttu.unomomento.service;
 
+import ee.ttu.unomomento.db.tables.records.ThesisCandidateRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisOwnerRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisRecord;
 import ee.ttu.unomomento.db.tables.records.ThesisTagRecord;
 import ee.ttu.unomomento.dto.WorkplaceDTO;
-import ee.ttu.unomomento.model.Account;
-import ee.ttu.unomomento.model.Thesis;
-import ee.ttu.unomomento.model.ThesisOwner;
-import ee.ttu.unomomento.model.ThesisTag;
+import ee.ttu.unomomento.model.*;
 import ee.ttu.unomomento.model.template.AccountPersonInformation;
 import ee.ttu.unomomento.model.template.AddThesis;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
-
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static ee.ttu.unomomento.db.tables.Account.ACCOUNT;
 import static ee.ttu.unomomento.db.tables.Person.PERSON;
@@ -40,11 +35,13 @@ public class ThesisService {
 
     private final DSLContext dslContext;
     private final AccountService accountService;
+    private final PersonService personService;
 
     @Autowired
-    public ThesisService(DSLContext dslContext, AccountService accountService) {
+    public ThesisService(DSLContext dslContext, AccountService accountService, PersonService personService) {
         this.dslContext = dslContext;
         this.accountService = accountService;
+        this.personService = personService;
     }
 
     public boolean save(AddThesis thesisTemplate, String username) {
@@ -164,6 +161,52 @@ public class ThesisService {
         return true;
     }
 
+    public boolean candidateThesis(Long thesisId, String username) {
+        Account account = accountService.findAccountByUsername(username);
+        if (account == null) return false;
+
+        Person person = personService.findPersonByAccountId(account.getAccountId());
+        if (person == null) return false;
+
+        List<PersonRole> personRole = personService.getPersonRoleByPersonId(person.getPersonId());
+        boolean studentsRole = personRole.stream()
+                .filter(pr -> pr.getRoleCode() == 1)
+                .collect(Collectors.toList())
+                .size() != 0;
+        if (!studentsRole) return false;
+
+        Thesis thesis = getThesisById(thesisId);
+        if (thesis == null) return false;
+
+        ThesisCandidate thesisCandidate = new ThesisCandidate(thesisId, person.getPersonId());
+        ThesisCandidateRecord thesisRecord = dslContext.newRecord(THESIS_CANDIDATE, thesisCandidate);
+
+        return thesisRecord.insert() != 0;
+    }
+
+    public boolean uncandidateThesis(Long thesisId, String username) {
+        Account account = accountService.findAccountByUsername(username);
+        if (account == null) return false;
+
+        Person person = personService.findPersonByAccountId(account.getAccountId());
+        if (person == null) return false;
+
+        List<PersonRole> personRole = personService.getPersonRoleByPersonId(person.getPersonId());
+        boolean studentsRole = personRole.stream()
+                .filter(pr -> pr.getRoleCode() == 1)
+                .collect(Collectors.toList())
+                .size() != 0;
+        if (!studentsRole) return false;
+
+        Thesis thesis = getThesisById(thesisId);
+        if (thesis == null) return false;
+
+        ThesisCandidate thesisCandidate = new ThesisCandidate(thesisId, person.getPersonId());
+        ThesisCandidateRecord thesisRecord = dslContext.newRecord(THESIS_CANDIDATE, thesisCandidate);
+
+        return thesisRecord.delete() != 0;
+    }
+
     public List<WorkplaceDTO> getAllMyOwnTheses(String username) {
         return dslContext
                 .select(THESIS.THESIS_ID, THESIS.EE_TITLE, THESIS.EN_TITLE, THESIS.EE_DESCRIPTION, THESIS.EN_DESCRIPTION, THESIS.REG_TIME,
@@ -214,6 +257,14 @@ public class ThesisService {
                 .groupBy(THESIS.THESIS_ID, THESIS.EE_TITLE, THESIS.EN_TITLE, THESIS.EE_DESCRIPTION, THESIS.EN_DESCRIPTION, THESIS.REG_TIME, PERSON.FIRSTNAME,
                         PERSON.LASTNAME, THESIS.SUPERVISOR_NAME)
                 .fetchOneInto(WorkplaceDTO.class);
+    }
+
+    public Thesis getThesisById(Long thesisId) {
+        return dslContext
+                .select()
+                .from(THESIS)
+                .where(THESIS.THESIS_ID.eq(thesisId))
+                .fetchOneInto(Thesis.class);
     }
 
     public String getOwnerByThesisId(Long thesisId) {

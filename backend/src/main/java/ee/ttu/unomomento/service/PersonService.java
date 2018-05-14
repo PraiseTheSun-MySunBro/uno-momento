@@ -1,15 +1,18 @@
 package ee.ttu.unomomento.service;
 
+import ee.ttu.unomomento.db.tables.PersonRole;
 import ee.ttu.unomomento.model.Person;
 import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+import static ee.ttu.unomomento.db.Tables.PERSON_ROLE;
 import static ee.ttu.unomomento.db.tables.Account.ACCOUNT;
 import static ee.ttu.unomomento.db.tables.Person.PERSON;
 import static ee.ttu.unomomento.db.tables.PersonAccountOwner.PERSON_ACCOUNT_OWNER;
-import static ee.ttu.unomomento.db.tables.PersonRole.PERSON_ROLE;
 import static ee.ttu.unomomento.db.tables.ThesisOwner.THESIS_OWNER;
 import static ee.ttu.unomomento.db.tables.Thesis.THESIS;
 import static ee.ttu.unomomento.db.tables.CuratorsWithTheses.CURATORS_WITH_THESES;
@@ -67,6 +70,14 @@ public class PersonService {
         return dslContext
                 .select()
                 .from(CURATORS_WITH_THESES);
+    }
+
+    public List<ee.ttu.unomomento.model.PersonRole> getPersonRoleByPersonId(Long personId) {
+        return dslContext
+                .select()
+                .from(PERSON_ROLE)
+                .where(PERSON_ROLE.PERSON_ID.eq(personId))
+                .fetchInto(ee.ttu.unomomento.model.PersonRole.class);
     }
 
     public Person findPersonByAccountId(Long accountId) {

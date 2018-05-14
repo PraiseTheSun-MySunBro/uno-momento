@@ -22,7 +22,7 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown>
+        <!-- <b-nav-item-dropdown>
           <template slot="button-content">
             <em class="lang">{{ language }}</em>
           </template>
@@ -34,7 +34,7 @@
             <img src="/static/gb.svg" class="navbar-flag">
             <em>English</em>
           </b-dropdown-item>
-        </b-nav-item-dropdown>
+        </b-nav-item-dropdown> -->
         <b-nav-item-dropdown right>
 
           <!-- Using button-content slot -->
@@ -78,9 +78,11 @@ export default {
   methods: {
     chooseEesti: function () {
       this.language = 'EESTI'
+      this.$setLang('ee')
     },
     chooseEnglish: function () {
       this.language = 'ENGLISH'
+      this.$setLang('en')
     },
     addThesis: function () {
       if (this.currentUser.roleCode === 1) {
