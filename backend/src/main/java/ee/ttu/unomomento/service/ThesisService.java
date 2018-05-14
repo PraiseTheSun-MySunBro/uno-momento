@@ -178,6 +178,8 @@ public class ThesisService {
         Thesis thesis = getThesisById(thesisId);
         if (thesis == null) return false;
 
+        if (thesis.getThesisStateCode() != 1) return false;
+
         ThesisCandidate thesisCandidate = new ThesisCandidate(thesisId, person.getPersonId());
         ThesisCandidateRecord thesisRecord = dslContext.newRecord(THESIS_CANDIDATE, thesisCandidate);
 
@@ -201,10 +203,47 @@ public class ThesisService {
         Thesis thesis = getThesisById(thesisId);
         if (thesis == null) return false;
 
+        if (thesis.getThesisStateCode() == 4) return false;
+
         ThesisCandidate thesisCandidate = new ThesisCandidate(thesisId, person.getPersonId());
         ThesisCandidateRecord thesisRecord = dslContext.newRecord(THESIS_CANDIDATE, thesisCandidate);
 
         return thesisRecord.delete() != 0;
+    }
+
+//    public boolean curatorPickStudent(Long thesisId, Long studentId, String username) {
+//        Account account = accountService.findAccountByUsername(username);
+//        if (account == null) return false;
+//
+//        Person person = personService.findPersonByAccountId(account.getAccountId());
+//        if (person == null) return false;
+//
+//        List<PersonRole> personRole = personService.getPersonRoleByPersonId(person.getPersonId());
+//        boolean curatorRole = personRole.stream()
+//                .filter(pr -> pr.getRoleCode() == 2)
+//                .collect(Collectors.toList())
+//                .size() != 0;
+//        if (!curatorRole) return false;
+//
+//        Thesis thesis = getThesisById(thesisId);
+//        if (thesis == null) return false;
+//
+//        if (thesis.getThesisStateCode() != 1) return false;
+//
+//        Long curatorId = getThesisCuratorIdByThesisId(thesisId);
+//        if (!person.getPersonId().equals(curatorId)) return false;
+//
+//
+//        return true;
+//    }
+
+    public Long getThesisCuratorIdByThesisId(Long thesisId) {
+        return dslContext
+                .select(THESIS_OWNER.PERSON_ID)
+                .from(THESIS)
+                .innerJoin(THESIS_OWNER).using(THESIS_OWNER.THESIS_ID)
+                .where(THESIS_OWNER.THESIS_ID.eq(thesisId))
+                .fetchOneInto(Long.class);
     }
 
     public List<WorkplaceDTO> getAllMyOwnTheses(String username) {

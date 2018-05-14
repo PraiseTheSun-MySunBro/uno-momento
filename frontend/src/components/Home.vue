@@ -174,7 +174,8 @@ export default {
         thesisDegree: '',
         thesisCuratorFirstName: '',
         thesisCuratorLastName: '',
-        supervisor_name: ''
+        supervisor_name: '',
+        thesis_id: -1
       },
       /* number of chosen page */
       currentPage: 1
@@ -192,6 +193,7 @@ export default {
       this.modal.thesisCuratorFirstName = lecturer.firstname
       this.modal.thesisCuratorLastName = lecturer.lastname
       this.modal.supervisor_name = thesis.supervisor_name
+      this.modal.thesis_id = thesis.thesis_id
       this.$refs.myModalRef.show()
     },
     hideModal: function () {
@@ -212,10 +214,24 @@ export default {
       }
     },
     candidateThesis: function () {
-      this.candidate = false
+      axios.put(`api/thesis/candidate/${this.modal.thesis_id}`)
+        .then(res => {
+          console.log(res.data)
+          this.candidate = false
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
     denyThesisCandidation: function () {
-      this.candidate = true
+      axios.delete(`api/thesis/uncandidate/${this.modal.thesis_id}`)
+        .then(res => {
+          console.log(res.data)
+          this.candidate = true
+        })
+        .catch(err => {
+          console.error(err.response)
+        })
     },
     acceptSubscription: function () {
       this.subscription = true

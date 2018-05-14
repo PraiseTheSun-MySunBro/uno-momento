@@ -210,3 +210,21 @@ CREATE OR REPLACE VIEW curators_with_theses WITH (security_barrier) AS
         INNER JOIN degree d ON t.degree_code = d.degree_code) r ON r.thesis_id = tho.thesis_id
 WHERE (pr.role_code = 2)
 GROUP BY p.person_id;
+
+CREATE OR REPLACE FUNCTION f_curator_picks_student(p_student_id person.person_id%TYPE,
+                                                   p_thesis_id thesis.thesis_id%TYPE)
+RETURNS BOOLEAN AS $$
+  BEGIN
+    IF EXISTS (SELECT 1 FROM thesis_candidate WHERE thesis_id = p_thesis_id AND candidate_id = p_student_id) THEN
+      IF ((SELECT thesis_state_code FROM thesis WHERE thesis_id = p_thesis_id) != 1) THEN
+        RETURN FALSE;
+      END IF;
+
+      DELETE FROM thesis_candidate WHERE candidate_id != p_student_id AND thesis_id = p_thesis_id;
+      UPDATE thesis SET thesis_state_code = 4 WHERE thesis_id = p_thesis_id;
+      RETURN TRUE;
+    END IF;
+    RETURN FALSE;
+  END;
+$$ LANGUAGE plpgsql SECURITY DEFINER
+SET search_path = public, pg_temp

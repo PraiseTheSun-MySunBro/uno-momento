@@ -65,6 +65,7 @@ INSERT INTO Person_Faculty (person_id, faculty_code) VALUES (5, 3);
 INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (1, 'Active', 'Aktiivne');
 INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (2, 'Inactive', 'Mitteaktiivne');
 INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (3, 'Reserved', 'Reserveeritud');
+INSERT INTO Thesis_State (thesis_state_code, en_name, ee_name) VALUES (4, 'Candidate chosen', 'Kandidaat valitud');
 
 INSERT INTO Thesis (faculty_code, degree_code, ee_title, en_title, ee_description, en_description)
 VALUES (3, 2, 'Lõputööde deklareerimise automatiseerimine', 'Thesis declaration', 'PHP Laravel programmeerimine', 'PHP Laravel programming');
