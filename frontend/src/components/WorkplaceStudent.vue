@@ -14,7 +14,7 @@
                   </template>
                   <b-card class="chosen-thesis__card" v-if="getMyPickedThesis != null && Object.keys(getMyPickedThesis).length !== 0">
                     <h2 class="text--sans text-center">{{ getMyPickedThesis.eeTitle }}</h2>
-                    <h3 class="modal-lecturer-name text--sans text-center">{{ getMyPickedThesis.fullName }}, {{ getMyPickedThesis.supervisorName }}</h3>
+                    <!-- <h3 class="modal-lecturer-name text--sans text-center">{{ getMyPickedThesis.fullName }}, {{ getMyPickedThesis.supervisorName }}</h3> -->
                     <hr class="hr__chosen">
                     <!-- Card with theses description -->
                     <div class="chosen-thesis-description__container" >
@@ -273,9 +273,9 @@
             size="lg">
     <div class="d-block text-center">
       <h2 class="text--sans">{{ modalThesisName }}</h2>
-      <h4 class="modal-lecturer-name" v-if="tabNo === 3">
+      <!-- <h4 class="modal-lecturer-name" v-if="tabNo === 3">
         {{ modal.fullName }}
-      </h4>
+      </h4> -->
     </div>
     <hr class="modal-hr__offer">
     <!-- Card with theses description -->
