@@ -4,9 +4,9 @@
       <div id="list__of__lecturers">
         <div role="tablist" >
           <b-card  id="list-accordion" no-body class="mb-1">
-            <div v-for="(lecturer, index) in lecturers" :key="index">
+            <div v-for="(lecturer, lectureIndex) in lecturers" :key="lectureIndex">
               <b-card-header header-tag="header" class="p-1" role="tab">
-              <b-btn block href="#" v-b-toggle="'accordion-' +index" variant="light" class="text-left">
+              <b-btn block href="#" v-b-toggle="'accordion-' +lectureIndex" variant="light" class="text-left">
                 <span class="when-opened float-right">
                   <i class="fas fa-caret-down"></i>
                 </span>
@@ -16,7 +16,7 @@
                 <em class="lector-name text--sans">{{ lecturer.firstname }} {{ lecturer.lastname }}</em>
                 </b-btn>
             </b-card-header>
-            <b-collapse :id="'accordion-' + index" visible accordion="my-accordion" role="tab">
+            <b-collapse :id="'accordion-' + lectureIndex" visible accordion="my-accordion" role="tab">
               <b-card-body class="theses-list">
                 <!-- List of lectors theses -->
                 <b-list-group>
@@ -24,7 +24,7 @@
                                     :key="index"
                                     href="#"
                                     id="theses-group-item"
-                                    @click="showModal(thesis,lecturer)">
+                                    @click="showModal(thesis,lecturer, lectureIndex, index)">
                     <em class="thesis-name text--sans">
                       {{ thesis.ee_title }}
                     </em>
@@ -107,8 +107,8 @@
           </b-card>
           <div id="modal-buttons-container">
             <b-btn class="modal-button-back" @click="hideModal">Tagasi</b-btn>
-            <b-btn class="modal-button-candidate" v-if="candidate" @click="candidateThesis">Kandideeri</b-btn>
-            <b-btn class="modal-button-deny" v-if="!candidate" @click="denyThesisCandidation">Tühista</b-btn>
+            <b-btn class="modal-button-candidate" v-if="modal.candidate" @click="candidateThesis()">Kandideeri</b-btn>
+            <b-btn class="modal-button-deny" v-else @click="denyThesisCandidation()">Tühista</b-btn>
           </div>
         </b-tab>
         <!-- Tab with thesis information in english -->
@@ -144,8 +144,8 @@
           </b-card>
           <div id="modal-buttons-container">
             <b-btn class="modal-button-back" @click="hideModal">Tagasi</b-btn>
-            <b-btn class="modal-button-candidate" v-if="candidate" @click="candidateThesis">Kandideeri</b-btn>
-            <b-btn class="modal-button-deny" v-if="!candidate" @click="denyThesisCandidation">Tühista</b-btn>
+            <b-btn class="modal-button-candidate" v-if="modal.candidate" @click="candidateThesis()">Kandideeri</b-btn>
+            <b-btn class="modal-button-deny" v-else @click="denyThesisCandidation()">Tühista</b-btn>
           </div>
         </b-tab>
       </b-tabs>
@@ -154,12 +154,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'HomeStudent',
   data () {
     return {
       /* test values */
-      candidate: true,
       subscription: false,
       /* list of lecturers  with list of theses */
       lecturers: [],
@@ -175,6 +176,7 @@ export default {
         thesisCuratorFirstName: '',
         thesisCuratorLastName: '',
         supervisor_name: '',
+        candidate: true,
         thesis_id: -1
       },
       /* number of chosen page */
@@ -182,7 +184,7 @@ export default {
     }
   },
   methods: {
-    showModal (thesis, lecturer) {
+    showModal (thesis, lecturer, lectureIndex, index) {
       this.modalThesisName = thesis.ee_title
       this.modal.ee_title = thesis.ee_title
       this.modal.en_title = thesis.en_title
@@ -194,6 +196,14 @@ export default {
       this.modal.thesisCuratorLastName = lecturer.lastname
       this.modal.supervisor_name = thesis.supervisor_name
       this.modal.thesis_id = thesis.thesis_id
+      this.modal.candidate = true
+      if (thesis.candidates != null) {
+        this.modal.candidate = !thesis.candidates.includes(this.currentUser.personId)
+        //this.$set(this.modal, 'candidate', !thesis.candidates.includes(this.currentUser.personId))
+      }
+      this.modal.lectureIndex = lectureIndex
+      this.modal.index = index
+      //this.$forceUpdate()
       this.$refs.myModalRef.show()
     },
     hideModal: function () {
@@ -216,21 +226,21 @@ export default {
     candidateThesis: function () {
       axios.put(`api/thesis/candidate/${this.modal.thesis_id}`)
         .then(res => {
-          console.log(res.data)
-          this.candidate = false
+          this.modal.candidate = false
+          this.$store.dispatch('joinAsCandidate', { lectureIndex: this.modal.lectureIndex, thesisIndex: this.modal.index, personId: this.currentUser.personId })
         })
         .catch(err => {
-          console.error(err.response)
+          console.error(err)
         })
     },
     denyThesisCandidation: function () {
       axios.delete(`api/thesis/uncandidate/${this.modal.thesis_id}`)
         .then(res => {
-          console.log(res.data)
-          this.candidate = true
+          this.modal.candidate = true
+          this.$store.dispatch('leaveAsCandidate', { lectureIndex: this.modal.lectureIndex, thesisIndex: this.modal.index, personId: this.currentUser.personId })
         })
         .catch(err => {
-          console.error(err.response)
+          console.error(err)
         })
     },
     acceptSubscription: function () {
@@ -261,6 +271,11 @@ export default {
       .catch(err => {
         console.error(err)
       })
+  },
+  computed: {
+    ...mapGetters({
+      currentUser: 'getUser'
+    })
   }
 }
 </script>
